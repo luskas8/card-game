@@ -1,0 +1,16 @@
+version: '3.9'
+
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    stop_signal: SIGINT
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/app
+    environment:
+      - PORT=3000
+      - NODE_ENV=development
+    command: npm start
