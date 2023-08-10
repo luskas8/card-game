@@ -1,26 +1,18 @@
 # Initialization with Docker
 
-## Build the Docker image
+## Build and run the Docker image
 
 ```bash
-docker build -t <your username>/node-web-app .
+docker compose up
 ```
 
-Your image will now be listed by Docker:
+Your container will now be listed by Docker:
 
 ```bash
-$ docker images
+$ docker ps
 
-# Example
-REPOSITORY                      TAG        ID              CREATED
-node                            lts-alpine  1934b0b038d1    5 days ago
-<your username>/node-web-app    latest     d64d3505b0d2    1 minute ago
-```
-
-## Run the image
-
-```bash
-docker run -p 49160:3000 -d <your username>/node-web-app
+CONTAINER ID   IMAGE         COMMAND                  CREATED          STATUS         PORTS                    NAMES        
+0f85d7251da8   jogo-server                            20 minutes ago   Up 7 seconds   0.0.0.0:3000->3000/tcp   jogo-server-1
 ```
 
 Print the output of your app:
