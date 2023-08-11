@@ -1,7 +1,11 @@
 FROM node:lts-alpine
 
+RUN apk add --no-cache bash curl && curl -1sLf \
+'https://dl.cloudsmith.io/public/infisical/infisical-cli/setup.alpine.sh' | bash \
+&& apk add infisical
+
 # Create app directory
-WORKDIR /usr/src/app
+WORKDIR /app
 
 # Install app dependencies
 COPY package*.json ./
@@ -12,8 +16,8 @@ RUN npm install
 # Bundle app source
 COPY . .
 
-# Expose port 3000
-EXPOSE 3000
+# Expose port
+EXPOSE ${PORT}
 
 # Run the app
-CMD [ "npm", "start" ]
+CMD ["infisical", "run", "--", "npm", "run", "start"]

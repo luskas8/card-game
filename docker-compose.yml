@@ -6,11 +6,12 @@ services:
       context: .
       dockerfile: Dockerfile
     stop_signal: SIGINT
-    ports:
-      - 3000:3000
     volumes:
       - .:/app
+    env_file:
+      - ./src/config/.env
+    ports:
+      - 3333:3333
     environment:
-      - PORT=3000
-      - NODE_ENV=development
+      - PORT=3333
     command: npm start
