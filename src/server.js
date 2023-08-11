@@ -11,8 +11,12 @@ io.on("connection", (socket) => {
   // ...
 });
 
+app.get("/health", async (req, res) => {
+  res.json({ status: 200, message: "Server online!" });
+});
+
 app.get("/", async (req, res) => {
-  res.send("Hello World!");
+  res.redirect(308, "/health");
 });
 
 httpServer.listen(process.env.PORT || 3000, async () => {
