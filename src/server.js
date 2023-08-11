@@ -1,13 +1,20 @@
-const { createServer } = require("http");
-const { Server } = require("socket.io");
+import express from "express";
+import { createServer } from "http";
+import { Server } from "socket.io";
 
-const httpServer = createServer();
+const app = express();
+
+const httpServer = createServer(app);
 const io = new Server(httpServer, { /* options */ });
 
 io.on("connection", (socket) => {
   // ...
 });
 
-httpServer.listen(3000, () => {
-    console.log('Running on http://localhost:3000');
+app.get("/", async (req, res) => {
+  res.send("Hello World!");
+});
+
+httpServer.listen(process.env.PORT || 3000, async () => {
+  console.log(`Running on http://localhost:${process.env.PORT || 3000}`);
 });
