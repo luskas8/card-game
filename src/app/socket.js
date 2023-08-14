@@ -17,14 +17,6 @@ class Socket {
         this._io.on('connection', (socket) => {
             logger.info(`Socket connected: ${socket.id}`)
             mainEvent(socket, this._io)
-
-            socket.on('disconnect', () => {
-                logger.warn(`Socket disconnected: ${socket.id}`)
-            })
-
-            socket.on('error', (err) => {
-                logger.error(`Socket error: ${err}`)
-            })
         })
 
         return this._io
