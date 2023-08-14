@@ -13,6 +13,8 @@ router.get('/', async (req, res) => {
     res.redirect(308, '/health')
 })
 
+// TODO: Create and use a auth middleware routes below
+
 router.get('/game-status', async (req, res) => {
     res.json({ status: Game.status() })
 })
