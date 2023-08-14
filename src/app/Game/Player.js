@@ -1,13 +1,14 @@
+import logger from "../logger.js"
 import Socket from "../socket.js"
 
 class Player {
     constructor(name, socketID, options = {}) {
         this.name = name
-        this._socketID = socketID
-        this._character = options.character || null
+        this.socketID = socketID
+        this.character = options.character || null
         this._isHost = options.isHost || false
         this._isReady = options.isReady || false
-        this._isTheKiller = options.isTheKiller || false
+        this.isTheKiller = options.isTheKiller || false
         this._wasTheKiller = options.wasTheKiller || false
     }
 
@@ -47,27 +48,31 @@ class Players {
         return this._players.find(player => player._socketID === socketID)
     }
 
-    add(player) {
-        if (this.player(player.name)) {
+    add(name, socketID, options = {}) {
+        if (this.player(name)) {
             return
         }
 
-        this._players.push(player)
+        this._players.push(new Player(name, socketID, options))
     }
 
     disconect(socketID) {
         const disconectPlayer = this.socket(socketID)
 
         if (!disconectPlayer) {
+            logger.info(`Player ${socketID} not found`)
             return
         }
 
         if (disconectPlayer.host) {
+            this._players = []
             Socket.io.disconnectSockets(true)
             return
         }
-
-        this._players = this._players.filter(player => player._socketID !== socketID)
+        logger("before", this._players.length)
+        const index = this._players.indexOf((player) => player._socketID === socketID)
+        this._players = this._players.splice(index, 1)
+        logger("after", this._players.length)
     }
 
     remove(name) {
