@@ -17,4 +17,9 @@ router.get('/game-status', async (req, res) => {
     res.json({ status: Game.status() })
 })
 
+router.get('/game-close', async (req, res) => {
+    Game.close()
+    res.json({ status: 200, message: 'Game closed!' })
+})
+
 export default router
