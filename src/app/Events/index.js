@@ -1,7 +1,8 @@
 import { Server, Socket } from "socket.io";
-import newConnection from "./new-connection.js";
-import disconnect from './disconnect.js'
 import logger from "../logger.js";
+import disconnect from './disconnect.js';
+import gameStatus from './game-status.js';
+import newConnection from "./new-connection.js";
 
 /**
  * @param {Socket} socket 
@@ -13,8 +14,11 @@ export default function mainEvent(socket, io) {
     })
 
     socket.on('disconnect', () => {
-        logger.warn(`Socket disconnected: ${socket.id}`)
         disconnect(socket, io)
+    })
+
+    socket.on('game-status', () => {
+        gameStatus(socket, io)
     })
 
     socket.on('error', (err) => {

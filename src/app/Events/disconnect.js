@@ -1,8 +1,5 @@
 import Players from "../Game/Player.js"
-import Game from "../Game/index.js"
-import logger from "../logger.js"
 
-export default function disconect(socket, io) {
-    logger.warn(`Socket disconnected: ${socket.id}`)
+export default function disconect(socket) {
     Players.disconect(socket.id)
 }

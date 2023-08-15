@@ -15,27 +15,36 @@ export default function newConnection(socket, io, data) {
         return
     }
 
-    if (!data) {
+    if (!data || !data.name) {
         socket.emit('new-connection-error', {
             error: 'Invalid data'
         })
         return
     }
 
-    if (!data.name) {
+    if (Game.players.player(data.name)) {
         socket.emit('new-connection-error', {
-            error: 'Name is required'
+            error: 'Name already in use'
         })
         return
     }
 
-    const isHost = io.engine.clientsCount === 1 && !Game.hostSocketId.length
+    const isHost = io.engine.clientsCount === 1 && Game.hostSocketId === ''
 
-    Game.players.add(data.name, socket.idm, {
+    const response = Game.players.add(data.name, socket.id, {
         isHost: isHost
     })
 
-    Game.hostSocketId = socket.id
+    if (response !== 'success') {
+        socket.emit('new-connection-error', {
+            error: response,
+        })
+        return
+    }
+
+    if (isHost) {
+        Game.hostSocketId = socket.id
+    }
 
     socket.emit('new-connection-success', {
         gameStatus: Game.gameStatus(),
