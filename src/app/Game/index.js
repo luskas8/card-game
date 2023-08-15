@@ -93,15 +93,8 @@ class Game {
 
     gameStatus() {
         return {
-            players: this._players._players.map(player => {
-                return {
-                    name: player.name,
-                    character: player.character,
-                    isReady: player.ready(),
-                    isKiller: player.isTheKiller
-                }
-            }),
-            "status": this._currentState
+            players: this.players.players,
+            status: this._currentState
         }
     }
 }
