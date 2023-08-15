@@ -6,11 +6,6 @@ export default function disconect(socket) {
     if (!player) {
         return
     }
-
-    // if (player.host) {
-    //     Game.close()
-    //     return
-    // }
     
     Players.disconect(player)
 }
