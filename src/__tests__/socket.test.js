@@ -1,18 +1,66 @@
-import App from '../app/app.js'
-import { Server } from 'socket.io'
-import client from 'socket.io-client'
+import { Server, Socket } from "socket.io"
+import { createServer } from "http"
+import Client from "socket.io-client"
+import mainEvent from "../app/Events/index.js"
+import logger from "../app/logger.js"
+import { GameStates } from "../app/Game/index.js"
 
-test('socket.io connection', () => {
-    const port = process.env.PORT || 3000
-    const app = new App()
-    const io = new Server(app.server)
+describe("Socket", () => {
+    /**  @type {Server} */ let io
+    /**  @type {Socket} */ let clientSocket, port
 
-    io.on('connection', (socket) => {
-        expect(socket).toBeDefined()
+    beforeAll((done) => {
+        const httpServer = createServer()
+        io = new Server(httpServer)
+        httpServer.listen(() => {
+            port = httpServer.address().port
+            clientSocket = new Client(`http://localhost:${port}`)
+            io.on("connection", (socket) => {
+                mainEvent(socket, io)
+            })
+            clientSocket.on("connect", done)
+        })
     })
 
-    const clientSocket = client.connect(`http://localhost:${port}`)
+    afterAll(() => {
+        clientSocket.disconnect(true)
+        io.close()
+    })
 
-    clientSocket.disconnect()
-    io.close()
+    test("should connect a new player", (done) => {
+        clientSocket.emit("new-connection", { name: "test" })
+
+        clientSocket.on("new-connection-success", (data) => {
+            expect(data).toHaveProperty("gameStatus")
+            done()
+        })
+    })
+
+    test("should disconnect a player", (done) => {
+        clientSocket.emit("new-connection", { name: "test" })
+        const self = clientSocket.disconnect(true)
+
+        expect(self.disconnected).toBe(true)
+        done()
+    })
+
+    test("should disconnect a player and remove from game", (done) => {
+        clientSocket.emit("new-connection", { name: "test" })
+        const self = clientSocket.disconnect(true)
+
+        expect(self.disconnected).toBe(true)
+
+        clientSocket = new Client(`http://localhost:${port}`)
+        clientSocket.emit("game-status")
+
+        clientSocket.on("game-status-success", (data) => {
+            logger.error(data)
+
+            expect(data).toHaveProperty("players")
+            expect(data.players).toHaveLength(0)
+            expect(data).toHaveProperty("status")
+            expect(data.status).toBe(GameStates.WAITING_PLAYERS)
+            done()
+        })
+    })
 })
