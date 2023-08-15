@@ -7,5 +7,10 @@ import logger from "../logger";
  * @param {Server} io
  */
 export default function gameStatus(socket, io) {
-    socket.emit('game-status-success', Game.gameStatus())
+    const status = Game.gameStatus()
+
+    if (Game.hostSocketId === socket.id) {
+        status.host = true
+    }
+    socket.emit('game-status-update', status)
 }

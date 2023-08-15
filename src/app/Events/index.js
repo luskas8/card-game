@@ -17,7 +17,7 @@ export default function mainEvent(socket, io) {
         disconnect(socket, io)
     })
 
-    socket.on('game-status', () => {
+    socket.on('request-game-status', () => {
         gameStatus(socket, io)
     })
 

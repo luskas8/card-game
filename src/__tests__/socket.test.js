@@ -51,9 +51,9 @@ describe("Socket", () => {
         expect(self.disconnected).toBe(true)
 
         clientSocket = new Client(`http://localhost:${port}`)
-        clientSocket.emit("game-status")
+        clientSocket.emit("request-game-status")
 
-        clientSocket.on("game-status-success", (data) => {
+        clientSocket.on("game-status-update", (data) => {
             logger.error(data)
 
             expect(data).toHaveProperty("players")

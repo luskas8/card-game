@@ -1,5 +1,6 @@
 import { Server, Socket } from "socket.io";
 import Game, { GameStates } from "../Game/index.js"
+import gameStatus from './game-status.js';
 
 /**
  * @param {Socket} socket 
@@ -57,4 +58,6 @@ export default function newConnection(socket, io, data) {
         })
         return
     }
+
+    gameStatus(socket, io)
 }
