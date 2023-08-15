@@ -1,4 +1,3 @@
-import Socket from "../socket.js"
 import Players from "./Player.js"
 
 /**
@@ -26,7 +25,9 @@ class Game {
 
     get game() {
         return {
-
+            host: this._hostSocketId,
+            players: this._players.players,
+            state: this._currentState
         }
     }
 
@@ -57,7 +58,6 @@ class Game {
     }
 
     close() {
-        Socket.io.disconnectSockets(true)
         Players._players = []
         this._hostSocketId = ""
         this._currentState = GameStates.WAITING_PLAYERS
