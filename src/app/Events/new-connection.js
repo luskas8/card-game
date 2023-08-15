@@ -3,7 +3,7 @@ import Game, { GameStates } from "../Game/index.js"
 import gameStatus from './game-status.js';
 
 /**
- * @param {Socket} socket 
+ * @param {Socket} socket
  * @param {Server} io
  * @param {Object} data
  * @param {string} data.name
@@ -23,7 +23,7 @@ export default function newConnection(socket, io, data) {
         return
     }
 
-    if (Game.players.player(data.name)) {
+    if (Game.players.findByName(data.name)) {
         socket.emit('new-connection-error', {
             error: 'Name already in use'
         })
