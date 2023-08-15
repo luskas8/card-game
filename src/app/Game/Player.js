@@ -1,6 +1,4 @@
-import logger from "../logger.js"
-
-class Player {
+export class Player {
     constructor(name, socketID, options = {}) {
         this.name = name
         this.socketID = socketID
@@ -28,7 +26,6 @@ class Player {
     }
 }
 
-
 class Players {
     /** @type {Player[]} */ _players
     constructor() {
@@ -39,16 +36,16 @@ class Players {
         return this._players
     }
 
-    player(name) {
+    findByName(name) {
         return this._players.find(player => player.name === name)
     }
 
-    socket(socketID) {
+    findBySocket(socketID) {
         return this._players.find(player => player.socketID === socketID)
     }
 
     add(name, socketID, options = {}) {
-        if (this.player(name) || this.socket(socketID)) {
+        if (this.findByName(name) || this.findBySocket(socketID)) {
             return "player already exists"
         }
 
@@ -56,39 +53,15 @@ class Players {
         return "success"
     }
 
-    disconect(socketID) {
-        const playerToDisconect = this.socket(socketID)
-
-        if (!playerToDisconect) {
-            logger.info(`Player ${socketID} not found`)
-            return
-        }
-
-        // if (playerToDisconect.host) {
-        //     this._players = []
-        //     Game.close()
-        //     logger.info(`Host ${playerToDisconect.name} disconected, game close`)
-        //     return
-        // }
-
-        this.remove(playerToDisconect)
-    }
-
     /**
-     * @param {Player} playerToRemove 
-     * @returns 
+     * @param {Player} playerToDisconnect
      */
-    remove(playerToRemove) {
-        if (!playerToRemove) {
+    disconect(playerToDisconnect) {
+        if (!playerToDisconnect) {
             return
         }
 
-        // if (deletedPlayer.host) {
-        //     Game.close()
-        //     return
-        // }
-
-        this._players = this._players.filter(player => player.socketID !== playerToRemove.socketID)
+        this._players = this._players.filter(player => player.socketID !== playerToDisconnect.socketID)
     }
 }
 
