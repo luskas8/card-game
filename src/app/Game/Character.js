@@ -1,7 +1,8 @@
 /**
  * @enum {string}
+ * @readonly
  */
-const Places = {
+export const Places = {
     ALL: "all",
     CAMPING: "camping",
     FOOD: "food",
@@ -17,17 +18,25 @@ export class BaseCharacter {
         this.playerSocketId = ''
         this.inUse = false
     }
+
+    get inUse() {
+        return this.inUse
+    }
 }
 
 class Characters {
     /** @type {BaseCharacter[]} */ characters
 
-    constructor() {
-        this.characters = []
+    constructor(initialCharacters) {
+        this.characters = initialCharacters
     }
 
     get all() {
         return this.characters
+    }
+
+    get size() {
+        return this.characters.length
     }
 
     /**
@@ -43,10 +52,10 @@ class Characters {
     }
 
     /**
-     * @param {BaseCharacter} characterToRemove 
+     * @param {BaseCharacter} characterToRemove
      */
     remove(characterToRemove) {
-        if (!this.findBySocket(characterToRemove.name)) {
+        if (!this.findByName(characterToRemove.name)) {
             return false
         }
         this.characters = this.characters.filter(character => character.name !== characterToRemove.name)
@@ -59,6 +68,10 @@ class Characters {
 
     findBySocket(playerSocketId) {
         return this.characters.find(character => character.playerSocketId === playerSocketId)
+    }
+
+    findByPlace(favoritePlace) {
+        return this.characters.filter(character => character.favoritePlace === favoritePlace)
     }
 
     use(characterName, playerSocketId) {
@@ -82,12 +95,22 @@ class Characters {
     }
 
     reset() {
-        this.characters = []
+        this.characters = [
+            new BaseCharacter("Zeca", Places.ALL),
+            new BaseCharacter("Fred", Places.BOAT),
+            new BaseCharacter("Jaimin", Places.BONFIRE),
+            new BaseCharacter("Tati", Places.CAMPING),
+            new BaseCharacter("Bocão", Places.FOOD),
+            new BaseCharacter("Serena", Places.MEDITATE),
+        ]
     }
 }
 
-const characters = new Characters()
-
-
-
-export default characters
+export default new Characters([
+    new BaseCharacter("Zeca", Places.ALL),
+    new BaseCharacter("Fred", Places.BOAT),
+    new BaseCharacter("Jaimin", Places.BONFIRE),
+    new BaseCharacter("Tati", Places.CAMPING),
+    new BaseCharacter("Bocão", Places.FOOD),
+    new BaseCharacter("Serena", Places.MEDITATE),
+])
