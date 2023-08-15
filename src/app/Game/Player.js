@@ -1,5 +1,4 @@
 import logger from "../logger.js"
-import Socket from "../socket.js"
 
 class Player {
     constructor(name, socketID, options = {}) {
@@ -45,49 +44,51 @@ class Players {
     }
 
     socket(socketID) {
-        return this._players.find(player => player._socketID === socketID)
+        return this._players.find(player => player.socketID === socketID)
     }
 
     add(name, socketID, options = {}) {
-        if (this.player(name)) {
-            return
+        if (this.player(name) || this.socket(socketID)) {
+            return "player already exists"
         }
 
         this._players.push(new Player(name, socketID, options))
+        return "success"
     }
 
     disconect(socketID) {
-        const disconectPlayer = this.socket(socketID)
+        const playerToDisconect = this.socket(socketID)
 
-        if (!disconectPlayer) {
+        if (!playerToDisconect) {
             logger.info(`Player ${socketID} not found`)
             return
         }
 
-        if (disconectPlayer.host) {
-            this._players = []
-            Socket.io.disconnectSockets(true)
-            return
-        }
-        logger("before", this._players.length)
-        const index = this._players.indexOf((player) => player._socketID === socketID)
-        this._players = this._players.splice(index, 1)
-        logger("after", this._players.length)
+        // if (playerToDisconect.host) {
+        //     this._players = []
+        //     Game.close()
+        //     logger.info(`Host ${playerToDisconect.name} disconected, game close`)
+        //     return
+        // }
+
+        this.remove(playerToDisconect)
     }
 
-    remove(name) {
-        const deletedPlayer = this.player(name)
-
-        if (!deletedPlayer) {
+    /**
+     * @param {Player} playerToRemove 
+     * @returns 
+     */
+    remove(playerToRemove) {
+        if (!playerToRemove) {
             return
         }
 
-        if (deletedPlayer.host) {
-            Socket.io.disconnectSockets(true)
-            return
-        }
+        // if (deletedPlayer.host) {
+        //     Game.close()
+        //     return
+        // }
 
-        this._players = this._players.filter(player => player.name !== name)
+        this._players = this._players.filter(player => player.socketID !== playerToRemove.socketID)
     }
 }
 
