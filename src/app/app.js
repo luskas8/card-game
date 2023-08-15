@@ -2,6 +2,7 @@ import express, { json } from 'express'
 import { createServer } from 'http'
 import logger from './logger.js'
 import router from './routes.js'
+import { pinoHttp } from 'pino-http'
 
 class App {
     _express = null
@@ -33,6 +34,7 @@ class App {
 
     middlewares() {
         const express = this.express
+        express.use(pinoHttp({ logger }))
         express.use(json())
     }
 

@@ -1,6 +1,5 @@
-import { Server, Socket } from "socket.io";
-import Game from "../Game";
-import logger from "../logger";
+import { Server, Socket } from "socket.io"
+import Game from "../Game/index.js"
 
 /**
  * @param {Socket} socket 

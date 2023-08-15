@@ -19,6 +19,7 @@ class Logger {
                     options: {
                         destination: path.resolve(__dirname(import.meta.url), 'logs', 'app.log'),
                         level: Object.values(pino.levels.labels),
+                        mkdir: true
                     },
                 }
             ]
