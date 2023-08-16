@@ -1,3 +1,4 @@
+import Characters from "./Character.js"
 import Players from "./Player.js"
 
 /**
@@ -57,10 +58,18 @@ class Game {
         return this._currentState
     }
 
-    close() {
-        Players._players = []
-        this._hostSocketId = ""
-        this._currentState = GameStates.WAITING_PLAYERS
+    async close() {
+        await new Promise(async (resolve, reject) => {
+            try {
+                await Characters.reset()
+                Players._players = []
+                this._hostSocketId = ""
+                this._currentState = GameStates.WAITING_PLAYERS
+                resolve()
+            } catch (err) {
+                reject(err)
+            }
+        })
     }
 
     start(hostSocketId) {
@@ -81,14 +90,6 @@ class Game {
         }
 
         this._currentState = GameStates.STARTED
-    }
-
-    status() {
-        return {
-            hostSocketId: this._hostSocketId,
-            players: this._players._players,
-            "status": this._currentState
-        }
     }
 
     gameStatus() {
