@@ -23,13 +23,6 @@ export default function newConnection(socket, io, data) {
         return
     }
 
-    if (Game.players.findByName(data.name)) {
-        socket.emit('new-connection-error', {
-            error: 'Name already in use'
-        })
-        return
-    }
-
     const isHost = io.engine.clientsCount === 1 && Game.hostSocketId === ''
 
     const response = Game.players.add(data.name, socket.id, {

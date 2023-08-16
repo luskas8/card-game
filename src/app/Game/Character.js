@@ -22,6 +22,38 @@ export class BaseCharacter {
     get inUse() {
         return this.inUse
     }
+
+    async use(playerSocketId) {
+        const usePromise = new Promise((resolve, reject) => {
+            if (!playerSocketId) {
+                reject(false)
+            }
+
+            if (this.inUse) {
+                reject(false)
+            }
+
+            this.inUse = true
+            this.playerSocketId = playerSocketId
+            resolve(true)
+        })
+
+        return usePromise.then(() => true).catch(() => false)
+    }
+
+    get release() {
+        const usePromise = new Promise((resolve, reject) => {
+            if (!this.inUse) {
+                reject(false)
+            }
+
+            this.inUse = false
+            this.playerSocketId = ''
+            resolve(true)
+        })
+
+        return usePromise.then(() => true).catch(() => false)
+    }
 }
 
 class Characters {
@@ -72,26 +104,6 @@ class Characters {
 
     findByPlace(favoritePlace) {
         return this.characters.filter(character => character.favoritePlace === favoritePlace)
-    }
-
-    use(characterName, playerSocketId) {
-        const character = this.findByName(characterName)
-        if (!character) {
-            return false
-        }
-
-        character = { ...character, playerSocketId, inUse: true }
-        return true
-    }
-
-    release(characterName) {
-        const character = this.findByName(characterName)
-        if (!character) {
-            return false
-        }
-
-        character = { ...character, playerSocketId: '', inUse: false }
-        return true
     }
 
     reset() {
