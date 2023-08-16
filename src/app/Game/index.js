@@ -61,7 +61,7 @@ class Game {
     async close() {
         await new Promise(async (resolve, reject) => {
             try {
-                await Characters.reset()
+                await Characters.reset
                 Players._players = []
                 this._hostSocketId = ""
                 this._currentState = GameStates.WAITING_PLAYERS

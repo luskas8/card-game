@@ -108,8 +108,8 @@ class Characters {
         return this.characters.filter(character => character.favoritePlace === favoritePlace)
     }
 
-    async reset() {
-        await new Promise((resolve, reject) => {
+    get reset() {
+        const resetPromise = new Promise((resolve, reject) => {
             this.characters = [
                 new BaseCharacter("Zeca", Places.ALL, { inUse: false }),
                 new BaseCharacter("Fred", Places.BOAT, { inUse: false }),
@@ -120,6 +120,8 @@ class Characters {
             ]
             resolve(true)
         })
+
+        return resetPromise.then(() => true).catch(() => false)
     }
 }
 
