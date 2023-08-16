@@ -6,30 +6,31 @@ import { Server, Socket } from "socket.io"
  * @param {Socket} socket 
  * @param {Server} io 
  * @param {Object} data
- * @param {String} data.characterName 
+ * @param {String} data.characterName
+ * @returns {Promise<boolean>}
  */
 export default async function chooseCharacter(socket, io, data) {
     if (!Players.findByName(socket.id)) {
         socket.emit("choose-character-error", {
             error: "You are not in a game"
         })
-        return
+        return false
     }
     
     if (!data.characterName) {
         socket.emit("choose-character-error", {
             error: "No character name provided"
         })
-        return
+        return false
     }
     
-    const character = characters.findByName(name)
+    const character = characters.findByName(data.characterName)
     
     if (character.inUse) {
         socket.emit("choose-character-error", {
             error: "Character already in use"
         })
-        return
+        return false
     }
 
     const using = await character.use(socket.id)
@@ -38,11 +39,11 @@ export default async function chooseCharacter(socket, io, data) {
         socket.emit("choose-character-error", {
             error: "Something went wrong"
         })
-        return
+        return false
     }
 
     socket.emit("choose-character-success", {
         character: character.name
     })
-    return
+    return true
 }

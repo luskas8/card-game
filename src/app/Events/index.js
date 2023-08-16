@@ -2,6 +2,7 @@ import { Server, Socket } from "socket.io";
 import logger from "../logger.js";
 import disconnect from './disconnect.js';
 import gameStatus from './game-status.js';
+import chooseCharacter from './choose-character.js';
 import newConnection from "./new-connection.js";
 
 /**
@@ -19,6 +20,10 @@ export default function mainEvent(socket, io) {
 
     socket.on('request-game-status', () => {
         gameStatus(socket, io)
+    })
+
+    socket.on('choose-character', async (data) => {
+        await chooseCharacter(socket, io, data)
     })
 
     socket.on('error', (err) => {
