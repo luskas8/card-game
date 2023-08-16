@@ -3,7 +3,8 @@ import { createServer } from "http"
 import Client from "socket.io-client"
 import mainEvent from "../app/Events/index.js"
 import logger from "../app/logger.js"
-import { GameStates } from "../app/Game/index.js"
+import Game, { GameStates } from "../app/Game/index.js"
+import Characters from "../app/Game/Character.js"
 
 describe("Socket", () => {
     /**  @type {Server} */ let io
@@ -22,7 +23,9 @@ describe("Socket", () => {
         })
     })
 
-    afterAll(() => {
+    afterAll(async () => {
+        logger.info(`CLIENT ID ${clientSocket.id}`)
+        await Game.close()
         clientSocket.disconnect(true)
         io.close()
     })
@@ -54,12 +57,24 @@ describe("Socket", () => {
         clientSocket.emit("request-game-status")
 
         clientSocket.on("game-status-update", (data) => {
-            logger.error(data)
-
             expect(data).toHaveProperty("players")
-            expect(data.players).toHaveLength(0)
+            expect(data.players.socketID).not.toBe(clientSocket.id)
             expect(data).toHaveProperty("status")
             expect(data.status).toBe(GameStates.WAITING_PLAYERS)
+            done()
+        })
+    })
+
+    test("should choose a character", (done) => {
+        clientSocket.emit("new-connection", { name: "test" })
+
+        clientSocket.on("new-connection-success", () => {
+            clientSocket.emit("choose-character", { characterName: "Zeca" })
+        })
+
+        clientSocket.on("choose-character-success", (data) => {
+            expect(data).toHaveProperty("character")
+            expect(data.character).toBe("Zeca")
             done()
         })
     })
