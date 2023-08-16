@@ -18,7 +18,6 @@ describe("Test character entity", () => {
 
     it("should be able to remove a character from characters object", () => {
         const character = Characters.add(new BaseCharacter("Pinoquio", Places.ALL))
-        logger.info(character)
         const result = Characters.remove(character)
         expect(result).toBe(true)
     })
@@ -32,5 +31,19 @@ describe("Test character entity", () => {
 
     it("should have default characters", () => {
         expect(Characters.size).toBe(6)
+    })
+
+    it ("should be able to use a character", async () => {
+        const character = Characters.add(new BaseCharacter("Pinoquio", Places.ALL))
+        const result = await character.use("40028922")
+        expect(result).toBe(true)
+    })
+
+    it ("should not be able to use an used character", async () => {
+        const character = Characters.findByName("Zeca")
+        const successResult = await character.use("40028922")
+        const errorResult = await character.use("40028923")
+        expect(successResult).toBeTruthy()
+        expect(errorResult).toBeFalsy()
     })
 })

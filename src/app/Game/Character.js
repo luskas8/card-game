@@ -1,3 +1,5 @@
+import logger from "../logger.js"
+
 /**
  * @enum {string}
  * @readonly
@@ -12,15 +14,15 @@ export const Places = {
 }
 
 export class BaseCharacter {
-    constructor(name, favoritePlace) {
+    constructor(name, favoritePlace, options = {}) {
         this.name = name
         this.favoritePlace = favoritePlace
-        this.playerSocketId = ''
-        this.inUse = false
+        this.playerSocketId = options.playerSocketId || ''
+        this._inUse = options.inUse || false
     }
 
     get inUse() {
-        return this.inUse
+        return this._inUse
     }
 
     async use(playerSocketId) {
@@ -29,11 +31,11 @@ export class BaseCharacter {
                 reject(false)
             }
 
-            if (this.inUse) {
+            if (this._inUse) {
                 reject(false)
             }
 
-            this.inUse = true
+            this._inUse = true
             this.playerSocketId = playerSocketId
             resolve(true)
         })
@@ -43,11 +45,11 @@ export class BaseCharacter {
 
     get release() {
         const usePromise = new Promise((resolve, reject) => {
-            if (!this.inUse) {
+            if (!this._inUse) {
                 reject(false)
             }
 
-            this.inUse = false
+            this._inUse = false
             this.playerSocketId = ''
             resolve(true)
         })
@@ -106,23 +108,28 @@ class Characters {
         return this.characters.filter(character => character.favoritePlace === favoritePlace)
     }
 
-    reset() {
-        this.characters = [
-            new BaseCharacter("Zeca", Places.ALL),
-            new BaseCharacter("Fred", Places.BOAT),
-            new BaseCharacter("Jaimin", Places.BONFIRE),
-            new BaseCharacter("Tati", Places.CAMPING),
-            new BaseCharacter("Bocão", Places.FOOD),
-            new BaseCharacter("Serena", Places.MEDITATE),
-        ]
+    async reset() {
+        await new Promise((resolve, reject) => {
+            this.characters = [
+                new BaseCharacter("Zeca", Places.ALL, { inUse: false }),
+                new BaseCharacter("Fred", Places.BOAT, { inUse: false }),
+                new BaseCharacter("Jaimin", Places.BONFIRE, { inUse: false }),
+                new BaseCharacter("Tati", Places.CAMPING, { inUse: false }),
+                new BaseCharacter("Bocão", Places.FOOD, { inUse: false }),
+                new BaseCharacter("Serena", Places.MEDITATE, { inUse: false }),
+            ]
+            resolve(true)
+        })
     }
 }
 
-export default new Characters([
-    new BaseCharacter("Zeca", Places.ALL),
-    new BaseCharacter("Fred", Places.BOAT),
-    new BaseCharacter("Jaimin", Places.BONFIRE),
-    new BaseCharacter("Tati", Places.CAMPING),
-    new BaseCharacter("Bocão", Places.FOOD),
-    new BaseCharacter("Serena", Places.MEDITATE),
-])
+const defaultCharacter = [
+    new BaseCharacter("Zeca", Places.ALL, { inUse: false }),
+    new BaseCharacter("Fred", Places.BOAT, { inUse: false }),
+    new BaseCharacter("Jaimin", Places.BONFIRE, { inUse: false }),
+    new BaseCharacter("Tati", Places.CAMPING, { inUse: false }),
+    new BaseCharacter("Bocão", Places.FOOD, { inUse: false }),
+    new BaseCharacter("Serena", Places.MEDITATE, { inUse: false }),
+]
+
+export default new Characters(defaultCharacter)
