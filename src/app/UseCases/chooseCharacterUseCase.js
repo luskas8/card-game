@@ -10,8 +10,12 @@ import Players from "../Game/Player.js"
  * @returns {Promise<Success|Error>}
  */
 export default async function chooseCharacterUseCase(socketID, data) {
+    if (!socketID) {
+        return Error.badRequest("No socketID provided")
+    }
+    
     if (!Players.findBySocket(socketID)) {
-        return Error.unauthorized("You are not in a game")
+        return Error.notFound("You are not in a game")
     }
     
     if (!data.characterName) {
@@ -19,15 +23,19 @@ export default async function chooseCharacterUseCase(socketID, data) {
     }
     
     const character = characters.findByName(data.characterName)
+
+    if (!character) {
+        return Error.notFound("Character not found")
+    }
     
     if (character.inUse) {
         return Error.unauthorized("Character already in use")
     }
 
-    const using = await character.use(socketID)
+    const response = await character.use(socketID)
 
-    if (!using) {
-        return Error.message("Something went wrong")
+    if (response instanceof Error) {
+        return response
     }
 
     return Success.accepted({ character: character.name })

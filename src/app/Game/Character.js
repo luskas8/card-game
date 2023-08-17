@@ -1,3 +1,4 @@
+import { Error, Success } from "../../config/Responses.js"
 import logger from "../logger.js"
 
 /**
@@ -25,22 +26,27 @@ export class BaseCharacter {
         return this._inUse
     }
 
+    /**
+     * 
+     * @param {string} playerSocketId
+     * @returns {Promise<Success|Error>}
+     */
     async use(playerSocketId) {
         const usePromise = new Promise((resolve, reject) => {
             if (!playerSocketId) {
-                reject(false)
+                reject(Error.badRequest("No playerSocketId provided"))
             }
 
             if (this._inUse) {
-                reject(false)
+                reject(Error.unauthorized("Character already in use"))
             }
 
             this._inUse = true
             this.playerSocketId = playerSocketId
-            resolve(true)
+            resolve(Success.message("Success"))
         })
 
-        return usePromise.then(() => true).catch(() => false)
+        return usePromise.then((success) => success).catch((error) => error)
     }
 
     get release() {
