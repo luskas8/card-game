@@ -1,4 +1,3 @@
-import { Socket } from "socket.io"
 import { Error, Success } from "../../config/Responses.js"
 import characters from "../Game/Character.js"
 import Players from "../Game/Player.js"
@@ -34,8 +33,8 @@ export default async function chooseCharacterUseCase(socketID, data) {
 
     const response = await character.use(socketID)
 
-    if (response instanceof Error) {
-        return response
+    if (response !== "Success") {
+        return Error.message(response)
     }
 
     return Success.accepted({ character: character.name })

@@ -1,6 +1,3 @@
-import { Error, Success } from "../../config/Responses.js"
-import logger from "../logger.js"
-
 /**
  * @enum {string}
  * @readonly
@@ -29,21 +26,21 @@ export class BaseCharacter {
     /**
      * 
      * @param {string} playerSocketId
-     * @returns {Promise<Success|Error>}
+     * @returns {Promise<string>}
      */
     async use(playerSocketId) {
         const usePromise = new Promise((resolve, reject) => {
             if (!playerSocketId) {
-                reject(Error.badRequest("No playerSocketId provided"))
+                reject("No playerSocketId provided")
             }
 
             if (this._inUse) {
-                reject(Error.unauthorized("Character already in use"))
+                reject("Character already in use")
             }
 
             this._inUse = true
             this.playerSocketId = playerSocketId
-            resolve(Success.message("Success"))
+            resolve("Success")
         })
 
         return usePromise.then((success) => success).catch((error) => error)
@@ -115,7 +112,7 @@ class Characters {
     }
 
     get reset() {
-        const resetPromise = new Promise((resolve, reject) => {
+        const resetPromise = new Promise((resolve, _) => {
             this.characters = [
                 new BaseCharacter("Zeca", Places.ALL, { inUse: false }),
                 new BaseCharacter("Fred", Places.BOAT, { inUse: false }),
