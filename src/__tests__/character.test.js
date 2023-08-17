@@ -2,7 +2,15 @@ import logger from "../app/logger"
 import Characters, { BaseCharacter, Places } from "../app/Game/Character"
 
 describe("Test character entity", () => {
+    beforeAll(async () => {
+        await Characters.reset
+    })
+
     afterEach(async () => {
+        await Characters.reset
+    })
+
+    afterAll(async () => {
         await Characters.reset
     })
 

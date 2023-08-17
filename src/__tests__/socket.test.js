@@ -4,13 +4,12 @@ import Client from "socket.io-client"
 import mainEvent from "../app/Events/index.js"
 import logger from "../app/logger.js"
 import Game, { GameStates } from "../app/Game/index.js"
-import Characters from "../app/Game/Character.js"
 
 describe("Socket", () => {
     /**  @type {Server} */ let io
     /**  @type {Socket} */ let clientSocket, port
 
-    beforeAll((done) => {
+    beforeEach((done) => {
         const httpServer = createServer()
         io = new Server(httpServer)
         httpServer.listen(() => {
@@ -23,7 +22,7 @@ describe("Socket", () => {
         })
     })
 
-    afterAll(async () => {
+    afterEach(async () => {
         logger.info(`CLIENT ID ${clientSocket.id}`)
         await Game.close()
         clientSocket.disconnect(true)
