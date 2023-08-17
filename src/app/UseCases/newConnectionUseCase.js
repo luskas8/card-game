@@ -5,9 +5,13 @@ import Game from "../Game/index.js";
  * @param {string} socketID
  * @param {Object} data
  * @param {string} data.name
- * @returns {Error|Success}
+ * @returns {Promise<Error|Success>}
  */
-export default function newConnection(socketID, data) {
+export default async function newConnection(socketID, data) {
+    if (!socketID) {
+        return Error.badRequest('SocketID is required')
+    }
+
     if (Game.players.size >= 6) {
         return Error.unauthorized('Game is full')
     }
@@ -17,7 +21,7 @@ export default function newConnection(socketID, data) {
     }
 
     const isHost = Game.players.size === 1 || Game.hostSocketId === ''
-    const response = Game.players.add(data.name, socketID, {
+    const response = await Game.players.add(data.name, socketID, {
         isHost: isHost
     })
 

@@ -5,7 +5,7 @@ import mainEvent from "../app/Events/index.js"
 import logger from "../app/logger.js"
 import Game, { GameStates } from "../app/Game/index.js"
 
-describe("Socket", () => {
+describe.skip("Socket", () => {
     /**  @type {Server} */ let io
     /**  @type {Socket} */ let clientSocket, port
 

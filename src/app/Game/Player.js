@@ -48,13 +48,16 @@ class Players {
         return this._players.find(player => player.socketID === socketID)
     }
 
-    add(name, socketID, options = {}) {
+    async add(name, socketID, options = {}) {
         if (this.findByName(name) || this.findBySocket(socketID)) {
             return "player already exists"
         }
+        const addPromise = new Promise((resolve, _) => {
+            this._players.push(new Player(name, socketID, options))
+            resolve("success")
+        })
 
-        this._players.push(new Player(name, socketID, options))
-        return "success"
+        return addPromise.then((data) => data).catch((error) => error)
     }
 
     /**
