@@ -79,7 +79,6 @@ describe("newConnectionUseCase", () => {
             })
         })
 
-        console.log(response)
         expect(response).toBeInstanceOf(Error)
         expect(response.status).toBe(Error.unauthorized().status)
     })
