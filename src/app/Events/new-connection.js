@@ -1,6 +1,8 @@
 import { Server, Socket } from "socket.io";
-import Game, { GameStates } from "../Game/index.js"
-import gameStatus from './game-status.js';
+import { Error } from "../../config/Responses.js";
+import Game, { GameStates } from "../Game/index.js";
+import newConnectionUseCase from '../UseCases/newConnectionUseCase.js';
+import gameStatusUpdate from "./game-status-update.js";
 
 /**
  * @param {Socket} socket
@@ -9,40 +11,14 @@ import gameStatus from './game-status.js';
  * @param {string} data.name
  */
 export default function newConnection(socket, io, data) {
-    if (io.engine.clientsCount >= 6) {
+    const response = newConnectionUseCase(socket.id, io, data)
+
+    if (response instanceof Error) {
         socket.emit('new-connection-error', {
-            error: 'Game is full'
+            error: response.message,
         })
         return
     }
-
-    if (!data || !data.name) {
-        socket.emit('new-connection-error', {
-            error: 'Invalid data'
-        })
-        return
-    }
-
-    const isHost = io.engine.clientsCount === 1 && Game.hostSocketId === ''
-
-    const response = Game.players.add(data.name, socket.id, {
-        isHost: isHost
-    })
-
-    if (response !== 'success') {
-        socket.emit('new-connection-error', {
-            error: response,
-        })
-        return
-    }
-
-    if (isHost) {
-        Game.hostSocketId = socket.id
-    }
-
-    socket.emit('new-connection-success', {
-        gameStatus: Game.gameStatus(),
-    })
 
     if (io.engine.clientsCount >= 3) {
         Game.updateState(GameStates.WAITING_HOST)
@@ -52,5 +28,9 @@ export default function newConnection(socket, io, data) {
         return
     }
 
-    gameStatus(socket, io)
+    socket.emit('new-connection-success', {
+        status: response.message,
+    })
+
+    gameStatusUpdate(socket.id, io)
 }

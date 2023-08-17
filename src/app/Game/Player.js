@@ -36,6 +36,10 @@ class Players {
         return this._players
     }
 
+    get size() {
+        return this._players.length
+    }
+
     findByName(name) {
         return this._players.find(player => player.name === name)
     }
