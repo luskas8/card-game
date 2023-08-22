@@ -108,7 +108,7 @@ class Characters {
     }
 
     findByPlace(favoritePlace) {
-        return this.characters.filter(character => character.favoritePlace === favoritePlace)
+        return this.characters.find(character => character.favoritePlace === favoritePlace)
     }
 
     get reset() {
