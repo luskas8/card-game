@@ -1,5 +1,5 @@
-import { Error, Success } from "../../config/Responses.js";
-import Game from "../Game/index.js";
+import { Error, Success } from "../../config/Responses.js"
+import Game from "../Game/index.js"
 
 /**
  * @param {string} socketID
@@ -20,7 +20,7 @@ export default async function newConnection(socketID, data) {
         return Error.badRequest('Name is required')
     }
 
-    const isHost = Game.players.size === 1 || Game.hostSocketId === ''
+    const isHost = Game.hostSocketId === ''
     const response = await Game.players.add(data.name, socketID, {
         isHost: isHost
     })
@@ -33,5 +33,5 @@ export default async function newConnection(socketID, data) {
         Game.hostSocketId = socketID
     }
 
-    return Success.created(Game.gameStatus())
+    return Success.created(Game.game)
 }

@@ -91,13 +91,6 @@ class Game {
 
         this._currentState = GameStates.STARTED
     }
-
-    gameStatus() {
-        return {
-            players: this.players.players,
-            status: this._currentState
-        }
-    }
 }
 
 export default new Game()

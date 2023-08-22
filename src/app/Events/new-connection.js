@@ -1,8 +1,8 @@
-import { Server, Socket } from "socket.io";
-import { Error } from "../../config/Responses.js";
-import Game, { GameStates } from "../Game/index.js";
-import newConnectionUseCase from '../UseCases/newConnectionUseCase.js';
-import gameStatusUpdate from "./game-status-update.js";
+import { Server, Socket } from "socket.io"
+import { Error } from "../../config/Responses.js"
+import Game, { GameStates } from "../Game/index.js"
+import newConnectionUseCase from '../UseCases/newConnectionUseCase.js'
+import gameStatusUpdate from "./game-status-update.js"
 
 /**
  * @param {Socket} socket
@@ -32,5 +32,5 @@ export default function newConnection(socket, io, data) {
         status: response.message,
     })
 
-    gameStatusUpdate(socket.id, io)
+    gameStatusUpdate(io)
 }

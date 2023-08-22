@@ -1,9 +1,9 @@
-import { Server, Socket } from "socket.io";
-import logger from "../logger.js";
-import disconnect from './disconnect.js';
-import gameStatus from './game-status.js';
-import chooseCharacter from './choose-character.js';
-import newConnection from "./new-connection.js";
+import { Server, Socket } from "socket.io"
+import logger from "../logger.js"
+import chooseCharacter from './choose-character.js'
+import disconnect from './disconnect.js'
+import gameStatusUpdate from "./game-status-update.js"
+import newConnection from "./new-connection.js"
 
 /**
  * @param {Socket} socket 
@@ -18,8 +18,8 @@ export default function mainEvent(socket, io) {
         disconnect(socket, io)
     })
 
-    socket.on('request-game-status', () => {
-        gameStatus(socket, io)
+    socket.on('game-status-request', () => {
+        gameStatusUpdate(io)
     })
 
     socket.on('choose-character', async (data) => {
