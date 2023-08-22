@@ -13,6 +13,10 @@ export class Player {
         return this._isHost
     }
 
+    get isReady() {
+        return this._isReady
+    }
+
     turnHost() {
         this._isHost = true
     }
