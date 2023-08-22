@@ -1,4 +1,4 @@
-import Game from "../../app/Game"
+import Game from "../../app/Entities/Game"
 import newConnectionUseCase from "../../app/UseCases/newConnectionUseCase"
 import { Error, Success } from "../../config/Responses"
 

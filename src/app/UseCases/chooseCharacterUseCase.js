@@ -1,6 +1,6 @@
 import { Error, Success } from "../../config/Responses.js"
-import characters from "../Game/Character.js"
-import Players from "../Game/Player.js"
+import characters from "../Entities/Character.js"
+import Players from "../Entities/Player.js"
 
 /**
  * @param {string} socketID

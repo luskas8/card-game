@@ -1,4 +1,4 @@
-import Players from "../Game/Player.js"
+import Players from "../Entities/Player.js"
 import gameStatusUpdate from "./game-status-update.js"
 
 export default function disconect(socket) {

@@ -1,5 +1,5 @@
 import { Server } from "socket.io"
-import Game from "../Game/index.js"
+import Game from "../Entities/Game.js"
 
 /**
  * @param {Server} io

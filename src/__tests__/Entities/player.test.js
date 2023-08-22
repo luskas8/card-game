@@ -1,4 +1,4 @@
-import { Player } from "../../app/Game/Player.js"
+import { Player } from "../../app/Entities/Player.js"
 
 describe("Test player entity", () => {
     it("should be able to create a player", () => {

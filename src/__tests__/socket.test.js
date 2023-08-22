@@ -3,7 +3,7 @@ import { createServer } from "http"
 import Client from "socket.io-client"
 import mainEvent from "../app/Events/index.js"
 import logger from "../app/logger.js"
-import Game, { GameStates } from "../app/Game/index.js"
+import Game, { GameStates } from "../app/Entities/Game.js"
 
 describe.skip("Socket", () => {
     /**  @type {Server} */ let io

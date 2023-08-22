@@ -1,5 +1,5 @@
-import Game from "../../app/Game"
-import Characters, { BaseCharacter, Places } from "../../app/Game/Character"
+import Game from "../../app/Entities/Game"
+import Characters, { BaseCharacter, Places } from "../../app/Entities/Character"
 
 describe("Test character entity", () => {
     beforeAll(async () => {

@@ -1,6 +1,6 @@
 import { Server, Socket } from "socket.io"
 import { Error } from "../../config/Responses.js"
-import Game, { GameStates } from "../Game/index.js"
+import Game, { GameStates } from "../Entities/Game.js"
 import newConnectionUseCase from '../UseCases/newConnectionUseCase.js'
 import gameStatusUpdate from "./game-status-update.js"
 
