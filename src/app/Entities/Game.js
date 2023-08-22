@@ -1,5 +1,5 @@
 import Characters from "./Character.js"
-import Players from "./Player.js"
+import { Player } from "./Player.js"
 
 /**
  * @readonly
@@ -15,19 +15,19 @@ export const GameStates = {
 
 class Game {
     /** @type {string} */ _hostSocketId
-    /** @type {Players} */ _players
+    /** @type {Player[]} */ _players
     /** @type {GameStates} */ _currentState
 
     constructor() {
         this._hostSocketId = ""
-        this._players = Players
+        this._players = []
         this._currentState = GameStates.WAITING_PLAYERS
     }
 
     get game() {
         return {
             host: this._hostSocketId,
-            players: this._players.players,
+            players: this._players,
             state: this._currentState
         }
     }
@@ -62,7 +62,7 @@ class Game {
         await new Promise(async (resolve, reject) => {
             try {
                 await Characters.reset
-                Players._players = []
+                this._players = []
                 this._hostSocketId = ""
                 this._currentState = GameStates.WAITING_PLAYERS
                 resolve()
@@ -90,6 +90,41 @@ class Game {
         }
 
         this._currentState = GameStates.STARTED
+    }
+
+    get size() {
+        return this._players.length
+    }
+
+    findPlayerByName(name) {
+        return this._players.find(player => player.name === name)
+    }
+
+    findPlayerBySocket(socketID) {
+        return this._players.find(player => player.socketID === socketID)
+    }
+
+    async addPlayer(name, socketID, options = {}) {
+        if (this.findPlayerByName(name) || this.findPlayerBySocket(socketID)) {
+            return "player already exists"
+        }
+        const addPromise = new Promise((resolve, _) => {
+            this._players.push(new Player(name, socketID, options))
+            resolve("success")
+        })
+
+        return addPromise.then((data) => data).catch((error) => error)
+    }
+
+    /**
+     * @param {Player} playerToDisconnect
+     */
+    disconectPlayer(playerToDisconnect) {
+        if (!playerToDisconnect) {
+            return
+        }
+
+        this._players = this._players.filter(player => player.socketID !== playerToDisconnect.socketID)
     }
 }
 

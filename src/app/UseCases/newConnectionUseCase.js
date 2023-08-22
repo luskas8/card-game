@@ -12,7 +12,7 @@ export default async function newConnection(socketID, data) {
         return Error.badRequest('SocketID is required')
     }
 
-    if (Game.players.size >= 6) {
+    if (Game.size >= 6) {
         return Error.unauthorized('Game is full')
     }
 
@@ -21,7 +21,7 @@ export default async function newConnection(socketID, data) {
     }
 
     const isHost = Game.hostSocketId === ''
-    const response = await Game.players.add(data.name, socketID, {
+    const response = await Game.addPlayer(data.name, socketID, {
         isHost: isHost
     })
 

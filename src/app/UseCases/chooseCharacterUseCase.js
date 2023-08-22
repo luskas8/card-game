@@ -1,6 +1,6 @@
 import { Error, Success } from "../../config/Responses.js"
 import characters from "../Entities/Character.js"
-import Players from "../Entities/Player.js"
+import Game from "../Entities/Game.js"
 
 /**
  * @param {string} socketID
@@ -13,7 +13,7 @@ export default async function chooseCharacterUseCase(socketID, data) {
         return Error.badRequest("No socketID provided")
     }
     
-    if (!Players.findBySocket(socketID)) {
+    if (!Game.findPlayerBySocket(socketID)) {
         return Error.notFound("You are not in a game")
     }
     
