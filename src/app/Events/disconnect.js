@@ -1,4 +1,5 @@
 import Players from "../Game/Player.js"
+import gameStatusUpdate from "./game-status-update.js"
 
 export default function disconect(socket) {
     const player = Players.findBySocket(socket.id)
@@ -8,4 +9,5 @@ export default function disconect(socket) {
     }
     
     Players.disconect(player)
+    gameStatusUpdate(io)
 }

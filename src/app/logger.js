@@ -1,6 +1,6 @@
-import path from 'path';
-import pino from 'pino';
-import __dirname from '../config/utils.js';
+import path from 'path'
+import pino from 'pino'
+import __dirname from '../config/utils.js'
 
 class Logger {
     constructor() {
@@ -23,26 +23,26 @@ class Logger {
                     },
                 }
             ]
-        });
+        })
 
         this._logger = pino(
             {
                 timestamp: pino.stdTimeFunctions.isoTime,
                 formatters: {
                     level: (label) => {
-                        return { level: label.toUpperCase() };
+                        return { level: label.toUpperCase() }
                     },
                 },
             },
             process.env.NODE_ENV === 'prd' ? transport : null
-        );
+        )
 
-        this._logger.warn('Logger initialized');
+        this._logger.warn('Logger initialized')
     }
 
     get logger() {
-        return this._logger;
+        return this._logger
     }
 }
 
-export default new Logger().logger;
+export default new Logger().logger

@@ -1,6 +1,6 @@
-import Game from "../../app/Game";
-import newConnectionUseCase from "../../app/UseCases/newConnectionUseCase";
-import { Error, Success } from "../../config/Responses";
+import Game from "../../app/Game"
+import newConnectionUseCase from "../../app/UseCases/newConnectionUseCase"
+import { Error, Success } from "../../config/Responses"
 
 describe("newConnectionUseCase", () => {
     const socketID = "40028922"
@@ -19,7 +19,7 @@ describe("newConnectionUseCase", () => {
 
         expect(response).toBeInstanceOf(Success)
         expect(response.status).toBe(Success.created().status)
-    });
+    })
 
     it("should not be able to create a new connection with no socketID", async () => {
         const response = await newConnectionUseCase("", { name })
