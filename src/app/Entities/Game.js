@@ -82,14 +82,15 @@ class Game {
         }
 
         if (this._currentState === GameStates.STARTED) {
-            return this._currentState
+            return "Game already started"
         }
 
-        if (this._players._players.length < 3) {
+        if (this._players.length < 3) {
             return 'You need at least 3 players'
         }
 
         this._currentState = GameStates.STARTED
+        return 'Game started'
     }
 
     get size() {
@@ -121,10 +122,11 @@ class Game {
      */
     disconectPlayer(playerToDisconnect) {
         if (!playerToDisconnect) {
-            return
+            return false
         }
 
         this._players = this._players.filter(player => player.socketID !== playerToDisconnect.socketID)
+        return true
     }
 }
 

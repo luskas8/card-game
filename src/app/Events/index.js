@@ -1,7 +1,7 @@
 import { Server, Socket } from "socket.io"
 import logger from "../logger.js"
 import chooseCharacter from './choose-character.js'
-import disconnect from './disconnect.js'
+import disconect from './disconect.js'
 import gameStatusUpdate from "./game-status-update.js"
 import newConnection from "./new-connection.js"
 
@@ -14,8 +14,8 @@ export default function mainEvent(socket, io) {
         newConnection(socket, io, data)
     })
 
-    socket.on('disconnect', () => {
-        disconnect(socket, io)
+    socket.on('disconect', () => {
+        disconect(socket, io)
     })
 
     socket.on('game-status-request', () => {
