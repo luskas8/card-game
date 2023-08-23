@@ -1,11 +1,11 @@
 import { Error, Success } from "../../../config/Responses.js";
-import Game from "../Entities/Game.js"
+import Game from "../Entities/Game.js";
 
 /**
  * @param {string} socketID
  * @returns {Promise<Error|Success>}
  */
-export async function startGameUseCase(socketID) {
+export default async function startGameUseCase(socketID) {
     if (!socketID) {
         return Error.badRequest("Socket ID is required")
     }

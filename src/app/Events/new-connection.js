@@ -10,8 +10,8 @@ import gameStatusUpdate from "./game-status-update.js"
  * @param {Object} data
  * @param {string} data.name
  */
-export default function newConnection(socket, io, data) {
-    const response = newConnectionUseCase(socket.id, io, data)
+export default async function newConnection(socket, io, data) {
+    const response = await newConnectionUseCase(socket.id, io, data)
 
     if (response instanceof Error) {
         socket.emit('new-connection-error', {

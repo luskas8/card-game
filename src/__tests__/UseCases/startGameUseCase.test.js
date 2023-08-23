@@ -1,6 +1,6 @@
-import { ErrorType, Error, SuccessType, Success } from "../../../config/Responses"
+import { Error, ErrorType, Success } from "../../../config/Responses"
 import Game, { GameStates } from "../../app/Entities/Game"
-import { startGameUseCase } from "../../app/UseCases/startGameUseCase"
+import startGameUseCase from "../../app/UseCases/startGameUseCase"
 
 describe("startGameUseCase", () => {
     beforeEach((done) => {
