@@ -56,7 +56,7 @@ describe("Test character entity", () => {
         expect(errorResult).not.toBe("Success")
     })
 
-    it("it should not be able to use a character when it is in use", async () => {
+    it("should not be able to use a character when it is in use", async () => {
         const character = Characters.findByName("Zeca")
         character._inUse = true
         const result = await character.use("40028922")
@@ -64,7 +64,7 @@ describe("Test character entity", () => {
         expect(result).not.toBe("Success")
     })
 
-    it("it should not be able to use a character when not passed player socket id", async () => {
+    it("should not be able to use a character when not passed player socket id", async () => {
         const character = Characters.findByName("Zeca")
         character._inUse = true
         const result = await character.use("")
@@ -72,7 +72,7 @@ describe("Test character entity", () => {
         expect(result).not.toBe("Success")
     })
 
-    it("it should be able to release a character", async () => {
+    it("should be able to release a character", async () => {
         const character = Characters.findByName("Zeca")
         character._inUse = true
         const result = await character.release
@@ -80,7 +80,7 @@ describe("Test character entity", () => {
         expect(result).toBe(true)
     })
 
-    it("it should not be able to release a character when not in use", async () => {
+    it("should not be able to release a character when not in use", async () => {
         const character = Characters.findByName("Zeca")
         const result = await character.release
         
