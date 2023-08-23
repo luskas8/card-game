@@ -17,9 +17,11 @@ class Game {
     /** @type {string} */ _hostSocketId
     /** @type {Player[]} */ _players
     /** @type {GameStates} */ _currentState
+    /** @type {string} */ _currentKillerSocketID
 
     constructor() {
         this._hostSocketId = ""
+        this._currentKillerSocketID = ""
         this._players = []
         this._currentState = GameStates.WAITING_PLAYERS
     }
@@ -28,7 +30,8 @@ class Game {
         return {
             host: this._hostSocketId,
             players: this._players,
-            state: this._currentState
+            state: this._currentState,
+            killer: this._currentKillerSocketID,
         }
     }
 
@@ -38,6 +41,18 @@ class Game {
     
     get hostSocketId() {
         return this._hostSocketId
+    }
+
+    get killer() {
+        return this._players.find(player => player.socketID === this._currentKillerSocketID)
+    }
+
+    get killerSocketID() {
+        return this._currentKillerSocketID
+    }
+
+    set killerSocketID(socketID) {
+        this._currentKillerSocketID = socketID
     }
 
     /**
@@ -81,6 +96,10 @@ class Game {
 
     allPlayersHasCharacter() {
         return this._players.every(player => player.character != null)
+    }
+
+    allPlayersWasKiller() {
+        return this._players.every(player => player._wasTheKiller)
     }
 
     get size() {

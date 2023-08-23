@@ -99,6 +99,17 @@ class Error {
     static notFound(message = 'Not Found') {
         return new Error(404, message)
     }
+
+    /**
+     * 
+     * @param {any} message - All players was killer
+     * @returns {Error}
+     * @memberof Error
+     * @static
+     */
+    static allKillers(message = 'All players was killer') {
+        return new Error(418, message)
+    }
 }
 
 const SuccessType = Success

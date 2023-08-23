@@ -30,7 +30,10 @@ export default async function startGameUseCase(socketID) {
         return Error.message("Game already started")
     }
 
-    await Game.start()
+    if (Game.allPlayersWasKiller()) {
+        return Error.allKillers()
+    }
 
+    await Game.start()
     return Success.message("Game started")
 }
