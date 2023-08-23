@@ -29,7 +29,16 @@ class Game {
     get game() {
         return {
             host: this._hostSocketId,
-            players: this._players,
+            players: this._players.map(player => {
+                return {
+                    name: player.name,
+                    isHost: player.host,
+                    character: player.character,
+                    baseScore: player.baseScore,
+                    killerScore: player.killerScore,
+                    isKiller: player.isTheKiller,
+                }
+            }),
             state: this._currentState,
             killer: this._currentKillerSocketID,
         }
