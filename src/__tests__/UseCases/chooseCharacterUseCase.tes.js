@@ -1,7 +1,7 @@
 import Game from "../../app/Entities/Game.js"
 import chooseCharacterUseCase from "../../app/UseCases/chooseCharacterUseCase.js"
 import newConnectionUseCase from "../../app/UseCases/newConnectionUseCase.js"
-import { Error, Success } from "../../config/Responses"
+import { Error, Success } from "../../../config/Responses.js"
 
 describe("chooseCharacterUseCase", () => {
     const socketID = "40028922"

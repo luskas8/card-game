@@ -1,4 +1,4 @@
-import { Error } from "../../config/Responses.js"
+import { Error } from "../../../config/Responses.js"
 import chooseCharacterUseCase from "../UseCases/chooseCharacterUseCase.js"
 import logger from "../logger.js"
 import gameStatusUpdate from "./game-status-update.js"
