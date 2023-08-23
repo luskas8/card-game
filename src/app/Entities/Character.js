@@ -123,7 +123,6 @@ class Characters {
             ]
             resolve(true)
         })
-
         return resetPromise.then(() => true).catch(() => false)
     }
 }

@@ -28,6 +28,5 @@ export default async function chooseKillerUseCase() {
         Game.killerSocketID = player.socketID
         resolve(player)
     })
-
     return chooseKillerUseCasePromise.then((data) => data).catch((error) => error)
 }

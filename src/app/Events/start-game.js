@@ -12,14 +12,15 @@ import gameStatusUpdate from "./game-status-update";
 export default async function startGame(socket, io) {
     const result = await startGameUseCase(socket.id)
 
-    if (result instanceof Error && result.status !== Error.allKillers().status) {
+    if (result instanceof Error) {
+        if (result.status === Error.allKillers().status) {
+            io.emit("conference-time", { message: "Game has started points conference time"})
+            // TODO: Implement points conference time
+            return false
+        }
+
         socket.emit("start-game-error", {message: result.message })
         return false
-    }
-
-    if (result.status === Error.allKillers().status) {
-        io.emit("conference-time", { message: "The game has started points conference time"})
-        // TODO: Implement points conference time
     }
 
     const choosedKiller = await chooseKillerUseCase()

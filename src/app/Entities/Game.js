@@ -118,11 +118,11 @@ class Game {
         if (this.findPlayerByName(name) || this.findPlayerBySocket(socketID)) {
             return "player already exists"
         }
+
         const addPromise = new Promise((resolve, _) => {
             this._players.push(new Player(name, socketID, options))
             resolve("success")
         })
-
         return addPromise.then((data) => data).catch((error) => error)
     }
 

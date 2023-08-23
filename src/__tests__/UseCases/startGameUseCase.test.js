@@ -1,11 +1,12 @@
 import { Error, Success } from "../../../config/Responses"
 import Game, { GameStates } from "../../app/Entities/Game"
+import { Player } from "../../app/Entities/Player"
 import startGameUseCase from "../../app/UseCases/startGameUseCase"
 
 describe("startGameUseCase", () => {
     beforeEach((done) => {
         Game.hostSocketId = "123"
-        Game._players = [{ socketID: "123", character: "123" }, { socketID: "1234", character: "123" }, { socketID: "1235", character: "123" }, { socketID: "1236", character: "123" }]
+        Game._players = [new Player("TESTADOR", "123", { isHost: true, isTheKiller: true, wasTheKiller: true, character: "Zeca" }), new Player("TESTADOR", "1234", { character: "Zeca" }), new Player("TESTADOR", "1235", { character: "Zeca" }), new Player("TESTADOR", "123", { character: "Zeca" }), new Player("TESTADOR", "1236", { character: "Zeca" })]
         done()
     })
 
@@ -35,8 +36,8 @@ describe("startGameUseCase", () => {
     })
 
     it("should not be able to start a game without a character", async () => {
-        Game._players.push({ socketID: "1", character: null })
-        const result = await startGameUseCase("1")
+        Game._players.push({ socketID: "123", character: null })
+        const result = await startGameUseCase("123")
 
         expect(result).toBeInstanceOf(Error)
         expect(result.status).toBe(Error.unauthorized().status)
@@ -56,6 +57,15 @@ describe("startGameUseCase", () => {
 
         expect(result).toBeInstanceOf(Error)
         expect(result.status).toBe(Error.message("").status)
+    })
+
+    it("should not start the game if all players already was killer", async () => {
+        Game.players.map(player => player._wasTheKiller = true)
+        const result = await startGameUseCase("123")
+
+        expect(result).toBeInstanceOf(Error)
+        expect(result.status).toBe(Error.allKillers().status)
+
     })
  
     it("should be able to start a game", async () => {
