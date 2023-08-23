@@ -23,7 +23,7 @@ export default function newConnection(socket, io, data) {
     if (io.engine.clientsCount >= 3) {
         Game.updateState(GameStates.WAITING_HOST)
         io.emit(Game.currentState, {
-            status: Game.currentState(),
+            status: Game.currentState,
         })
         return
     }

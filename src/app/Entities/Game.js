@@ -54,7 +54,7 @@ class Game {
         this._currentState = state
     }
 
-    currentState() {
+    get currentState() {
         return this._currentState
     }
 
@@ -72,25 +72,33 @@ class Game {
         })
     }
 
-    start(hostSocketId) {
-        if (!hostSocketId) {
-            return 'Host socketId is required'
-        }
+    async start(hostSocketId) {
+        const startPromise = new Promise((resolve, reject) => {
+            if (!hostSocketId) {
+                reject('Host socketId is required')
+            }
+    
+            if (hostSocketId !== this._hostSocketId) {
+                reject('You are not the host')
+            }
+    
+            if (this._currentState === GameStates.STARTED) {
+                reject("Game already started")
+            }
+    
+            if (this._players.length < 3) {
+                reject('You need at least 3 players')
+            }
+    
+            this._currentState = GameStates.STARTED
+            resolve('Game started')
+        })
 
-        if (hostSocketId !== this._hostSocketId) {
-            return 'You are not the host'
-        }
+        return startPromise.then((data) => data).catch((error) => error)
+    }
 
-        if (this._currentState === GameStates.STARTED) {
-            return "Game already started"
-        }
-
-        if (this._players.length < 3) {
-            return 'You need at least 3 players'
-        }
-
-        this._currentState = GameStates.STARTED
-        return 'Game started'
+    allPlayersHasCharacter() {
+        return this._players.every(player => player.character != null)
     }
 
     get size() {

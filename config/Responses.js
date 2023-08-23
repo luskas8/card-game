@@ -11,17 +11,6 @@ class Success {
      * @memberof Success
      * @static
      */
-    static get status() {
-        return this.status
-    }
-
-    /**
-     * 
-     * @param {any} message
-     * @returns {Success}
-     * @memberof Success
-     * @static
-     */
     static message(message = 'Success') {
         return new Success(this.status, message)
     }
@@ -112,4 +101,7 @@ class Error {
     }
 }
 
-export { Success, Error }
+const SuccessType = Success
+const ErrorType = Error
+
+export { Success, Error, SuccessType, ErrorType }
