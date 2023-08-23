@@ -1,4 +1,18 @@
 export class Player {
+    /**
+     * @param {string} name 
+     * @param {string} socketID 
+     * @param {Object} options
+     * @param {string?} options.character
+     * @param {boolean?} options.isHost
+     * @param {boolean?} options.isReady
+     * @param {boolean?} options.isTheKiller
+     * @param {boolean?} options.wasTheKiller
+     * @param {number?} options.killerScore
+     * @param {number?} options.baseScore
+     * @returns {Player}
+     * @constructor
+     */
     constructor(name, socketID, options = {}) {
         this.name = name
         this.socketID = socketID
@@ -7,6 +21,23 @@ export class Player {
         this._isReady = options.isReady || false
         this.isTheKiller = options.isTheKiller || false
         this._wasTheKiller = options.wasTheKiller || false
+        this._killerScore = options.killerScore || 0
+        this._baseScore = options.baseScore || 0
+    }
+
+    /** Total score of the player: baseScore + killerScore
+     * @returns {number}
+     */
+    get score() {
+        return this.baseScore + this.killerScore
+    }
+
+    get killerScore() {
+        return this._killerScore
+    }
+
+    get baseScore() {
+        return this._baseScore
     }
 
     get host() {
