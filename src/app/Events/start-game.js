@@ -12,7 +12,7 @@ export default async function startGame(socket, io) {
     const result = await startGameUseCase(socket.id)
 
     if (result instanceof Error) {
-        socket.emit("start-game-error", result)
+        socket.emit("start-game-error", {message: result.message })
         return false
     }
 

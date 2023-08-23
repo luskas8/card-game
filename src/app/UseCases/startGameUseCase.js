@@ -1,5 +1,5 @@
 import { Error, Success } from "../../../config/Responses.js";
-import Game from "../Entities/Game.js";
+import Game, { GameStates } from "../Entities/Game.js";
 
 /**
  * @param {string} socketID
@@ -14,15 +14,23 @@ export default async function startGameUseCase(socketID) {
         return Error.notFound("Player not found")
     }
 
+    if (Game.hostSocketId !== socketID) {
+        return Error.unauthorized("You are not the host")
+    }
+
+    if (Game.size < 3) {
+        return Error.badRequest("You need at least 3 players")
+    }
+
     if (!Game.allPlayersHasCharacter()) {
         return Error.unauthorized("All players must choose a character")
     }
 
-    const result = await Game.start(socketID)
-
-    if (result !== "Game started") {
-        return Error.message(result)
+    if (Game.currentState === GameStates.STARTED) {
+        return Error.message("Game already started")
     }
 
-    return Success.message(result)
+    await Game.start()
+
+    return Success.message("Game started")
 }
