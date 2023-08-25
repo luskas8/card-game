@@ -18,7 +18,7 @@ export default async function startGameUseCase(socketID) {
         return Error.forbidden("You are not the host")
     }
 
-    if (Game.size < 3) {
+    if (Game.playerListSize < 3) {
         return Error.forbidden("You need at least 3 players")
     }
 

@@ -18,7 +18,7 @@ export default async function startGameUseCase(socketID) {
         return Error.unauthorized("You are not the host")
     }
 
-    if (Game.size < 3) {
+    if (Game.playerListSize < 3) {
         return Error.badRequest("You need at least 3 players")
     }
 
@@ -34,6 +34,6 @@ export default async function startGameUseCase(socketID) {
         return Error.allKillers()
     }
 
-    await Game.start()
+    Game.start()
     return Success.message("Game started")
 }

@@ -41,7 +41,7 @@ describe("Test character entity", () => {
     })
 
     it("should have default characters", () => {
-        expect(Characters.size).toBe(6)
+        expect(Characters.characterListSize).toBe(6)
     })
 
     it("should be able to use a character", async () => {
