@@ -11,10 +11,10 @@ export default async function conferenceUseCase() {
     if (tieList.length > 0) {
         tieList.push(first)
         const predator = tieList.sort((a, b) => b.killerScore - a.killerScore)[0]
-        const killersTie = tieList.filter(player => player.killerScore === predator.killerScore && player.socketID !== predator.socketID)
-        if (killersTie.length > 0) {
-            killersTie.push(predator)
-            return Success.tie(killersTie)
+        const killersTieList = tieList.filter(player => player.killerScore === predator.killerScore && player.socketID !== predator.socketID)
+        if (killersTieList.length > 0) {
+            killersTieList.push(predator)
+            return Success.tie(killersTieList)
         }
 
         return Success.winner(predator, "Winner as predator")
