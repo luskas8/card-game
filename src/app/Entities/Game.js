@@ -152,7 +152,7 @@ class Game {
         }
 
         this._players = this._players.filter(player => player.socketID !== playerToDisconnect.socketID)
-        this.playersNotWasKillerSocketID = this.playersNotWasKillerSocketID.filter(socketID => socketID !== playerToDisconnect.socketID)
+        this._playersNotWasKillerSocketID = this.playersNotWasKillerSocketID.filter(socketID => socketID !== playerToDisconnect.socketID)
         return true
     }
 }

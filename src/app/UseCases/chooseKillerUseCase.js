@@ -1,15 +1,19 @@
+import { Error } from "../../../config/Responses";
 import Game, { GameStates } from "../Entities/Game"
 import { Player } from "../Entities/Player";
 
 /**
- * @returns {Promise<Player|null>}
+ * @returns {Promise<Player|Error>}
  * @description Choose a killer randomly
  * @throws {Error} If all players was killer
  */
 export default async function chooseKillerUseCase() {
     return new Promise((resolve, reject) => {
-        if (Game.playersNotWasKillerSocketID.length === 0 || Game.currentState !== GameStates.STARTED) {
-            reject(null)
+        if (Game.playersNotWasKillerSocketID.length <= 0) {
+            reject(Error.forbidden("All players was killer"))
+        }
+        if (Game.currentState !== GameStates.STARTED) {
+            reject(Error.forbidden("Game not started"))
         }
 
         const randomIndex = Math.floor(Math.random() * Game.playersNotWasKillerSocketID.length)
