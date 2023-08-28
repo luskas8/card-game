@@ -2,8 +2,8 @@ import { Error, Success } from "../../../config/Responses";
 import Game from "../Entities/Game";
 
 export default async function conferenceUseCase() {
-    if (!Game.allPlayersWasKiller()) {
-        return Error.badRequest("Not all players was killer")
+    if (Game.playersNotWasKillerSocketID.length > 0) {
+        return Error.forbidden("Not all players was killer")
     }
 
     const first = Game.players.sort((a, b) => b.score - a.score)[0]
@@ -14,11 +14,11 @@ export default async function conferenceUseCase() {
         const killersTieList = tieList.filter(player => player.killerScore === predator.killerScore && player.socketID !== predator.socketID)
         if (killersTieList.length > 0) {
             killersTieList.push(predator)
-            return Success.tie(killersTieList)
+            return Success.message(killersTieList)
         }
 
-        return Success.winner(predator, "Winner as predator")
+        return Success.message([predator])
     }
 
-    return Success.winner(first)
+    return Success.message(first)
 }

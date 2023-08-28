@@ -18,7 +18,7 @@ describe("conferenceUseCase", () => {
         const result = await conferenceUseCase()
 
         expect(result).toBeInstanceOf(Error)
-        expect(result.status).toBe(Error.badRequest().status)
+        expect(result.status).toBe(Error.forbidden().status)
     })
 
     it("should start conference when all players was killer", async () => {
@@ -26,7 +26,7 @@ describe("conferenceUseCase", () => {
         const result = await conferenceUseCase()
 
         expect(result).toBeInstanceOf(Success)
-        expect(result.status).toBe(Success.winner().status)
+        expect(result.status).toBe(Success.message().status)
     })
 
     it("should be a predator win", async () => {
@@ -37,9 +37,7 @@ describe("conferenceUseCase", () => {
         const result = await conferenceUseCase()
 
         expect(result).toBeInstanceOf(Success)
-        expect(result.status).toBe(Success.winner().status)
-        expect(result.message).toHaveProperty("message")
-        expect(result.message.message).toBe("Winner as predator")
+        expect(result.status).toBe(Success.message().status)
     })
 
     it("should be a tie", async () => {
@@ -50,6 +48,6 @@ describe("conferenceUseCase", () => {
         const result = await conferenceUseCase()
 
         expect(result).toBeInstanceOf(Success)
-        expect(result.status).toBe(Success.tie().status)
+        expect(result.status).toBe(Success.message().status)
     })
 })
