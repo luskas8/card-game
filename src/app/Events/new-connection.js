@@ -11,13 +11,19 @@ import gameStatusUpdate from "./game-status-update.js"
  * @param {string} data.name
  */
 export default async function newConnection(socket, io, data) {
-    const response = await newConnectionUseCase(socket.id, io, data)
-
-    if (response instanceof Error) {
+    const newConnectionResponse = await newConnectionUseCase(socket.id, io, data)
+    if (newConnectionResponse instanceof Error) {
         socket.emit('new-connection-error', {
-            error: response.message,
+            error: newConnectionResponse.message,
         })
         return
+    }
+
+    const chooseCharacterResponse = await chooseCharacterUseCase(socket.id, data)
+    if (chooseCharacterResponse instanceof Error) {
+        logger.error(response)
+        socket.emit("choose-character-error", { error: chooseCharacterResponse.message })
+        return false
     }
 
     if (io.engine.clientsCount >= 3) {
@@ -29,7 +35,8 @@ export default async function newConnection(socket, io, data) {
     }
 
     socket.emit('new-connection-success', {
-        status: response.message,
+        status: 201,
+        message: "You are connected and choosed your character",
     })
 
     gameStatusUpdate(io)

@@ -20,9 +20,7 @@ export default async function newConnection(socketID, data) {
         return Error.badRequest('Name is required')
     }
 
-    const response = await Game.addPlayer(data.name, socketID, {
-        isHost: isHost
-    })
+    const response = await Game.addPlayer(data.name, socketID)
 
     if (response !== 'success') {
         return Error.badRequest(response)

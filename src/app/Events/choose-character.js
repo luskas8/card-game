@@ -19,7 +19,7 @@ export default async function chooseCharacter(socket, io, data) {
         return false
     }
 
-    socket.emit("choose-character-success", [response.message])
+    socket.emit("choose-character-success", response)
     gameStatusUpdate(io)
     return true
 }
