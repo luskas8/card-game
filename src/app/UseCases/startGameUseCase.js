@@ -30,10 +30,6 @@ export default async function startGameUseCase(socketID) {
         return Error.message("Game already started")
     }
 
-    if (Game.allPlayersWasKiller()) {
-        return Error.allKillers()
-    }
-
     Game.start()
     return Success.message("Game started")
 }
