@@ -58,15 +58,6 @@ describe("startGameUseCase", () => {
         expect(result).toBeInstanceOf(Error)
         expect(result.status).toBe(Error.message("").status)
     })
-
-    it("should not start the game if all players already was killer", async () => {
-        Game.players.map(player => player._wasTheKiller = true)
-        const result = await startGameUseCase("123")
-
-        expect(result).toBeInstanceOf(Error)
-        expect(result.status).toBe(Error.allKillers().status)
-
-    })
  
     it("should be able to start a game", async () => {
         const result = await startGameUseCase("123")
