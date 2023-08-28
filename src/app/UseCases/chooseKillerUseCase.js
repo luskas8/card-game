@@ -12,6 +12,7 @@ export default async function chooseKillerUseCase() {
         if (Game.playersNotWasKillerSocketID.length <= 0) {
             reject(Error.forbidden("All players was killer"))
         }
+        
         if (Game.currentState !== GameStates.STARTED) {
             reject(Error.forbidden("Game not started"))
         }

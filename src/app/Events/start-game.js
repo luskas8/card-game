@@ -1,8 +1,8 @@
 import { Server, Socket } from "socket.io";
 import { Error } from "../../../config/Responses";
-import chooseKillerUseCase from "../UseCases/chooseKillerUseCase";
 import startGameUseCase from "../UseCases/startGameUseCase";
 import gameStatusUpdate from "./game-status-update";
+import newRound from "./new-round";
 
 /**
  * @param {Socket} socket 
@@ -15,6 +15,8 @@ export default async function startGame(socket, io) {
         socket.emit("start-game-error", {message: result.message })
         return false
     }
+
+    newRound(socket, io)
 
     gameStatusUpdate(io)
     return true

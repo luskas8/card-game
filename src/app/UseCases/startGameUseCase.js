@@ -15,19 +15,19 @@ export default async function startGameUseCase(socketID) {
     }
 
     if (Game.hostSocketId !== socketID) {
-        return Error.unauthorized("You are not the host")
+        return Error.forbidden("You are not the host")
     }
 
     if (Game.playerListSize < 3) {
-        return Error.badRequest("You need at least 3 players")
+        return Error.forbidden("You need at least 3 players")
     }
 
     if (!Game.allPlayersHasCharacter()) {
-        return Error.unauthorized("All players must choose a character")
+        return Error.forbidden("All players must choose a character")
     }
 
     if (Game.currentState === GameStates.STARTED) {
-        return Error.message("Game already started")
+        return Error.forbidden("Game already started")
     }
 
     Game.start()
