@@ -1,3 +1,4 @@
+import Game from "../Entities/Game"
 import newRoundUseCase from "../UseCases/newRoundUseCase"
 import gameStatusUpdate from "./game-status-update"
 
@@ -8,6 +9,9 @@ export default async function newRound(socket, io) {
         return false
     }
 
-    gameStatusUpdate(io)
+    gameStatusUpdate(io, {
+        action: ["new-round", "reset-cards"],
+        data: Game.game
+    })
     return true
 }

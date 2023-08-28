@@ -20,7 +20,7 @@ export default function mainEvent(socket, io) {
     })
 
     socket.on('game-status-request', () => {
-        gameStatusUpdate(io)
+        gameStatusUpdate(io, "all")
     })
 
     socket.on('choose-character', async (data) => {

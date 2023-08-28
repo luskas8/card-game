@@ -1,13 +1,16 @@
-import Players from "../Entities/Player.js"
+import Game from "../Entities/Game.js"
 import gameStatusUpdate from "./game-status-update.js"
 
 export default function disconect(socket) {
-    const player = Players.findBySocket(socket.id)
+    const player = Game.findPlayerBySocket(socket.id)
 
     if (!player) {
         return
     }
     
-    Players.disconect(player)
-    gameStatusUpdate(io)
+    Game.disconectPlayer(player)
+    gameStatusUpdate(io, {
+        action: ["disconect"],
+        data: player.socketID
+    })
 }

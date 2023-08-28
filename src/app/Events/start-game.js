@@ -18,6 +18,8 @@ export default async function startGame(socket, io) {
 
     newRound(socket, io)
 
-    gameStatusUpdate(io)
+    gameStatusUpdate(io, {
+        action: ["start-game"],
+    })
     return true
 }
