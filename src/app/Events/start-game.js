@@ -1,8 +1,8 @@
-import { Server, Socket } from "socket.io";
-import { Error } from "../../../config/Responses";
-import startGameUseCase from "../UseCases/startGameUseCase";
-import gameStatusUpdate from "./game-status-update";
-import newRound from "./new-round";
+import { Server, Socket } from "socket.io"
+import { Error } from "../config/Responses.js"
+import startGameUseCase from "../UseCases/startGameUseCase.js"
+import gameStatusUpdate from "./game-status-update.js"
+import newRound from "./new-round.js"
 
 /**
  * @param {Socket} socket 

@@ -1,6 +1,5 @@
-import { Error, Success } from "../../../config/Responses"
-import chooseKillerUseCase from "./chooseKillerUseCase"
-import conferenceUseCase from "./conferenceUseCase"
+import chooseKillerUseCase from "./chooseKillerUseCase.js"
+import conferenceUseCase from "./conferenceUseCase.js"
 
 export default async function newRoundUseCase() {
     try {
