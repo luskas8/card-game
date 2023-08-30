@@ -20,4 +20,4 @@ COPY . .
 EXPOSE ${PORT}
 
 # Run the app
-CMD ["infisical", "run", "--", "npm", "run", "start"]
+CMD ["npm", "run", "start"]
