@@ -72,7 +72,7 @@ class Characters {
         return this.characters
     }
 
-    get size() {
+    get characterListSize() {
         return this.characters.length
     }
 

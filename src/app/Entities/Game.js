@@ -18,12 +18,14 @@ class Game {
     /** @type {Player[]} */ _players
     /** @type {GameStates} */ _currentState
     /** @type {string} */ _currentKillerSocketID
+    /** @type {string[]} */ _playersNotWasKillerSocketID
 
     constructor() {
         this._hostSocketId = ""
         this._currentKillerSocketID = ""
         this._players = []
         this._currentState = GameStates.WAITING_PLAYERS
+        this._playersNotWasKillerSocketID = []
     }
 
     get game() {
@@ -50,6 +52,10 @@ class Game {
     
     get hostSocketId() {
         return this._hostSocketId
+    }
+
+    get playersNotWasKillerSocketID() {
+        return this._playersNotWasKillerSocketID
     }
 
     get killer() {
@@ -96,11 +102,8 @@ class Game {
         })
     }
 
-    async start() {
-        await new Promise((resolve, _) => {
-            this._currentState = GameStates.STARTED
-            resolve('Game started')
-        })
+    start() {
+        this._currentState = GameStates.STARTED
     }
 
     allPlayersHasCharacter() {
@@ -111,7 +114,7 @@ class Game {
         return this._players.every(player => player._wasTheKiller)
     }
 
-    get size() {
+    get playerListSize() {
         return this._players.length
     }
 
@@ -124,15 +127,20 @@ class Game {
     }
 
     async addPlayer(name, socketID, options = {}) {
-        if (this.findPlayerByName(name) || this.findPlayerBySocket(socketID)) {
-            return "player already exists"
-        }
+        return new Promise((resolve, reject) => {
+            if (this.findPlayerByName(name) || this.findPlayerBySocket(socketID)) {
+                reject("player already exists")
+            }
 
-        const addPromise = new Promise((resolve, _) => {
-            this._players.push(new Player(name, socketID, options))
+            const isHost = this._hostSocketId === ''
+            if (isHost) {
+                this._hostSocketId = socketID
+            }
+
+            this._players.push(new Player(name, socketID, {...options, isHost}))
+            this.playersNotWasKillerSocketID.push(socketID)
             resolve("success")
         })
-        return addPromise.then((data) => data).catch((error) => error)
     }
 
     /**
@@ -144,6 +152,7 @@ class Game {
         }
 
         this._players = this._players.filter(player => player.socketID !== playerToDisconnect.socketID)
+        this._playersNotWasKillerSocketID = this.playersNotWasKillerSocketID.filter(socketID => socketID !== playerToDisconnect.socketID)
         return true
     }
 }

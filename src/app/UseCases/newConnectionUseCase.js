@@ -12,7 +12,7 @@ export default async function newConnection(socketID, data) {
         return Error.badRequest('SocketID is required')
     }
 
-    if (Game.size >= 6) {
+    if (Game.playerListSize >= 6) {
         return Error.unauthorized('Game is full')
     }
 
@@ -20,18 +20,10 @@ export default async function newConnection(socketID, data) {
         return Error.badRequest('Name is required')
     }
 
-    const isHost = Game.hostSocketId === ''
-    const response = await Game.addPlayer(data.name, socketID, {
-        isHost: isHost
-    })
-
-    if (response !== 'success') {
-        return Error.badRequest(response)
+    try {
+        const response = await Game.addPlayer(data.name, socketID)
+        return Success.created(response)
+    } catch (error) {
+        return Error.badRequest(error.message)
     }
-
-    if (isHost) {
-        Game.hostSocketId = socketID
-    }
-
-    return Success.created(Game.game)
 }

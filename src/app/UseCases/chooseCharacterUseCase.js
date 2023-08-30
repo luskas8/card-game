@@ -30,12 +30,11 @@ export default async function chooseCharacterUseCase(socketID, data) {
     if (character.inUse) {
         return Error.unauthorized("Character already in use")
     }
-
-    const response = await character.use(socketID)
-
-    if (response !== "Success") {
-        return Error.message(response)
+    
+    try {
+        const response = await character.use(socketID)
+        return Success.accepted({ character: character.name })
+    } catch (error) {
+        return Error.badRequest(error)
     }
-
-    return Success.accepted({ character: character.name })
 }

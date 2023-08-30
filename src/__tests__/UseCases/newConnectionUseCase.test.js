@@ -58,8 +58,9 @@ describe("newConnectionUseCase", () => {
     })
 
     it("should not be able to create a new connection with a socketID that already exists", async () => {
-        newConnectionUseCase(socketID, { name })
+        await newConnectionUseCase(socketID, { name })
         const response = await newConnectionUseCase(socketID, { name: "Jailson Mendes 2" })
+
         expect(response).toBeInstanceOf(Error)
         expect(response.status).toBe(Error.badRequest().status)
     })

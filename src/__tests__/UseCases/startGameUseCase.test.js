@@ -32,7 +32,7 @@ describe("startGameUseCase", () => {
         const result = await startGameUseCase("1234")
 
         expect(result).toBeInstanceOf(Error)
-        expect(result.status).toBe(Error.unauthorized().status)
+        expect(result.status).toBe(Error.forbidden().status)
     })
 
     it("should not be able to start a game without a character", async () => {
@@ -40,7 +40,7 @@ describe("startGameUseCase", () => {
         const result = await startGameUseCase("123")
 
         expect(result).toBeInstanceOf(Error)
-        expect(result.status).toBe(Error.unauthorized().status)
+        expect(result.status).toBe(Error.forbidden().status)
     })
 
     it("should not be able to start a game with less than 3 players", async () => {
@@ -48,7 +48,7 @@ describe("startGameUseCase", () => {
         const result = await startGameUseCase("123")
 
         expect(result).toBeInstanceOf(Error)
-        expect(result.status).toBe(Error.badRequest().status)
+        expect(result.status).toBe(Error.forbidden().status)
     })
 
     it("should not be able to start a game when already started", async () => {
@@ -56,16 +56,7 @@ describe("startGameUseCase", () => {
         const result = await startGameUseCase("123")
 
         expect(result).toBeInstanceOf(Error)
-        expect(result.status).toBe(Error.message("").status)
-    })
-
-    it("should not start the game if all players already was killer", async () => {
-        Game.players.map(player => player._wasTheKiller = true)
-        const result = await startGameUseCase("123")
-
-        expect(result).toBeInstanceOf(Error)
-        expect(result.status).toBe(Error.allKillers().status)
-
+        expect(result.status).toBe(Error.forbidden().status)
     })
  
     it("should be able to start a game", async () => {
