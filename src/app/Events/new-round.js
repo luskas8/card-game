@@ -1,6 +1,6 @@
-import Game from "../Entities/Game"
-import newRoundUseCase from "../UseCases/newRoundUseCase"
-import gameStatusUpdate from "./game-status-update"
+import Game from "../Entities/Game.js"
+import newRoundUseCase from "../UseCases/newRoundUseCase.js"
+import gameStatusUpdate from "./game-status-update.js"
 
 export default async function newRound(socket, io) {
     const response = await newRoundUseCase()

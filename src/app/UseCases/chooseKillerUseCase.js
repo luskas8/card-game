@@ -1,6 +1,6 @@
-import { Error } from "../../../config/Responses";
-import Game, { GameStates } from "../Entities/Game"
-import { Player } from "../Entities/Player";
+import { Error } from "../../../config/Responses.js";
+import Game, { GameStates } from "../Entities/Game.js"
+import { Player } from "../Entities/Player.js";
 
 /**
  * @returns {Promise<Player|Error>}
