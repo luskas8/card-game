@@ -1,48 +1,52 @@
-import path from 'path'
-import pino from 'pino'
-import __dirname from '../../config/utils.js'
+import path from "path";
+import pino from "pino";
+import __dirname from "../../config/utils.js";
 
 class Logger {
     constructor() {
-        const transport  = pino.transport({
+        const transport = pino.transport({
             targets: [
                 {
-                    target: 'pino-socket',
+                    target: "pino-socket",
                     options: {
-                        address: '10.10.10.5',
+                        address: "10.10.10.5",
                         port: 5000,
-                        mode: 'tcp'
-                    }
+                        mode: "tcp",
+                    },
                 },
                 {
-                    target: 'pino/file',
+                    target: "pino/file",
                     options: {
-                        destination: path.resolve(__dirname(import.meta.url), 'logs', 'app.log'),
+                        destination: path.resolve(
+                            __dirname(import.meta.url),
+                            "logs",
+                            "app.log"
+                        ),
                         level: Object.values(pino.levels.labels),
-                        mkdir: true
+                        mkdir: true,
                     },
-                }
-            ]
-        })
+                },
+            ],
+        });
 
         this._logger = pino(
             {
                 timestamp: pino.stdTimeFunctions.isoTime,
                 formatters: {
                     level: (label) => {
-                        return { level: label.toUpperCase() }
+                        return { level: label.toUpperCase() };
                     },
                 },
             },
-            process.env.NODE_ENV === 'prd' ? transport : null
-        )
+            process.env.NODE_ENV === "prd" ? transport : null
+        );
 
-        this._logger.warn('Logger initialized')
+        this._logger.warn("Logger initialized");
     }
 
     get logger() {
-        return this._logger
+        return this._logger;
     }
 }
 
-export default new Logger().logger
+export default new Logger().logger;

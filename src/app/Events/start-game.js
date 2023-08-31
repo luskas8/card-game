@@ -5,21 +5,21 @@ import gameStatusUpdate from "./game-status-update.js";
 import newRound from "./new-round.js";
 
 /**
- * @param {Socket} socket 
+ * @param {Socket} socket
  * @param {Server} io
  * @returns {Promose<boolean>}
  */
 export default async function startGame(socket, io) {
-    const result = await startGameUseCase(socket.id)
+    const result = await startGameUseCase(socket.id);
     if (result instanceof Error) {
-        socket.emit("start-game-error", {message: result.message })
-        return false
+        socket.emit("start-game-error", { message: result.message });
+        return false;
     }
 
-    newRound(socket, io)
+    newRound(socket, io);
 
     gameStatusUpdate(io, {
         action: ["start-game"],
-    })
-    return true
+    });
+    return true;
 }

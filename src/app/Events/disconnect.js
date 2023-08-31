@@ -1,16 +1,16 @@
-import Game from "../Entities/Game.js"
-import gameStatusUpdate from "./game-status-update.js"
+import Game from "../Entities/Game.js";
+import gameStatusUpdate from "./game-status-update.js";
 
 export default function disconect(socket) {
-    const player = Game.findPlayerBySocket(socket.id)
+    const player = Game.findPlayerBySocket(socket.id);
 
     if (!player) {
-        return
+        return;
     }
-    
-    Game.disconectPlayer(player)
+
+    Game.disconectPlayer(player);
     gameStatusUpdate(io, {
         action: ["disconect"],
-        data: player.socketID
-    })
+        data: player.socketID,
+    });
 }

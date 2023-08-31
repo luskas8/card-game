@@ -1,5 +1,5 @@
 import { Error } from "../../../config/Responses.js";
-import Game, { GameStates } from "../Entities/Game.js"
+import Game, { GameStates } from "../Entities/Game.js";
 import { Player } from "../Entities/Player.js";
 
 /**
@@ -10,19 +10,21 @@ import { Player } from "../Entities/Player.js";
 export default async function chooseKillerUseCase() {
     return new Promise((resolve, reject) => {
         if (Game.playersNotWasKillerSocketID.length <= 0) {
-            reject(Error.forbidden("All players was killer"))
-        }
-        
-        if (Game.currentState !== GameStates.STARTED) {
-            reject(Error.forbidden("Game not started"))
+            reject(Error.forbidden("All players was killer"));
         }
 
-        const randomIndex = Math.floor(Math.random() * Game.playersNotWasKillerSocketID.length)
-        const player = Game.playersNotWasKillerSocketID[randomIndex]
-        Game.playersNotWasKillerSocketID.splice(randomIndex, 1)
-        player.isTheKiller = true
-        player._wasTheKiller = true
-        Game.killerSocketID = player.socketID
-        resolve(player)
-    })
+        if (Game.currentState !== GameStates.STARTED) {
+            reject(Error.forbidden("Game not started"));
+        }
+
+        const randomIndex = Math.floor(
+            Math.random() * Game.playersNotWasKillerSocketID.length
+        );
+        const player = Game.playersNotWasKillerSocketID[randomIndex];
+        Game.playersNotWasKillerSocketID.splice(randomIndex, 1);
+        player.isTheKiller = true;
+        player._wasTheKiller = true;
+        Game.killerSocketID = player.socketID;
+        resolve(player);
+    });
 }
