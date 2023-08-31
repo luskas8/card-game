@@ -1,7 +1,7 @@
 import { Server, Socket } from "socket.io"
 import logger from "../logger.js"
 import chooseCharacter from './choose-character.js'
-import disconect from './disconnect.js'
+import disconect from './disconect.js'
 import gameStatusUpdate from "./game-status-update.js"
 import newConnection from "./new-connection.js"
 import startGame from "./start-game.js"

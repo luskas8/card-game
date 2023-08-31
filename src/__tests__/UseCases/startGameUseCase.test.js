@@ -1,4 +1,4 @@
-import { Error, Success } from "../config/Responses"
+import { Error, Success } from "../../../config/Responses"
 import Game, { GameStates } from "../../app/Entities/Game"
 import { Player } from "../../app/Entities/Player"
 import startGameUseCase from "../../app/UseCases/startGameUseCase"

@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import logger from './logger.js'
-import Game from './Entities/Game.js'
+import Game from './Game/index.js'
 
 const router = Router()
 

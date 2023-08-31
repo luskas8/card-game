@@ -1,4 +1,4 @@
-import { Error } from "../config/Responses.js"
+import { Error } from "../../../config/Responses.js"
 import Game from "../Entities/Game.js"
 import chooseCharacterUseCase from "../UseCases/chooseCharacterUseCase.js"
 import logger from "../logger.js"

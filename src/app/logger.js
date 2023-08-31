@@ -1,6 +1,6 @@
 import path from 'path'
 import pino from 'pino'
-import __dirname from './config/utils.js'
+import __dirname from '../../config/utils.js'
 
 class Logger {
     constructor() {

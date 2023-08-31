@@ -1,5 +1,5 @@
-import { Error, Success } from "../config/Responses.js";
-import Game from "../Entities/Game.js";
+import { Error, Success } from "../../../config/Responses";
+import Game from "../Entities/Game";
 
 export default async function conferenceUseCase() {
     if (Game.playersNotWasKillerSocketID.length > 0) {

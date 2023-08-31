@@ -1,6 +1,6 @@
 import Game from "../../app/Entities/Game"
 import newConnectionUseCase from "../../app/UseCases/newConnectionUseCase"
-import { Error, Success } from "../config/Responses"
+import { Error, Success } from "../../../config/Responses"
 
 describe("newConnectionUseCase", () => {
     const socketID = "40028922"
