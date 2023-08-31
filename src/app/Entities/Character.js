@@ -9,83 +9,83 @@ export const Places = {
     BOAT: "boat",
     BONFIRE: "bonfire",
     MEDITATE: "meditate",
-};
+}
 
 export class BaseCharacter {
     constructor(name, favoritePlace, options = {}) {
-        this.name = name;
-        this.favoritePlace = favoritePlace;
-        this.playerSocketId = options.playerSocketId || "";
-        this._inUse = options.inUse || false;
+        this.name = name
+        this.favoritePlace = favoritePlace
+        this.playerSocketId = options.playerSocketId || ''
+        this._inUse = options.inUse || false
     }
 
     get inUse() {
-        return this._inUse;
+        return this._inUse
     }
 
     /**
-     *
+     * 
      * @param {string} playerSocketId
      * @returns {Promise<string>}
      */
     async use(playerSocketId) {
         const usePromise = new Promise((resolve, reject) => {
             if (!playerSocketId) {
-                reject("No playerSocketId provided");
+                reject("No playerSocketId provided")
             }
 
             if (this._inUse) {
-                reject("Character already in use");
+                reject("Character already in use")
             }
 
-            this._inUse = true;
-            this.playerSocketId = playerSocketId;
-            resolve("Success");
-        });
+            this._inUse = true
+            this.playerSocketId = playerSocketId
+            resolve("Success")
+        })
 
-        return usePromise.then((success) => success).catch((error) => error);
+        return usePromise.then((success) => success).catch((error) => error)
     }
 
     get release() {
         const usePromise = new Promise((resolve, reject) => {
             if (!this._inUse) {
-                reject(false);
+                reject(false)
             }
 
-            this._inUse = false;
-            this.playerSocketId = "";
-            resolve(true);
-        });
+            this._inUse = false
+            this.playerSocketId = ''
+            resolve(true)
+        })
 
-        return usePromise.then(() => true).catch(() => false);
+        return usePromise.then(() => true).catch(() => false)
     }
 }
 
 class Characters {
-    /** @type {BaseCharacter[]} */ characters;
+    /** @type {BaseCharacter[]} */ characters
 
     constructor(initialCharacters) {
-        this.characters = initialCharacters;
+        this.characters = initialCharacters
     }
 
     get all() {
-        return this.characters;
+        return this.characters
     }
 
     get characterListSize() {
-        return this.characters.length;
+        return this.characters.length
     }
 
     /**
-     * @param {BaseCharacter} character
+     * @param {BaseCharacter} character 
      */
     add(character) {
         if (this.findByName(character.name)) {
-            return null;
+            return null
         }
 
-        this.characters.push(character);
-        return character;
+        this.characters.push(character)
+        return character
     }
 
     /**
@@ -93,28 +93,22 @@ class Characters {
      */
     remove(characterToRemove) {
         if (!this.findByName(characterToRemove.name)) {
-            return false;
+            return false
         }
-        this.characters = this.characters.filter(
-            (character) => character.name !== characterToRemove.name
-        );
-        return true;
+        this.characters = this.characters.filter(character => character.name !== characterToRemove.name)
+        return true
     }
 
     findByName(name) {
-        return this.characters.find((character) => character.name === name);
+        return this.characters.find(character => character.name === name)
     }
 
     findBySocket(playerSocketId) {
-        return this.characters.find(
-            (character) => character.playerSocketId === playerSocketId
-        );
+        return this.characters.find(character => character.playerSocketId === playerSocketId)
     }
 
     findByPlace(favoritePlace) {
-        return this.characters.find(
-            (character) => character.favoritePlace === favoritePlace
-        );
+        return this.characters.find(character => character.favoritePlace === favoritePlace)
     }
 
     get reset() {
@@ -126,10 +120,10 @@ class Characters {
                 new BaseCharacter("Tati", Places.CAMPING, { inUse: false }),
                 new BaseCharacter("Bocão", Places.FOOD, { inUse: false }),
                 new BaseCharacter("Serena", Places.MEDITATE, { inUse: false }),
-            ];
-            resolve(true);
-        });
-        return resetPromise.then(() => true).catch(() => false);
+            ]
+            resolve(true)
+        })
+        return resetPromise.then(() => true).catch(() => false)
     }
 }
 
@@ -140,6 +134,6 @@ const defaultCharacter = [
     new BaseCharacter("Tati", Places.CAMPING, { inUse: false }),
     new BaseCharacter("Bocão", Places.FOOD, { inUse: false }),
     new BaseCharacter("Serena", Places.MEDITATE, { inUse: false }),
-];
+]
 
-export default new Characters(defaultCharacter);
+export default new Characters(defaultCharacter)
