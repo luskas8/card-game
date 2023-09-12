@@ -6,7 +6,7 @@ const router = Router();
 
 router.get("/health", async (req, res) => {
     logger.warn("Health check");
-    res.json({ status: 200, message: "Server online!" });
+    res.json({ statusCode: 200, message: "Server online!" });
 });
 
 router.get("/", async (req, res) => {
@@ -21,7 +21,7 @@ router.get("/game-status", async (req, res) => {
 
 router.get("/game-close", async (req, res) => {
     Game.close();
-    res.json({ status: 200, message: "Game closed!" });
+    res.json({ statusCode: 200, message: "Game closed!" });
 });
 
 export default router;
