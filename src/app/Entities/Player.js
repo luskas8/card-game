@@ -1,4 +1,5 @@
 import { CharacterActions } from "./Character";
+import Game from "./Game";
 
 export class Player {
     /**
@@ -29,7 +30,7 @@ export class Player {
         this.choosedActions = options.choosedActions || [];
     }
 
-    /** Total score of the player: baseScore + killerScore
+    /** It's total score: baseScore + killerScore
      * @returns {number}
      */
     get score() {
@@ -61,10 +62,19 @@ export class Player {
     }
 
     ready() {
-        if (this.isTheKiller && this.choosedActions.length >= 3) {
-            this._isReady = true;
-        } else if (!this.isTheKiller && this.choosedActions.length == 1) {
-            this._isReady = true;
+        switch (this.isTheKiller) {
+        case true:
+            if (this.choosedActions.length === Game.currentRound) {
+                this._isReady = true;
+            }
+            break;
+        case false:
+            if (this.choosedActions.length === 1) {
+                this._isReady = true;
+            }
+            break;
+        default:
+            break;
         }
     }
 

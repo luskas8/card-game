@@ -30,5 +30,5 @@ export default async function conferenceUseCase() {
         return Success.message([killerWinner]);
     }
 
-    return Success.message(firstWinner);
+    return Success.message([firstWinner]);
 }

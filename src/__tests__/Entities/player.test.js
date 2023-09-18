@@ -8,6 +8,7 @@ describe("Test player entity", () => {
 
     it("should be able to turn a player ready", () => {
         const player = new Player("Gilmar", "40028922");
+        player.chooseAction("action")
         player.ready();
         expect(player.isReady).toBe(true);
     });

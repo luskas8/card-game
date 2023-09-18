@@ -20,7 +20,7 @@ class Game {
     /** @type {GameStates} */ _currentState;
     /** @type {string} */ _currentKillerSocketID;
     /** @type {string[]} */ _playersNotWasKillerSocketID;
-    /** @type {string[]} */ _currentRound;
+    /** @type {number} */ _currentRound;
 
     constructor() {
         this._hostSocketId = "";
@@ -28,6 +28,7 @@ class Game {
         this._players = [];
         this._currentState = GameStates.WAITING_PLAYERS;
         this._playersNotWasKillerSocketID = [];
+        this._currentRound = 1;
     }
 
     get game() {
@@ -71,6 +72,10 @@ class Game {
         return this._currentKillerSocketID;
     }
 
+    get currentRound() {
+        return this._currentRound;
+    }
+
     set killerSocketID(socketID) {
         this._currentKillerSocketID = socketID;
     }
@@ -106,6 +111,10 @@ class Game {
 
     start() {
         this._currentState = GameStates.STARTED;
+    }
+
+    addRound() {
+        this._currentRound += 1;
     }
 
     allPlayersHasCharacter() {
