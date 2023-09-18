@@ -2,8 +2,8 @@
  * @enum {string}
  * @readonly
  */
-export const Places = {
-    ALL: "all",
+export const CharacterActions = {
+    JOKER: "joker",
     CAMPING: "camping",
     FOOD: "food",
     BOAT: "boat",
@@ -12,9 +12,9 @@ export const Places = {
 };
 
 export class BaseCharacter {
-    constructor(name, favoritePlace, options = {}) {
+    constructor(name, favoriteAction, options = {}) {
         this.name = name;
-        this.favoritePlace = favoritePlace;
+        this.favoriteAction = favoriteAction;
         this.playerSocketId = options.playerSocketId || "";
         this._inUse = options.inUse || false;
     }
@@ -68,7 +68,7 @@ class Characters {
         this.characters = initialCharacters;
     }
 
-    get all() {
+    get getAll() {
         return this.characters;
     }
 
@@ -111,35 +111,34 @@ class Characters {
         );
     }
 
-    findByPlace(favoritePlace) {
+    findByFavoriteAction(favoriteAction) {
         return this.characters.find(
-            (character) => character.favoritePlace === favoritePlace
+            (character) => character.favoriteAction === favoriteAction
         );
     }
 
     get reset() {
-        const resetPromise = new Promise((resolve, _) => {
+        return new Promise((resolve, _) => {
             this.characters = [
-                new BaseCharacter("Zeca", Places.ALL, { inUse: false }),
-                new BaseCharacter("Fred", Places.BOAT, { inUse: false }),
-                new BaseCharacter("Jaimin", Places.BONFIRE, { inUse: false }),
-                new BaseCharacter("Tati", Places.CAMPING, { inUse: false }),
-                new BaseCharacter("Bocão", Places.FOOD, { inUse: false }),
-                new BaseCharacter("Serena", Places.MEDITATE, { inUse: false }),
+                new BaseCharacter("Zeca", CharacterActions.JOKER, { inUse: false }),
+                new BaseCharacter("Fred", CharacterActions.BOAT, { inUse: false }),
+                new BaseCharacter("Jaimin", CharacterActions.BONFIRE, { inUse: false }),
+                new BaseCharacter("Tati", CharacterActions.CAMPING, { inUse: false }),
+                new BaseCharacter("Bocão", CharacterActions.FOOD, { inUse: false }),
+                new BaseCharacter("Serena", CharacterActions.MEDITATE, { inUse: false }),
             ];
             resolve(true);
         });
-        return resetPromise.then(() => true).catch(() => false);
     }
 }
 
 const defaultCharacter = [
-    new BaseCharacter("Zeca", Places.ALL, { inUse: false }),
-    new BaseCharacter("Fred", Places.BOAT, { inUse: false }),
-    new BaseCharacter("Jaimin", Places.BONFIRE, { inUse: false }),
-    new BaseCharacter("Tati", Places.CAMPING, { inUse: false }),
-    new BaseCharacter("Bocão", Places.FOOD, { inUse: false }),
-    new BaseCharacter("Serena", Places.MEDITATE, { inUse: false }),
+    new BaseCharacter("Zeca", CharacterActions.JOKER, { inUse: false }),
+    new BaseCharacter("Fred", CharacterActions.BOAT, { inUse: false }),
+    new BaseCharacter("Jaimin", CharacterActions.BONFIRE, { inUse: false }),
+    new BaseCharacter("Tati", CharacterActions.CAMPING, { inUse: false }),
+    new BaseCharacter("Bocão", CharacterActions.FOOD, { inUse: false }),
+    new BaseCharacter("Serena", CharacterActions.MEDITATE, { inUse: false }),
 ];
 
 export default new Characters(defaultCharacter);

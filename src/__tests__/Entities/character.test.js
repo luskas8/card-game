@@ -1,7 +1,7 @@
 import Game from "../../app/Entities/Game";
 import Characters, {
     BaseCharacter,
-    Places,
+    CharacterActions
 } from "../../app/Entities/Character";
 
 describe("Test character entity", () => {
@@ -14,17 +14,17 @@ describe("Test character entity", () => {
     });
 
     it("should return default characters", () => {
-        expect(Characters.all).toBeDefined();
+        expect(Characters.getAll).toBeDefined();
     });
 
     it("should be able to create a character", () => {
-        const character = new BaseCharacter("Pinoquio", Places.ALL);
+        const character = new BaseCharacter("Pinoquio", CharacterActions.JOKER);
         expect(character).toBeInstanceOf(BaseCharacter);
     });
 
     it("should be able to create character by characters object", () => {
         const character = Characters.add(
-            new BaseCharacter("Pinoquio", Places.ALL)
+            new BaseCharacter("Pinoquio", CharacterActions.JOKER)
         );
         expect(character).toBeInstanceOf(BaseCharacter);
     });
@@ -41,7 +41,7 @@ describe("Test character entity", () => {
     });
 
     it("should not be able to create a character with same id or name", () => {
-        const character = Characters.add(new BaseCharacter("Zeca", Places.ALL));
+        const character = Characters.add(new BaseCharacter("Zeca", CharacterActions.JOKER));
         expect(character).toBeNull();
     });
 
@@ -100,7 +100,7 @@ describe("Test character entity", () => {
     });
 
     it("should be able to find a character by place", () => {
-        const character = Characters.findByPlace(Places.ALL);
+        const character = Characters.findByFavoriteAction(CharacterActions.JOKER);
         expect(character).toBeInstanceOf(BaseCharacter);
     });
 
