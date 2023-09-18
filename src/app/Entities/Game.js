@@ -1,5 +1,6 @@
 import Characters from "./Character.js";
 import { Player } from "./Player.js";
+import logger from "./Logger.js";
 
 /**
  * @readonly
@@ -19,6 +20,7 @@ class Game {
     /** @type {GameStates} */ _currentState;
     /** @type {string} */ _currentKillerSocketID;
     /** @type {string[]} */ _playersNotWasKillerSocketID;
+    /** @type {string[]} */ _currentRound;
 
     constructor() {
         this._hostSocketId = "";
@@ -39,6 +41,7 @@ class Game {
                     baseScore: player.baseScore,
                     killerScore: player.killerScore,
                     isKiller: player.isTheKiller,
+                    actions: player.choosedActions,
                 };
             }),
             state: this._currentState,
@@ -91,17 +94,14 @@ class Game {
     }
 
     async close() {
-        await new Promise(async (resolve, reject) => {
-            try {
-                await Characters.reset;
-                this._players = [];
-                this._hostSocketId = "";
-                this._currentState = GameStates.WAITING_PLAYERS;
-                resolve();
-            } catch (err) {
-                reject(err);
-            }
-        });
+        try {
+            await Characters.reset;
+            this._players = [];
+            this._hostSocketId = "";
+            this._currentState = GameStates.WAITING_PLAYERS;
+        } catch (err) {
+            logger.error(err);
+        }
     }
 
     start() {
@@ -110,6 +110,10 @@ class Game {
 
     allPlayersHasCharacter() {
         return this._players.every((player) => player.character != null);
+    }
+
+    allPlayersAreReady() {
+        return this._players.every((player) => player.isReady);
     }
 
     allPlayersWasKiller() {

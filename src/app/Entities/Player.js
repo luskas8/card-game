@@ -1,3 +1,5 @@
+import { CharacterActions } from "./Character";
+
 export class Player {
     /**
      * @param {string} name
@@ -10,6 +12,7 @@ export class Player {
      * @param {boolean?} options.wasTheKiller
      * @param {number?} options.killerScore
      * @param {number?} options.baseScore
+     * @param {CharacterActions[]?} options.choosedActions
      * @returns {Player}
      * @constructor
      */
@@ -23,6 +26,7 @@ export class Player {
         this._wasTheKiller = options.wasTheKiller || false;
         this._killerScore = options.killerScore || 0;
         this._baseScore = options.baseScore || 0;
+        this.choosedActions = options.choosedActions || [];
     }
 
     /** Total score of the player: baseScore + killerScore
@@ -48,15 +52,33 @@ export class Player {
         return this._isReady;
     }
 
+    get resetActions() {
+        this.choosedActions = [];
+    }
+
     turnHost() {
         this._isHost = true;
     }
 
     ready() {
-        this._isReady = true;
+        if (this.isTheKiller && this.choosedActions.length >= 3) {
+            this._isReady = true;
+        } else if (!this.isTheKiller && this.choosedActions.length == 1) {
+            this._isReady = true;
+        }
     }
 
     unready() {
         this._isReady = false;
+    }
+
+    chooseAction(action) {
+        if (this.choosedActions.includes(action)) {
+            return false;
+        }
+
+        this.choosedActions.push(action);
+        this.ready();
+        return true;
     }
 }
