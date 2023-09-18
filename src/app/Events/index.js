@@ -1,5 +1,5 @@
 import { Server, Socket } from "socket.io";
-import logger from "../logger.js";
+import logger from "../Entities/Logger.js";
 import chooseCharacter from "./choose-character.js";
 import disconect from "./disconnect.js";
 import gameStatusUpdate from "./game-status-update.js";

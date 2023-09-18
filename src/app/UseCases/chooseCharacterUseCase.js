@@ -1,4 +1,4 @@
-import { Error, Success } from "../../../config/Responses.js";
+import { Error, Success } from "../Core/utils.js";
 import characters from "../Entities/Character.js";
 import Game from "../Entities/Game.js";
 

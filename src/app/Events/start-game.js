@@ -1,5 +1,5 @@
 import { Server, Socket } from "socket.io";
-import { Error } from "../../../config/Responses.js";
+import { Error } from "../Core/utils.js";
 import startGameUseCase from "../UseCases/startGameUseCase.js";
 import gameStatusUpdate from "./game-status-update.js";
 import newRound from "./new-round.js";

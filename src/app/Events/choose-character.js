@@ -1,7 +1,7 @@
-import { Error } from "../../../config/Responses.js";
+import { Error } from "../Core/utils.js";
 import Game from "../Entities/Game.js";
 import chooseCharacterUseCase from "../UseCases/chooseCharacterUseCase.js";
-import logger from "../logger.js";
+import logger from "../Entities/Logger.js";
 import gameStatusUpdate from "./game-status-update.js";
 
 /**

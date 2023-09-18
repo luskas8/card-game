@@ -1,6 +1,6 @@
 import { Server } from "socket.io";
-import mainEvent from "./Events/index.js";
-import logger from "./logger.js";
+import mainEvent from "../Events/index.js";
+import logger from "./Logger.js";
 
 class Socket {
     /** @type {Server} */ _io;

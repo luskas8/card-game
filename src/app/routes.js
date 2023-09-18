@@ -1,5 +1,5 @@
 import { Router } from "express";
-import logger from "./logger.js";
+import logger from "./Entities/Logger.js";
 import Game from "./Entities/Game.js";
 
 const router = Router();

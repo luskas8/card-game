@@ -1,12 +1,12 @@
 import express, { json } from "express";
-import { createServer } from "http";
-import logger from "./logger.js";
-import router from "./routes.js";
+import { createServer, Server } from "http";
+import logger from "./Logger.js";
+import router from "../routes.js";
 import { pinoHttp } from "pino-http";
 
 class App {
-    _express = null;
-    _server = null;
+    /** @type {express} */ _express = null;
+    /** @type {Server} */ _server = null;
 
     constructor() {
         this.server;
