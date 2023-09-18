@@ -9,7 +9,8 @@
     "start": "node src/server.js",
     "test": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules npx jest --verbose --detectOpenHandles --forceExit",
     "test:coverage": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules npx jest --coverage --verbose --detectOpenHandles --forceExit",
-    "lint": "prettier \"src/**/*.js\" --write && eslint \"src/**/*.js\" --fix"
+    "lint": "prettier \"src/**/*.js\" --write && eslint \"src/**/*.js\"",
+    "lint:fix": "prettier \"src/**/*.js\" --write && eslint \"src/**/*.js\" --fix"
   },
   "keywords": [
     "game",
