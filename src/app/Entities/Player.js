@@ -1,4 +1,4 @@
-import { CharacterActions } from "./Character.js";
+import { CharacterActions, BaseCharacter } from "./Character.js";
 import Game from "./Game.js";
 
 export class Player {
@@ -6,7 +6,7 @@ export class Player {
      * @param {string} name
      * @param {string} socketID
      * @param {Object} options
-     * @param {string?} options.character
+     * @param {BaseCharacter?} options.character
      * @param {boolean?} options.isHost
      * @param {boolean?} options.isReady
      * @param {boolean?} options.isTheKiller
@@ -64,7 +64,7 @@ export class Player {
     ready() {
         switch (this.isTheKiller) {
         case true:
-            if (this.choosedActions.length === Game.currentRound) {
+            if (this.choosedActions.length === Game.currentRotation) {
                 this._isReady = true;
             }
             break;
