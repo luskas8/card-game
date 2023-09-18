@@ -1,5 +1,5 @@
-import { CharacterActions } from "./Character";
-import Game from "./Game";
+import { CharacterActions } from "./Character.js";
+import Game from "./Game.js";
 
 export class Player {
     /**
