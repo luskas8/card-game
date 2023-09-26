@@ -32,7 +32,7 @@ export class Round {
         return this._tursHistory;
     }
 
-    get turns() {
+    get currentTurn() {
         return this._tursHistory[this._currentTurn];
     }
 
