@@ -1,4 +1,5 @@
 import Game from "../Entities/Game.js";
+import { Error } from "../Core/utils.js";
 import newRoundUseCase from "../UseCases/newRoundUseCase.js";
 import gameStatusUpdate from "./game-status-update.js";
 
