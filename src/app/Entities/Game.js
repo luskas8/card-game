@@ -1,5 +1,5 @@
 import Characters from "./Character.js";
-import Round from "./Round.js";
+import { Round } from "./Round.js";
 import { Player } from "./Player.js";
 import logger from "./Logger.js";
 
