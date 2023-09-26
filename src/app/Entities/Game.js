@@ -1,4 +1,5 @@
 import Characters from "./Character.js";
+import Round from "./Round.js";
 import { Player } from "./Player.js";
 import logger from "./Logger.js";
 
@@ -22,6 +23,7 @@ class Game {
     /** @type {string[]} */ _playersNotWasKillerSocketID;
     /** @type {number} */ _currentRotation;
     /** @type {string[]} */ _roundDeaths;
+    /** @type {Round} */ _currentRound;
 
     constructor() {
         this._hostSocketId = "";
@@ -31,6 +33,7 @@ class Game {
         this._playersNotWasKillerSocketID = [];
         this._currentRotation = 1;
         this._roundDeaths = [];
+        this._currentRound = null;
     }
 
     get game() {
