@@ -14,8 +14,7 @@ import gameStatusUpdate from "./game-status-update.js";
 export default async function newConnection(socket, io, data) {
     const newConnectionResponse = await newConnectionUseCase(
         socket.id,
-        io,
-        data
+        io
     );
     if (newConnectionResponse instanceof Error) {
         socket.emit("new-connection-error", {
