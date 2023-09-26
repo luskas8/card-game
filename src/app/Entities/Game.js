@@ -171,7 +171,7 @@ class Game {
     /**
      * @param {Player} playerToDisconnect
      */
-    disconectPlayer(playerToDisconnect) {
+    disconnectPlayer(playerToDisconnect) {
         if (!playerToDisconnect) {
             return false;
         }
