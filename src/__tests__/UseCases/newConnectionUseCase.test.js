@@ -68,33 +68,21 @@ describe("newConnectionUseCase", () => {
     });
 
     it("should not be able to connect when game is full", async () => {
-        const response = await newConnectionUseCase("socketID 1", {
-            name: "Jailson Mendes 1",
-        }).then(async () => {
-            return await newConnectionUseCase("socketID 2", {
-                name: "Jailson Mendes 2",
-            }).then(async () => {
-                return await newConnectionUseCase("socketID 3", {
-                    name: "Jailson Mendes 3",
-                }).then(async () => {
-                    return await newConnectionUseCase("socketID 4", {
-                        name: "Jailson Mendes 4",
-                    }).then(async () => {
-                        return await newConnectionUseCase("socketID 5", {
-                            name: "Jailson Mendes 5",
-                        }).then(async () => {
-                            return await newConnectionUseCase("socketID 6", {
-                                name: "Jailson Mendes 6",
-                            }).then(async () => {
-                                return await newConnectionUseCase(socketID, {
-                                    name,
-                                });
-                            });
-                        });
-                    });
-                });
-            });
-        });
+        const promises = []
+
+        for (let i = 0; i < Game.maxPlayers; i++) {
+            const num = i + 1;
+
+            promises.push(newConnectionUseCase(`socketID ${num}`, {
+                name: `Jailson Mendes ${num}`,
+            }))
+        }
+
+        await Promise.all(promises)
+
+        const response = await newConnectionUseCase(socketID, {
+            name,
+        })
 
         expect(response).toBeInstanceOf(Error);
         expect(response.status).toBe(Error.unauthorized().status);

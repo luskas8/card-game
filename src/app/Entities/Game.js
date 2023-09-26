@@ -34,6 +34,7 @@ class Game {
         this._currentRotation = 1;
         this._roundDeaths = [];
         this._currentRound = null;
+        this._maxPlayers = 6;
     }
 
     get game() {
@@ -101,6 +102,10 @@ class Game {
 
     get currentState() {
         return this._currentState;
+    }
+
+    get maxPlayers() {
+        return this._maxPlayers;
     }
 
     async close() {
