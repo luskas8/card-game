@@ -1,6 +1,6 @@
 import { Turn } from "./Turn.js";
 
-export class Round {
+export default class Round {
     MAX_TURNS = 3;
     _currentTurn = 0;
     _killer = null;
