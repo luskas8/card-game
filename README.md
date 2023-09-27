@@ -30,13 +30,13 @@ Running on http://localhost:3000
 
 ## TO-DO 📝
 
-1. Remover informação de quem é o host do jogador `hostId = socketId`
-2. Cartas escolhidas estarem no turno e não no jogador `{'playerId': [<card-1>, <card-2>]}`
-3. Remover "ready"
-4. Escalpo ficar na Rodada (Round) (killerId = socketId)
-5. Criar função getKillerIds (função do Game)
-6. Remover `_playersNotWasKillerSocketID` e transformar numa função de `Game` que itera pelos players do jogo e dos killerIds da rodada
-7. Transformar `GameStates` em "o jogo foi iniciado ou não?" (booleano = wasGameStarted) (ajustar função start)
-8. Matar `inUse` e `playerSocketId` do `Character` e transformar em função de `Game (getAvailableCharacters)`
-9. Depois disso tudo... melhorar os testes de game utilizando TODAS as funções
-10. Matar funções `reset` e `findByFavoriteAction` de Character
+- [x] Remover informação de quem é o host do jogador `hostId = socketId`
+- [ ] Cartas escolhidas estarem no turno e não no jogador `{'playerId': [<card-1>, <card-2>]}`
+- [ ] Remover "ready"
+- [ ] Escalpo ficar na Rodada (Round) (killerId = socketId)
+- [ ] Criar função getKillerIds (função do Game)
+- [ ] Remover `_playersNotWasKillerSocketID` e transformar numa função de `Game` que itera pelos players do jogo e dos killerIds da rodada
+- [ ] Transformar `GameStates` em "o jogo foi iniciado ou não?" (booleano = wasGameStarted) (ajustar função start)
+- [ ] Matar `inUse` e `playerSocketId` do `Character` e transformar em função de `Game (getAvailableCharacters)`
+- [ ] Depois disso tudo... melhorar os testes de game utilizando TODAS as funções
+- [ ] Matar funções `reset` e `findByFavoriteAction` de Character

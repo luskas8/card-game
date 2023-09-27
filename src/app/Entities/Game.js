@@ -16,7 +16,7 @@ export const GameStates = {
 };
 
 class Game {
-    /** @type {string} */ _hostSocketId;
+    /** @type {string} Host socketID */ _host;
     /** @type {Player[]} */ _players;
     /** @type {GameStates} */ _currentState;
     /** @type {string} */ _currentKillerSocketID;
@@ -25,7 +25,7 @@ class Game {
     /** @type {Round[]} */ _rounds;
 
     constructor() {
-        this._hostSocketId = "";
+        this._host = "";
         this._currentKillerSocketID = "";
         this._players = [];
         this._currentState = GameStates.WAITING_PLAYERS;
@@ -37,7 +37,7 @@ class Game {
 
     get game() {
         return {
-            host: this._hostSocketId,
+            host: this._host,
             killer: this._currentKillerSocketID,
             players: this._players.map((player) => {
                 return {
@@ -50,6 +50,12 @@ class Game {
                 };
             }),
             state: this._currentState,
+            rounds: this._rounds.map((round) => {
+                return {
+                    currentTurn: round.currentTurn,
+                    turs: round.tursHistory,
+                }
+            })
         };
     }
 
@@ -57,8 +63,8 @@ class Game {
         return this._players;
     }
 
-    get hostSocketId() {
-        return this._hostSocketId;
+    get host() {
+        return this._host;
     }
 
     get playersNotWasKillerSocketID() {
@@ -86,8 +92,8 @@ class Game {
     /**
      * @param {string} socketId
      */
-    set hostSocketId(socketId) {
-        this._hostSocketId = socketId;
+    set host(socketId) {
+        this._host = socketId;
     }
 
     /**
@@ -109,7 +115,7 @@ class Game {
         try {
             await Characters.reset;
             this._players = [];
-            this._hostSocketId = "";
+            this._host = "";
             this._currentState = GameStates.WAITING_PLAYERS;
         } catch (err) {
             logger.error(err);
@@ -160,9 +166,9 @@ class Game {
                 reject("player already exists");
             }
 
-            const isHost = this._hostSocketId === "";
+            const isHost = this._host === "";
             if (isHost) {
-                this._hostSocketId = socketID;
+                this._host = socketID;
             }
 
             this._players.push(
