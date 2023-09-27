@@ -138,10 +138,6 @@ export default class Events {
         return true;
     }
 
-    async test() {
-        console.log("test");
-    }
-
     /**
      * @param {Socket} socket
      * @param {Server} io
