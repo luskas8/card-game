@@ -3,7 +3,7 @@ import { Turn } from "./Turn.js";
 export default class Round {
     MAX_TURNS = 3;
     /** @type {number} */ _currentTurn = 0;
-    /** @type {string | null} Killer socketID */ _killer = null;
+    /** @type {string} Killer socketID */ _killer = null;
     /** @type {Turn[]} */ _tursHistory = [];
 
     constructor(killer) {
@@ -30,7 +30,7 @@ export default class Round {
     }
 
     get tursHistory() {
-        return this._tursHistory;
+        return this._tursHistory.map((turn) => turn.turnResume);
     }
 
     get reset() {

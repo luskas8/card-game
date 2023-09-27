@@ -3,32 +3,30 @@ import Round from "./Round.js";
 import { Player } from "./Player.js";
 import logger from "./Logger.js";
 
-/**
- * @readonly
- * @enum {string}
- */
-export const GameStates = {
-    WAITING_PLAYERS: "waiting_for_players",
-    WAITING_HOST: "waiting_for_host",
-    STARTED: "started",
-    FINISHED: "finished",
-    PAUSED: "paused",
-};
+// /**
+//  * @readonly
+//  * @enum {string}
+//  */
+// export const GameStates = {
+//     WAITING_PLAYERS: "waiting_for_players",
+//     WAITING_HOST: "waiting_for_host",
+//     STARTED: "started",
+//     FINISHED: "finished",
+//     PAUSED: "paused",
+// };
 
 class Game {
     /** @type {string} Host socketID */ _host;
     /** @type {Player[]} */ _players;
-    /** @type {GameStates} */ _currentState;
-    /** @type {string} */ _currentKillerSocketID;
+    /** @type {boolean} */ _wasStarted;
     /** @type {string[]} */ _playersNotWasKillerSocketID;
     /** @type {number} */ _currentRotation;
     /** @type {Round[]} */ _rounds;
 
     constructor() {
         this._host = "";
-        this._currentKillerSocketID = "";
         this._players = [];
-        this._currentState = GameStates.WAITING_PLAYERS;
+        this._wasStarted = false;
         this._playersNotWasKillerSocketID = [];
         this._currentRotation = 1;
         this._maxPlayers = 6;
@@ -38,7 +36,6 @@ class Game {
     get game() {
         return {
             host: this._host,
-            killer: this._currentKillerSocketID,
             players: this._players.map((player) => {
                 return {
                     name: player.name,
@@ -49,7 +46,7 @@ class Game {
                     isKiller: player.isTheKiller,
                 };
             }),
-            state: this._currentState,
+            start: this._wasStarted,
             rounds: this._rounds.map((round) => {
                 return {
                     currentTurn: round.currentTurn,
@@ -67,26 +64,8 @@ class Game {
         return this._host;
     }
 
-    get playersNotWasKillerSocketID() {
-        return this._playersNotWasKillerSocketID;
-    }
-
-    get killer() {
-        return this._players.find(
-            (player) => player.socketID === this._currentKillerSocketID
-        );
-    }
-
-    get killerSocketID() {
-        return this._currentKillerSocketID;
-    }
-
-    get currentRotation() {
-        return this._currentRotation;
-    }
-
-    set killerSocketID(socketID) {
-        this._currentKillerSocketID = socketID;
+    get getKillerIds() {
+        return this._rounds.map((round) => round.killer);
     }
 
     /**
@@ -96,15 +75,8 @@ class Game {
         this._host = socketId;
     }
 
-    /**
-     * @param {GameStates} state
-     */
-    updateState(state) {
-        this._currentState = state;
-    }
-
-    get currentState() {
-        return this._currentState;
+    get wasStarted() {
+        return this._wasStarted;
     }
 
     get maxPlayers() {
@@ -116,14 +88,14 @@ class Game {
             await Characters.reset;
             this._players = [];
             this._host = "";
-            this._currentState = GameStates.WAITING_PLAYERS;
+            this._wasStarted = false;
         } catch (err) {
             logger.error(err);
         }
     }
 
     start() {
-        this._currentState = GameStates.STARTED;
+        this._wasStarted = true;
     }
 
     /**
@@ -166,15 +138,13 @@ class Game {
                 reject("player already exists");
             }
 
-            const isHost = this._host === "";
-            if (isHost) {
+            if (this._host === "") {
                 this._host = socketID;
             }
 
             this._players.push(
-                new Player(name, socketID, { ...options, isHost })
+                new Player(name, socketID, { ...options })
             );
-            this.playersNotWasKillerSocketID.push(socketID);
             resolve("success");
         });
     }
@@ -190,10 +160,6 @@ class Game {
         this._players = this._players.filter(
             (player) => player.socketID !== playerToDisconnect.socketID
         );
-        this._playersNotWasKillerSocketID =
-            this.playersNotWasKillerSocketID.filter(
-                (socketID) => socketID !== playerToDisconnect.socketID
-            );
         return true;
     }
 }

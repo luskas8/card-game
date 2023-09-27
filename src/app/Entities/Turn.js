@@ -2,6 +2,13 @@
  * @typedef {Object.<string, string[]>} PlayersChoosedActions
  */
 
+/**
+ * @typedef {Object} TurnResume
+ * @property {string} socketID
+ * @property {string[]} action
+ * @property {boolean} killed
+ */
+
 export class Turn {
     _killerMaxActions = 0;
     _killerChoosedActions = []
@@ -29,7 +36,11 @@ export class Turn {
         return true;
     }
 
+    /**
+     * @returns {TurnResume[]}
+     */
     get turnResume() {
+        /** @type {TurnResume[]} */
         const result = [];
         Object.keys(this._playersChoosedActions).forEach((socketID) => {
             result.push({
