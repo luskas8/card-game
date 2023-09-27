@@ -12,7 +12,7 @@ export default async function newRound(socket, io) {
 
     gameStatusUpdate(io, {
         action: ["new-round", "reset-cards"],
-        data: Game.game,
+        data: Game.status,
     });
     return true;
 }

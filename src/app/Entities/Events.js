@@ -1,22 +1,49 @@
 import { Server, Socket } from "socket.io";
 import { Error } from "../Core/utils.js";
-import Game, { GameStates } from "../Entities/Game.js";
-import logger from "../Entities/Logger.js";
+import chooseActionUseCase from "../UseCases/chooseActionUseCase.js";
 import chooseCharacterUseCase from "../UseCases/chooseCharacterUseCase.js";
 import newConnectionUseCase from "../UseCases/newConnectionUseCase.js";
 import startGameUseCase from "../UseCases/startGameUseCase.js";
+import Game, { GameStates } from "./Game.js";
+import logger from "./Logger.js";
 
+/**
+ * @typedef {Object} EventType
+ * @property {string} event
+ * @property {string} function
+ */
 
 export default class Events {
-    /** @type {string[]} */ events = [];
+    /** @type {EventType[]} */ events = [];
     constructor() {
         this.events = [
-            "new-connection",
-            "choose-character",
-            "start-game",
-            "disconnect",
-            "choose-action"
+            { event: "new-connection", function: "newConnection"},
+            { event: "choose-character", function: "chooseCharacter"},
+            { event: "start-game", function: "startGame"},
+            { event: "disconnect", function: "disconnect"},
+            { event: "choose-action", function: "chooseAction"},
         ];
+    }
+
+    /**
+     * @param {Socket} socket
+     * @param {Server} io
+     * @param {Object} data
+     * @param {string[]} data.actions
+     * @returns {Promise<boolean>}
+     */
+    async chooseAction(socket, io, data) {
+        const result = chooseActionUseCase(socket.id, data);
+        if (result instanceof Error) {
+            socket.emit("choose-action-error", { message: result.message });
+            return false;
+        }
+
+        this.gameStatusUpdate(io, {
+            action: ["choosed-action"],
+            data: { player: socket.id },
+        });
+        return true;
     }
 
     /**
@@ -95,11 +122,10 @@ export default class Events {
      * @param {Server} io
      */
     gameStatusUpdate(io, data) {
-        if (data === "all") {
-            io.emit("game-status-update", Game.game);
-            return;
-        }
-        io.emit("game-status-update", data);
+        io.emit("game-status-update", {
+            action: data.action,
+            data: data.data || Game.status,
+        });
     }
 
     disconnect(socket) {
@@ -148,8 +174,8 @@ export default class Events {
     static async registry(socket, io) {
         const _this = new Events();
         _this.events.forEach((event) => {
-            socket.on(event, async (data) => {
-                await _this[event](socket, io, data);
+            socket.on(event.name, async (data) => {
+                await _this[event.function](socket, io, data);
             });
         });
     }

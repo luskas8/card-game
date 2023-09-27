@@ -35,7 +35,7 @@ class Game {
         this._rounds = [];
     }
 
-    get game() {
+    get status() {
         return {
             host: this._hostSocketId,
             killer: this._currentKillerSocketID,
