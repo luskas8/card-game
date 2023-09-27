@@ -9,7 +9,7 @@ describe("chooseCharacterUseCase", () => {
 
     beforeEach(async () => {
         await Game.close();
-        await newConnectionUseCase(socketID, { name: "Player" });
+        await Game.addPlayer("Player 1", socketID)
     });
 
     afterEach(async () => {
@@ -23,6 +23,18 @@ describe("chooseCharacterUseCase", () => {
 
         expect(response).toBeInstanceOf(Success);
         expect(response.status).toBe(Success.accepted().status);
+    });
+
+    it("should not be able to choose a character already in use", async () => {
+        await chooseCharacterUseCase(socketID, { characterName });
+        await newConnectionUseCase("socketID", { name: "Player 2" });
+
+        const response = await chooseCharacterUseCase("socketID", {
+            characterName,
+        });
+
+        expect(response).toBeInstanceOf(Error);
+        expect(response.status).toBe(Error.unauthorized().status);
     });
 
     it("should not be able to choose a character with no socketID", async () => {
@@ -46,18 +58,6 @@ describe("chooseCharacterUseCase", () => {
 
         expect(response).toBeInstanceOf(Error);
         expect(response.status).toBe(Error.notFound().status);
-    });
-
-    it("should not be able to choose a character already in use", async () => {
-        await chooseCharacterUseCase(socketID, { characterName });
-        await newConnectionUseCase("socketID", { name: "Player 2" });
-
-        const response = await chooseCharacterUseCase("socketID", {
-            characterName,
-        });
-
-        expect(response).toBeInstanceOf(Error);
-        expect(response.status).toBe(Error.unauthorized().status);
     });
 
     it("should not be able to choose a character that does not exist", async () => {
