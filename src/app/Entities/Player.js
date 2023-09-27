@@ -8,12 +8,10 @@ export class Player {
      * @param {Object} options
      * @param {BaseCharacter?} options.character
      * @param {boolean?} options.isHost
-     * @param {boolean?} options.isReady
      * @param {boolean?} options.isTheKiller
      * @param {boolean?} options.wasTheKiller
      * @param {number?} options.killerScore
      * @param {number?} options.baseScore
-     * @param {CharacterActions[]?} options.choosedActions
      * @returns {Player}
      * @constructor
      */
@@ -22,12 +20,10 @@ export class Player {
         this.socketID = socketID;
         this.character = options.character || null;
         this._isHost = options.isHost || false;
-        this._isReady = options.isReady || false;
         this.isTheKiller = options.isTheKiller || false;
         this._wasTheKiller = options.wasTheKiller || false;
         this._killerScore = options.killerScore || 0;
         this._baseScore = options.baseScore || 0;
-        this.choosedActions = options.choosedActions || [];
     }
 
     /** It's total score: baseScore + killerScore
@@ -49,46 +45,11 @@ export class Player {
         return this._isHost;
     }
 
-    get isReady() {
-        return this._isReady;
-    }
-
     get resetActions() {
         this.choosedActions = [];
     }
 
     turnHost() {
         this._isHost = true;
-    }
-
-    ready() {
-        switch (this.isTheKiller) {
-        case true:
-            if (this.choosedActions.length === Game.currentRotation) {
-                this._isReady = true;
-            }
-            break;
-        case false:
-            if (this.choosedActions.length === 1) {
-                this._isReady = true;
-            }
-            break;
-        default:
-            break;
-        }
-    }
-
-    unready() {
-        this._isReady = false;
-    }
-
-    chooseAction(action) {
-        if (this.choosedActions.includes(action)) {
-            return false;
-        }
-
-        this.choosedActions.push(action);
-        this.ready();
-        return true;
     }
 }

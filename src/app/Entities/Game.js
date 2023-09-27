@@ -1,5 +1,5 @@
 import Characters from "./Character.js";
-import { Round } from "./Round.js";
+import Round from "./Round.js";
 import { Player } from "./Player.js";
 import logger from "./Logger.js";
 
@@ -22,8 +22,7 @@ class Game {
     /** @type {string} */ _currentKillerSocketID;
     /** @type {string[]} */ _playersNotWasKillerSocketID;
     /** @type {number} */ _currentRotation;
-    /** @type {string[]} */ _roundDeaths;
-    /** @type {Round} */ _currentRound;
+    /** @type {Round[]} */ _rounds;
 
     constructor() {
         this._hostSocketId = "";
@@ -32,14 +31,14 @@ class Game {
         this._currentState = GameStates.WAITING_PLAYERS;
         this._playersNotWasKillerSocketID = [];
         this._currentRotation = 1;
-        this._roundDeaths = [];
-        this._currentRound = null;
         this._maxPlayers = 6;
+        this._rounds = [];
     }
 
     get game() {
         return {
             host: this._hostSocketId,
+            killer: this._currentKillerSocketID,
             players: this._players.map((player) => {
                 return {
                     name: player.name,
@@ -48,11 +47,9 @@ class Game {
                     baseScore: player.baseScore,
                     killerScore: player.killerScore,
                     isKiller: player.isTheKiller,
-                    actions: player.choosedActions,
                 };
             }),
             state: this._currentState,
-            killer: this._currentKillerSocketID,
         };
     }
 
@@ -123,8 +120,11 @@ class Game {
         this._currentState = GameStates.STARTED;
     }
 
-    addRound() {
-        this._currentRound += 1;
+    /**
+     * @param {Round} round
+     */
+    addRound(round) {
+        this._rounds.push(round)
     }
 
     allPlayersHasCharacter() {
