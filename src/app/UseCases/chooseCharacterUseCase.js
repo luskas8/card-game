@@ -12,8 +12,8 @@ export default async function chooseCharacterUseCase(socketID, data) {
     if (!socketID) {
         return Error.badRequest("No socketID provided");
     }
-
-    if (!Game.findPlayerBySocket(socketID)) {
+    const player = Game.findPlayerBySocket(socketID);
+    if (!player) {
         return Error.notFound("You are not in a game");
     }
 
@@ -27,12 +27,12 @@ export default async function chooseCharacterUseCase(socketID, data) {
         return Error.notFound("Character not found");
     }
 
-    if (character.inUse) {
+    if (Game.findPlayerByCharacter(character.name)) {
         return Error.unauthorized("Character already in use");
     }
 
     try {
-        const response = await character.use(socketID);
+        player.character = character;
         return Success.accepted({ character: character.name });
     } catch (error) {
         return Error.badRequest(error);

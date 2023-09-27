@@ -125,6 +125,12 @@ class Game {
         return this._players.find((player) => player.name === name);
     }
 
+    findPlayerByCharacter(characterName) {
+        return this._players.find(
+            (player) => player.character && player.character.name === characterName
+        );
+    }
+
     findPlayerBySocket(socketID) {
         return this._players.find((player) => player.socketID === socketID);
     }
