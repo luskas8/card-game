@@ -1,5 +1,5 @@
 import { Server } from "socket.io";
-import mainEvent from "../Events/index.js";
+import Events from "./Events.js";
 import logger from "./Logger.js";
 
 class Socket {
@@ -18,7 +18,7 @@ class Socket {
         });
         this._io.on("connection", (socket) => {
             logger.info(`Socket connected: ${socket.id}`);
-            mainEvent(socket, this._io);
+            Events.registry(socket, this._io);
         });
 
         return this._io;
