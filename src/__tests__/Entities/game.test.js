@@ -10,13 +10,13 @@ describe("Test game entity", () => {
         expect(Game.currentState).toEqual(GameStates.WAITING_HOST);
     });
 
-    it("shoudl be able to disconect a player", () => {
+    it("shoudl be able to disconnect a player", () => {
         Game._players = [{ socketID: "123" }];
 
-        expect(Game.disconectPlayer("123")).toBe(true);
+        expect(Game.disconnectPlayer("123")).toBe(true);
     });
 
-    it("shoudl not be able to disconect a player when not passed one", () => {
-        expect(Game.disconectPlayer("")).toBe(false);
+    it("shoudl not be able to disconnect a player when not passed one", () => {
+        expect(Game.disconnectPlayer("")).toBe(false);
     });
 });

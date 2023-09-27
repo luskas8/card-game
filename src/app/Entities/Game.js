@@ -31,6 +31,7 @@ class Game {
         this._currentState = GameStates.WAITING_PLAYERS;
         this._playersNotWasKillerSocketID = [];
         this._currentRotation = 1;
+        this._maxPlayers = 6;
         this._rounds = [];
     }
 
@@ -98,6 +99,10 @@ class Game {
 
     get currentState() {
         return this._currentState;
+    }
+
+    get maxPlayers() {
+        return this._maxPlayers;
     }
 
     async close() {
@@ -171,7 +176,7 @@ class Game {
     /**
      * @param {Player} playerToDisconnect
      */
-    disconectPlayer(playerToDisconnect) {
+    disconnectPlayer(playerToDisconnect) {
         if (!playerToDisconnect) {
             return false;
         }
