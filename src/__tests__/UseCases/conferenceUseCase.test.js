@@ -1,6 +1,7 @@
 import { Error, Success } from "../../app/Core/utils.js";
 import Game from "../../app/Entities/Game";
 import { Player } from "../../app/Entities/Player";
+import Round from "../../app/Entities/Round.js";
 import conferenceUseCase from "../../app/UseCases/conferenceUseCase";
 
 describe("conferenceUseCase", () => {
@@ -42,8 +43,9 @@ describe("conferenceUseCase", () => {
     });
 
     it("should start conference when all players was killer", async () => {
-        Game.players.map((player) => (player._wasTheKiller = true));
-        Game._playersNotWasKillerSocketID = [];
+        Game.players.forEach((player) => {
+            Game.addRound(new Round(player.socketID));
+        });
         const result = await conferenceUseCase();
 
         expect(result).toBeInstanceOf(Success);

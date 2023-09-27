@@ -1,17 +1,12 @@
-import Game, { GameStates } from "../../app/Entities/Game";
+import Game from "../../app/Entities/Game";
 
 describe("Test game entity", () => {
     it("should return all players in the game", () => {
         expect(Game.players).toEqual([]);
     });
 
-    it("should update the game state", () => {
-        Game.updateState(GameStates.WAITING_HOST);
-        expect(Game.currentState).toEqual(GameStates.WAITING_HOST);
-    });
-
-    it("shoudl be able to disconnect a player", () => {
-        Game._players = [{ socketID: "123" }];
+    it("shoudl be able to disconnect a player", async () => {
+        await Game.addPlayer("123", "TESTADOR")
 
         expect(Game.disconnectPlayer("123")).toBe(true);
     });
