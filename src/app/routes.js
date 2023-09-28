@@ -16,7 +16,7 @@ router.get("/", async (req, res) => {
 // TODO: Create and use a auth middleware routes below
 
 router.get("/game-status", async (req, res) => {
-    res.json({ status: Game.game });
+    res.json({ status: Game.status });
 });
 
 router.get("/game-close", async (req, res) => {
