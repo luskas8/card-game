@@ -33,7 +33,7 @@ class Game {
         this._rounds = [];
     }
 
-    get status() {
+    get game() {
         return {
             host: this._host,
             players: this._players.map((player) => {
