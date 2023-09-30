@@ -6,7 +6,7 @@ import startGameUseCase from "../../app/UseCases/startGameUseCase";
 describe("startGameUseCase", () => {
     beforeEach((done) => {
         Game.hostSocketId = "123";
-        Game._players = [
+        Game.players = [
             new Player("TESTADOR", "123", {
                 isHost: true,
                 isTheKiller: true,
@@ -19,10 +19,6 @@ describe("startGameUseCase", () => {
             new Player("TESTADOR", "1236", { character: "Zeca" }),
         ];
         done();
-    });
-
-    afterEach(async () => {
-        await Game.close();
     });
 
     it("should not be able to start a game without pass a socket id", async () => {
@@ -47,7 +43,7 @@ describe("startGameUseCase", () => {
     });
 
     it("should not be able to start a game without a character", async () => {
-        Game._players.push({ socketID: "123", character: null });
+        Game.players.push({ socketID: "123", character: null });
         const result = await startGameUseCase("123");
 
         expect(result).toBeInstanceOf(Error);
@@ -55,7 +51,7 @@ describe("startGameUseCase", () => {
     });
 
     it("should not be able to start a game with less than 3 players", async () => {
-        Game._players = Game._players.slice(0, 2);
+        Game.players = Game.players.slice(0, 2);
         const result = await startGameUseCase("123");
 
         expect(result).toBeInstanceOf(Error);
@@ -63,7 +59,7 @@ describe("startGameUseCase", () => {
     });
 
     it("should not be able to start a game when already started", async () => {
-        Game._wasStarted = true;
+        Game.didGameStart = true;
         const result = await startGameUseCase("123");
 
         expect(result).toBeInstanceOf(Error);
@@ -74,6 +70,6 @@ describe("startGameUseCase", () => {
         const result = await startGameUseCase("123");
 
         expect(result).toBeInstanceOf(Success);
-        expect(Game.wasStarted).toBe(true);
+        expect(Game.didGameStart).toBe(true);
     });
 });

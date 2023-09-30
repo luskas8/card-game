@@ -2,34 +2,25 @@ import { Error, Success } from "../Core/utils.js";
 import Game from "../Entities/Game.js";
 
 /**
- * @param {string} socketID
- * @returns {Promise<Error|Success>}
+ * @param {string} hostId
+ * @param {Game} game
  */
-export default async function startGameUseCase(socketID) {
-    if (!socketID) {
-        return Error.badRequest("Socket ID is required");
-    }
-
-    if (!Game.findPlayerBySocket(socketID)) {
-        return Error.notFound("Player not found");
-    }
-
-    if (Game.hostSocketId !== socketID) {
+export default function startGameUseCase(hostId, game) {
+    if (game.hostSocketId !== hostId || !game.findPlayerById(hostId)) {
         return Error.forbidden("You are not the host");
     }
 
-    if (Game.playerListSize < 3) {
+    if (game.players.length < 3) {
         return Error.forbidden("You need at least 3 players");
     }
 
-    if (!Game.allPlayersHasCharacter()) {
+    if (!game.allPlayersChoseACharacter()) {
         return Error.forbidden("All players must choose a character");
     }
 
-    if (Game.wasStarted) {
+    if (game.didGameStart) {
         return Error.forbidden("Game already started");
     }
 
-    Game.start();
-    return Success.message("Game started");
+    return game.start();
 }

@@ -1,16 +1,20 @@
+import { Socket } from "socket.io";
 import Game from "../Entities/Game.js";
 import gameStatusUpdate from "./game-status-update.js";
 
-export default function disconnect(socket) {
-    const player = Game.findPlayerBySocket(socket.id);
+/**
+ * @param {Socket} socket
+ * @param {Game} game
+ */
+export default function disconnect(socket, game) {
+    const playerId = socket.id;
 
-    if (!player) {
-        return;
+    if (game.findPlayerById(playerId)) {
+        game.disconnectPlayer(playerId);
+
+        gameStatusUpdate(socket, {
+            action: "update-game",
+            data: { players: game.summary.players },
+        });
     }
-
-    Game.disconnectPlayer(player);
-    gameStatusUpdate(io, {
-        action: ["disconnect"],
-        data: player.socketID,
-    });
 }

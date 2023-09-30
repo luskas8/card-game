@@ -1,59 +1,41 @@
 import { Server, Socket } from "socket.io";
+
 import { Error } from "../Core/utils.js";
-import Game, { GameStates } from "../Entities/Game.js";
+
+import Game from "../Entities/Game.js";
+import logger from "../Entities/Logger.js";
+
 import newConnectionUseCase from "../UseCases/newConnectionUseCase.js";
+
 import gameStatusUpdate from "./game-status-update.js";
 
 /**
  * @param {Socket} socket
  * @param {Server} io
  * @param {Object} data
- * @param {string} data.name
+ * @param {Game} game
  * @returns {Promise<boolean>}
  */
-export default async function newConnection(socket, io, data) {
-    const newConnectionResponse = await newConnectionUseCase(
-        socket.id,
-        io
-    );
-    if (newConnectionResponse instanceof Error) {
-        socket.emit("new-connection-error", {
-            error: newConnectionResponse.message,
-        });
-        return false;
-    }
+export default function newConnection(socket, data, game) {
+    const playerId = socket.id;
 
-    const chooseCharacterResponse = await chooseCharacterUseCase(
-        socket.id,
-        data
-    );
+    const response = newConnectionUseCase(playerId, data, game);
 
-    if (io.engine.clientsCount >= 3) {
-        Game.updateState(GameStates.WAITING_HOST);
-        io.emit(Game.currentState, {
-            status: Game.currentState,
-        });
-    }
+    const emitData = { success: true };
 
-    let action = ["new-connection"];
-    socket.emit("new-connection-success", {
-        status: 201,
-        message: "You are connected and choosed your character",
-    });
-
-    if (chooseCharacterResponse instanceof Error) {
+    if (response instanceof Error) {
         logger.error(response);
-        socket.emit("choose-character-error", {
-            error: chooseCharacterResponse.message,
-        });
-        return true;
+        emitData.success = false;
+        emitData.error = response.message;
     } else {
-        action.push("choose-character");
+        const { summary } = game;
+
+        emitData.game = summary;
+        gameStatusUpdate(socket, {
+            action: "update-players",
+            data: { playerId, name: data.name },
+        });
     }
 
-    gameStatusUpdate(io, {
-        action,
-        data: Game.findPlayerBySocket(socket.id),
-    });
-    return true;
+    socket.emit("new-connection", emitData);
 }

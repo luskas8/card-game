@@ -1,13 +1,8 @@
-import { Server } from "socket.io";
-import Game from "../Entities/Game.js";
+import { Socket } from "socket.io";
 
 /**
- * @param {Server} io
+ * @param {Socket} socket
  */
-export default function gameStatusUpdate(io, data) {
-    if (data === "all") {
-        io.emit("game-status-update", Game.game);
-        return;
-    }
-    io.emit("game-status-update", data);
+export default function gameStatusUpdate(socket, data) {
+    socket.broadcast.emit("game-status-update", data);
 }

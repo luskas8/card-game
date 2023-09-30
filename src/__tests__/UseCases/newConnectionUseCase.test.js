@@ -6,14 +6,6 @@ describe("newConnectionUseCase", () => {
     const socketID = "40028922";
     const name = "Jailson Mendes";
 
-    beforeEach(async () => {
-        await Game.close();
-    });
-
-    afterEach(async () => {
-        await Game.close();
-    });
-
     it("should be able to create a new connection", async () => {
         const response = await newConnectionUseCase(socketID, { name });
 
@@ -68,21 +60,23 @@ describe("newConnectionUseCase", () => {
     });
 
     it("should not be able to connect when game is full", async () => {
-        const promises = []
+        const promises = [];
 
         for (let i = 0; i < Game.maxPlayers; i++) {
             const num = i + 1;
 
-            promises.push(newConnectionUseCase(`socketID ${num}`, {
-                name: `Jailson Mendes ${num}`,
-            }))
+            promises.push(
+                newConnectionUseCase(`socketID ${num}`, {
+                    name: `Jailson Mendes ${num}`,
+                })
+            );
         }
 
-        await Promise.all(promises)
+        await Promise.all(promises);
 
         const response = await newConnectionUseCase(socketID, {
             name,
-        })
+        });
 
         expect(response).toBeInstanceOf(Error);
         expect(response.status).toBe(Error.unauthorized().status);

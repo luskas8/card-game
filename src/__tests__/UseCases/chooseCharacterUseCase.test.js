@@ -7,15 +7,6 @@ describe("chooseCharacterUseCase", () => {
     const socketID = "40028922";
     const characterName = "Zeca";
 
-    beforeEach(async () => {
-        await Game.close();
-        await Game.addPlayer("Player 1", socketID)
-    });
-
-    afterEach(async () => {
-        await Game.close();
-    });
-
     it("should be able to choose a character", async () => {
         const response = await chooseCharacterUseCase(socketID, {
             characterName,

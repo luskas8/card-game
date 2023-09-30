@@ -1,34 +1,32 @@
-import { Server, Socket } from "socket.io";
+import { Socket } from "socket.io";
+
 import logger from "../Entities/Logger.js";
-import chooseCharacter from "./choose-character.js";
-import disconnect from "./disconnect.js";
-import gameStatusUpdate from "./game-status-update.js";
+import Game from "../Entities/Game.js";
+
 import newConnection from "./new-connection.js";
+import disconnect from "./disconnect.js";
+import chooseCharacter from "./choose-character.js";
 import startGame from "./start-game.js";
 
 /**
  * @param {Socket} socket
- * @param {Server} io
+ * @param {Game} game
  */
-export default function mainEvent(socket, io) {
-    socket.on("new-connection", async function (data) {
-        await newConnection(socket, io, data);
+export default function mainEvent(socket, game) {
+    socket.on("new-connection", (data) => {
+        newConnection(socket, data, game);
     });
 
     socket.on("disconnect", () => {
-        disconnect(socket, io);
+        disconnect(socket, game);
     });
 
-    socket.on("game-status-request", () => {
-        gameStatusUpdate(io, "all");
+    socket.on("choose-character", (data) => {
+        chooseCharacter(socket, data, game);
     });
 
-    socket.on("choose-character", async (data) => {
-        await chooseCharacter(socket, io, data);
-    });
-
-    socket.on("start-game", async () => {
-        await startGame(socket, io);
+    socket.on("start-game", () => {
+        startGame(socket, game);
     });
 
     socket.on("error", (err) => {

@@ -1,4 +1,4 @@
-import { BaseCharacter } from "../../app/Entities/Character.js";
+import Characters from "../../app/Entities/Character.js";
 import { Player } from "../../app/Entities/Player.js";
 
 describe("Test player entity", () => {
@@ -6,30 +6,22 @@ describe("Test player entity", () => {
     let player;
 
     beforeEach(() => {
-        player = new Player('John', '1234', {
-            character: new BaseCharacter('killer', 'kill'),
-            wasTheKiller: true,
-            killerScore: 10,
-            baseScore: 20,
-        });
+        player = new Player("John", "1234");
     });
 
-    it('should have a name and socketID', () => {
-        expect(player.name).toBe('John');
-        expect(player.socketID).toBe('1234');
+    it("should have a name and socketID", () => {
+        expect(player.name).toBe("John");
+        expect(player.socketID).toBe("1234");
     });
 
-    it('should have a character', () => {
+    it("should be able to pick a character", () => {
+        player.character = Characters.findByName("Bocão");
         expect(player.character).toBeDefined();
-        expect(player.character.name).toBe('killer');
     });
 
-    it('should have a score', () => {
+    it("should be able to see its' score", () => {
+        player.baseScore = 10;
+        player.killerScore = 20;
         expect(player.score).toBe(30);
-    });
-
-    it('should be able to set the isKiller property of its character', () => {
-        player.isKiller = false;
-        expect(player.isKiller).toBe(false);
     });
 });

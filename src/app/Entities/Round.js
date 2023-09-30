@@ -1,54 +1,42 @@
-import { Turn } from "./Turn.js";
+import Turn from "./Turn.js";
 
 export default class Round {
     MAX_TURNS = 3;
-    /** @type {number} */ _currentTurn = 0;
-    /** @type {string} Killer socketID */ _killer = null;
-    /** @type {Turn[]} */ _tursHistory = [];
+    currentTurnIndex = 0;
+    /** @type {Turn[]}  */ turnsHistory = [];
+    killerId = "";
 
-    constructor(killer) {
-        this._killer = killer;
-        this.tursHistory.push(new Turn(this._currentTurn));
+    /**
+     * @param {string} killerId
+     * @returns {Round}
+     * @constructor
+     */
+    constructor(killerId) {
+        this.killerId = killerId;
+        this.nextRound();
     }
 
-    get nextRound() {
-        this.currentTurn += 1;
-        if (this._currentTurn >= this.MAX_TURNS) {
-            this._currentTurn = this.MAX_TURNS;
-            return false;
-        }
+    canStartANewTurn() {
+        return this.currentTurnIndex < this.MAX_TURNS;
+    }
 
-        return true;
+    get turns() {
+        return this.turnsHistory.map((turn) => turn.chosenActions);
     }
 
     get currentTurn() {
-        return this._currentTurn;
+        return [...this.turns].pop();
     }
 
-    get killer() {
-        return this._killer;
-    }
+    nextRound() {
+        const { currentTurnIndex, turnsHistory, killerId } = this;
 
-    get tursHistory() {
-        return this._tursHistory.map((turn) => turn.turnResume);
-    }
-
-    get reset() {
-        this._currentTurn = 0;
-        this._tursHistory = [];
-        this._killer = null;
-    }
-
-    get newTurn() {
-        if (this._currentTurn >= this.MAX_TURNS) {
-            return false;
+        if (this.canStartANewTurn()) {
+            this.currentTurnIndex += 1;
+            turnsHistory.push(new Turn(killerId, currentTurnIndex));
+            return true;
         }
 
-        this.tursHistory.push(new Turn(this._currentTurn));
-        return true;
-    }
-
-    set killer(killer) {
-        this._killer = killer;
+        return false;
     }
 }
