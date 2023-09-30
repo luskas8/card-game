@@ -3,32 +3,30 @@ import Round from "./Round.js";
 import { Player } from "./Player.js";
 import logger from "./Logger.js";
 
-/**
- * @readonly
- * @enum {string}
- */
-export const GameStates = {
-    WAITING_PLAYERS: "waiting_for_players",
-    WAITING_HOST: "waiting_for_host",
-    STARTED: "started",
-    FINISHED: "finished",
-    PAUSED: "paused",
-};
+// /**
+//  * @readonly
+//  * @enum {string}
+//  */
+// export const GameStates = {
+//     WAITING_PLAYERS: "waiting_for_players",
+//     WAITING_HOST: "waiting_for_host",
+//     STARTED: "started",
+//     FINISHED: "finished",
+//     PAUSED: "paused",
+// };
 
 class Game {
-    /** @type {string} */ _hostSocketId;
+    /** @type {string} Host socketID */ _host;
     /** @type {Player[]} */ _players;
-    /** @type {GameStates} */ _currentState;
-    /** @type {string} */ _currentKillerSocketID;
+    /** @type {boolean} */ _wasStarted;
     /** @type {string[]} */ _playersNotWasKillerSocketID;
     /** @type {number} */ _currentRotation;
     /** @type {Round[]} */ _rounds;
 
     constructor() {
-        this._hostSocketId = "";
-        this._currentKillerSocketID = "";
+        this._host = "";
         this._players = [];
-        this._currentState = GameStates.WAITING_PLAYERS;
+        this._wasStarted = false;
         this._playersNotWasKillerSocketID = [];
         this._currentRotation = 1;
         this._maxPlayers = 6;
@@ -37,8 +35,7 @@ class Game {
 
     get status() {
         return {
-            host: this._hostSocketId,
-            killer: this._currentKillerSocketID,
+            host: this._host,
             players: this._players.map((player) => {
                 return {
                     name: player.name,
@@ -49,7 +46,13 @@ class Game {
                     isKiller: player.isTheKiller,
                 };
             }),
-            state: this._currentState,
+            start: this._wasStarted,
+            rounds: this._rounds.map((round) => {
+                return {
+                    currentTurn: round.currentTurn,
+                    turs: round.tursHistory,
+                }
+            })
         };
     }
 
@@ -57,48 +60,23 @@ class Game {
         return this._players;
     }
 
-    get hostSocketId() {
-        return this._hostSocketId;
+    get host() {
+        return this._host;
     }
 
-    get playersNotWasKillerSocketID() {
-        return this._playersNotWasKillerSocketID;
-    }
-
-    get killer() {
-        return this._players.find(
-            (player) => player.socketID === this._currentKillerSocketID
-        );
-    }
-
-    get killerSocketID() {
-        return this._currentKillerSocketID;
-    }
-
-    get currentRotation() {
-        return this._currentRotation;
-    }
-
-    set killerSocketID(socketID) {
-        this._currentKillerSocketID = socketID;
+    get getKillerIds() {
+        return this._rounds.map((round) => round.killer);
     }
 
     /**
      * @param {string} socketId
      */
-    set hostSocketId(socketId) {
-        this._hostSocketId = socketId;
+    set host(socketId) {
+        this._host = socketId;
     }
 
-    /**
-     * @param {GameStates} state
-     */
-    updateState(state) {
-        this._currentState = state;
-    }
-
-    get currentState() {
-        return this._currentState;
+    get wasStarted() {
+        return this._wasStarted;
     }
 
     get maxPlayers() {
@@ -109,15 +87,15 @@ class Game {
         try {
             await Characters.reset;
             this._players = [];
-            this._hostSocketId = "";
-            this._currentState = GameStates.WAITING_PLAYERS;
+            this._host = "";
+            this._wasStarted = false;
         } catch (err) {
             logger.error(err);
         }
     }
 
     start() {
-        this._currentState = GameStates.STARTED;
+        this._wasStarted = true;
     }
 
     /**
@@ -147,6 +125,12 @@ class Game {
         return this._players.find((player) => player.name === name);
     }
 
+    findPlayerByCharacter(characterName) {
+        return this._players.find(
+            (player) => player.character && player.character.name === characterName
+        );
+    }
+
     findPlayerBySocket(socketID) {
         return this._players.find((player) => player.socketID === socketID);
     }
@@ -160,15 +144,13 @@ class Game {
                 reject("player already exists");
             }
 
-            const isHost = this._hostSocketId === "";
-            if (isHost) {
-                this._hostSocketId = socketID;
+            if (this._host === "") {
+                this._host = socketID;
             }
 
             this._players.push(
-                new Player(name, socketID, { ...options, isHost })
+                new Player(name, socketID, { ...options })
             );
-            this.playersNotWasKillerSocketID.push(socketID);
             resolve("success");
         });
     }
@@ -184,10 +166,6 @@ class Game {
         this._players = this._players.filter(
             (player) => player.socketID !== playerToDisconnect.socketID
         );
-        this._playersNotWasKillerSocketID =
-            this.playersNotWasKillerSocketID.filter(
-                (socketID) => socketID !== playerToDisconnect.socketID
-            );
         return true;
     }
 }

@@ -2,9 +2,9 @@ import { Turn } from "./Turn.js";
 
 export default class Round {
     MAX_TURNS = 3;
-    _currentTurn = 0;
-    _killer = null;
-    _tursHistory = [];
+    /** @type {number} */ _currentTurn = 0;
+    /** @type {string} Killer socketID */ _killer = null;
+    /** @type {Turn[]} */ _tursHistory = [];
 
     constructor(killer) {
         this._killer = killer;
@@ -14,6 +14,7 @@ export default class Round {
     get nextRound() {
         this.currentTurn += 1;
         if (this._currentTurn >= this.MAX_TURNS) {
+            this._currentTurn = this.MAX_TURNS;
             return false;
         }
 
@@ -29,11 +30,7 @@ export default class Round {
     }
 
     get tursHistory() {
-        return this._tursHistory;
-    }
-
-    get currentTurn() {
-        return this._tursHistory[this._currentTurn];
+        return this._tursHistory.map((turn) => turn.turnResume);
     }
 
     get reset() {

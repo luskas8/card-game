@@ -1,5 +1,5 @@
 import { Error, Success } from "../../app/Core/utils.js";
-import Game, { GameStates } from "../../app/Entities/Game";
+import Game from "../../app/Entities/Game";
 import { Player } from "../../app/Entities/Player";
 import startGameUseCase from "../../app/UseCases/startGameUseCase";
 
@@ -63,7 +63,7 @@ describe("startGameUseCase", () => {
     });
 
     it("should not be able to start a game when already started", async () => {
-        Game._currentState = GameStates.STARTED;
+        Game._wasStarted = true;
         const result = await startGameUseCase("123");
 
         expect(result).toBeInstanceOf(Error);
@@ -74,6 +74,6 @@ describe("startGameUseCase", () => {
         const result = await startGameUseCase("123");
 
         expect(result).toBeInstanceOf(Success);
-        expect(Game.currentState).toBe(GameStates.STARTED);
+        expect(Game.wasStarted).toBe(true);
     });
 });

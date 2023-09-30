@@ -1,5 +1,5 @@
 import { Error, Success } from "../Core/utils.js";
-import Game, { GameStates } from "../Entities/Game.js";
+import Game from "../Entities/Game.js";
 
 /**
  * @param {string} socketID
@@ -26,7 +26,7 @@ export default async function startGameUseCase(socketID) {
         return Error.forbidden("All players must choose a character");
     }
 
-    if (Game.currentState === GameStates.STARTED) {
+    if (Game.wasStarted) {
         return Error.forbidden("Game already started");
     }
 
