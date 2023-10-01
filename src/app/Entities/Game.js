@@ -56,16 +56,16 @@ class Game {
         return [...this.rounds].pop();
     }
 
+    getRandomInt = (max) => Math.floor(Math.random() * max);
+
     getRandomPlayerId(killerIds = []) {
         const { players } = this;
-
-        const getRandomInt = (max) => Math.floor(Math.random() * max);
 
         const playersPool = killerIds.length
             ? players.filter((p) => !killerIds.includes(p.socketID))
             : players;
 
-        const playerIndex = getRandomInt(playersPool.length - 1);
+        const playerIndex = this.getRandomInt(playersPool.length - 1);
 
         return playersPool[playerIndex].socketID;
     }
