@@ -2,7 +2,7 @@ import { Error, Success } from "../Core/utils.js";
 import Game from "../Entities/Game.js";
 
 export default async function conferenceUseCase() {
-    if (Game.getKillerIds.length < Game.playerListSize) {
+    if (Game.killerIds.length < Game.players.length) {
         return Error.forbidden("Not all players was killer");
     }
 

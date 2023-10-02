@@ -1,25 +1,32 @@
-import { Server, Socket } from "socket.io";
+import { Socket } from "socket.io";
 import { Error } from "../Core/utils.js";
+
+import Game from "../Entities/Game.js";
+import logger from "../Entities/Logger.js";
+
 import startGameUseCase from "../UseCases/startGameUseCase.js";
+
 import gameStatusUpdate from "./game-status-update.js";
-import newRound from "./new-round.js";
 
 /**
  * @param {Socket} socket
- * @param {Server} io
- * @returns {Promose<boolean>}
+ * @param {Game} game
  */
-export default async function startGame(socket, io) {
-    const result = await startGameUseCase(socket.id);
+export default function startGame(socket, game) {
+    const hostId = socket.id;
+
+    const result = startGameUseCase(hostId, game);
+
+    const emitData = { success: true };
+
     if (result instanceof Error) {
-        socket.emit("start-game-error", { message: result.message });
-        return false;
+        logger.error(response);
+        emitData.success = false;
+        emitData.error = result.message;
+    } else {
+        emitData.didGameStart = result;
+        gameStatusUpdate(socket, { action: "start-game", data: emitData });
     }
 
-    newRound(socket, io);
-
-    gameStatusUpdate(io, {
-        action: ["start-game"],
-    });
-    return true;
+    socket.emit("start-game", emitData);
 }

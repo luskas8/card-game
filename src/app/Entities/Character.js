@@ -1,19 +1,7 @@
-/**
- * @enum {string}
- * @readonly
- */
-export const CharacterActions = {
-    JOKER: "joker",
-    CAMPING: "camping",
-    FOOD: "food",
-    BOAT: "boat",
-    BONFIRE: "bonfire",
-    MEDITATE: "meditate",
-};
+class BaseCharacter {
+    name = "";
+    favoriteAction = "";
 
-export class BaseCharacter {
-    /** @type {string} */ name;
-    /** @type {CharacterActions} */ favoriteAction;
     constructor(name, favoriteAction) {
         this.name = name;
         this.favoriteAction = favoriteAction;
@@ -21,32 +9,18 @@ export class BaseCharacter {
 }
 
 class Characters {
-    /** @type {BaseCharacter[]} */ characters;
+    static characters = [
+        new BaseCharacter("Bocão", "food"),
+        new BaseCharacter("Fred", "boat"),
+        new BaseCharacter("Jaime", "bonfire"),
+        new BaseCharacter("Serena", "meditate"),
+        new BaseCharacter("Tati", "camping"),
+        new BaseCharacter("Zeca", "joker"),
+    ];
 
-    constructor(initialCharacters) {
-        this.characters = initialCharacters;
-    }
-
-    get getAll() {
-        return this.characters;
-    }
-
-    get characterListSize() {
-        return this.characters.length;
-    }
-
-    findByName(name) {
+    static findByName(name) {
         return this.characters.find((character) => character.name === name);
     }
 }
 
-const defaultCharacter = [
-    new BaseCharacter("Zeca", CharacterActions.JOKER, { inUse: false }),
-    new BaseCharacter("Fred", CharacterActions.BOAT, { inUse: false }),
-    new BaseCharacter("Jaimin", CharacterActions.BONFIRE, { inUse: false }),
-    new BaseCharacter("Tati", CharacterActions.CAMPING, { inUse: false }),
-    new BaseCharacter("Bocão", CharacterActions.FOOD, { inUse: false }),
-    new BaseCharacter("Serena", CharacterActions.MEDITATE, { inUse: false }),
-];
-
-export default new Characters(defaultCharacter);
+export default Characters;

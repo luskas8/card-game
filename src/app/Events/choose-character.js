@@ -1,29 +1,35 @@
 import { Error } from "../Core/utils.js";
+
 import Game from "../Entities/Game.js";
-import chooseCharacterUseCase from "../UseCases/chooseCharacterUseCase.js";
 import logger from "../Entities/Logger.js";
+
+import chooseCharacterUseCase from "../UseCases/chooseCharacterUseCase.js";
+
 import gameStatusUpdate from "./game-status-update.js";
 
 /**
  * @param {Socket} socket
- * @param {Server} io
  * @param {Object} data
  * @param {String} data.characterName
- * @returns {Promise<boolean>}
+ * @param {Game} game
  */
-export default async function chooseCharacter(socket, io, data) {
-    const response = await chooseCharacterUseCase(socket.id, data);
+export default function chooseCharacter(socket, data, game) {
+    const playerId = socket.id;
+
+    const response = chooseCharacterUseCase(playerId, data, game);
+
+    const emitData = { success: true };
 
     if (response instanceof Error) {
         logger.error(response);
-        socket.emit("choose-character-error", { error: response.message });
-        return false;
+        emitData.success = false;
+        emitData.error = response.message;
+    } else {
+        gameStatusUpdate(socket, {
+            action: "update-players",
+            data: { playerId, characterName: data.characterName },
+        });
     }
 
-    socket.emit("choose-character-success", response);
-    gameStatusUpdate(io, {
-        action: ["choose-character"],
-        data: Game.findPlayerBySocket(socket.id),
-    });
-    return true;
+    socket.emit("choose-character", emitData);
 }

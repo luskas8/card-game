@@ -1,4 +1,6 @@
 import { Server } from "socket.io";
+import { Server as HttpServer } from "http";
+import Game from "./Game.js";
 import mainEvent from "../Events/index.js";
 import logger from "./Logger.js";
 
@@ -8,17 +10,20 @@ class Socket {
         this._io = null;
     }
 
-    init(server) {
+    /**
+     * @param {HttpServer} server
+     * @param {Game} game
+     * */
+    init(server, game) {
         if (this._io) {
             return this._io;
         }
 
-        this._io = new Server(server, {
-            /* options */
-        });
+        this._io = new Server(server);
+
         this._io.on("connection", (socket) => {
             logger.info(`Socket connected: ${socket.id}`);
-            mainEvent(socket, this._io);
+            mainEvent(socket, game);
         });
 
         return this._io;

@@ -1,8 +1,11 @@
 import express, { json } from "express";
 import { createServer, Server } from "http";
+import { pinoHttp } from "pino-http";
+import path from "path";
+import { fileURLToPath } from "url";
+
 import logger from "./Logger.js";
 import router from "../routes.js";
-import { pinoHttp } from "pino-http";
 
 class App {
     /** @type {express} */ _express = null;
@@ -33,9 +36,14 @@ class App {
     }
 
     middlewares() {
-        const express = this.express;
-        express.use(pinoHttp({ logger }));
-        express.use(json());
+        const app = this.express;
+
+        const __filename = fileURLToPath(import.meta.url);
+        const __dirname = path.dirname(__filename);
+
+        // app.use(pinoHttp({ logger }));
+        app.use(json());
+        app.use("/", express.static(path.join(__dirname, "..")));
     }
 
     routes() {

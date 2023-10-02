@@ -1,55 +1,39 @@
 /**
- * @typedef {Object.<string, string[]>} PlayersChoosedActions
+ * @typedef {string[]} Actions
  */
 
-/**
- * @typedef {Object} TurnResume
- * @property {string} socketID
- * @property {string[]} action
- * @property {boolean} killed
- */
+export default class Turn {
+    killerId = "";
+    killerMaxActions = 0;
+    /** @type {string, Actions} */ chosenActions = {};
 
-export class Turn {
-    _killerMaxActions = 0;
-    _killerChoosedActions = []
-    /** @type {PlayersChoosedActions} */ _playersChoosedActions = {}
-
-    constructor(killerMaxActions) {
-        this._killerMaxActions = killerMaxActions;
-    }
-
-    choosePlayerAction(player, action) {
-        if (this._playersChoosedActions[player.socketID]) {
-            return false;
-        }
-
-        this._playersChoosedActions[player.socketID] = [...action];
-        return true;
-    }
-
-    chooseKillerActions(actions) {
-        if (this._killerChoosedActions.length == this._killerMaxActions) {
-            return false;
-        }
-
-        this._killerChoosedActions = [...actions];
-        return true;
+    /**
+     * @param {string} killerId
+     * @param {int} killerMaxActions
+     * @returns {Turn}
+     * @constructor
+     */
+    constructor(killerId, killerMaxActions) {
+        this.killerId = killerId;
+        this.killerMaxActions = killerMaxActions;
     }
 
     /**
-     * @returns {TurnResume[]}
+     * @param {string} playerId
+     * @param {Actions} actions
      */
-    get turnResume() {
-        /** @type {TurnResume[]} */
-        const result = [];
-        Object.keys(this._playersChoosedActions).forEach((socketID) => {
-            result.push({
-                socketID,
-                action: this._playersChoosedActions[socketID],
-                killed: this._killerChoosedActions.includes(this._playersChoosedActions[socketID]),
-            })
-        });
+    choosePlayerAction(playerId, actions) {
+        const { killerId, chosenActions, killerMaxActions } = this;
 
-        return result;
+        if (
+            !(playerId in actions) ||
+            (playerId === killerId &&
+                chosenActions[playerId].length < killerMaxActions)
+        ) {
+            this.chosenActions[playerId] = [...actions];
+            return true;
+        }
+
+        return false;
     }
 }
