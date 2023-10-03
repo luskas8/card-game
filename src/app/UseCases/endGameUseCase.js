@@ -9,7 +9,7 @@ export default async function conferenceUseCase() {
     const firstWinner = Game.players.sort((a, b) => b.score - a.score)[0];
     const tieList = Game.players.filter(
         (player) =>
-            player.socketID !== firstWinner.socketID &&
+            player.playerId !== firstWinner.playerId &&
             player.score === firstWinner.score
     );
     if (tieList.length > 0) {
@@ -19,7 +19,7 @@ export default async function conferenceUseCase() {
         )[0];
         const killersTieList = tieList.filter(
             (player) =>
-                player.socketID !== killerWinner.socketID &&
+                player.playerId !== killerWinner.playerId &&
                 player.killerScore === killerWinner.killerScore
         );
         if (killersTieList.length > 0) {
