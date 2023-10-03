@@ -10,7 +10,6 @@ export default class Turn {
     /**
      * @param {string} killerId
      * @param {int} killerMaxActions
-     * @returns {Turn}
      * @constructor
      */
     constructor(killerId, killerMaxActions) {
@@ -22,7 +21,7 @@ export default class Turn {
      * @param {string} playerId
      * @param {Actions} actions
      */
-    choosePlayerAction(playerId, actions) {
+    chooseAction(playerId, actions) {
         const { killerId, chosenActions, killerMaxActions } = this;
 
         if (
