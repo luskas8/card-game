@@ -1,12 +1,27 @@
 import Round from "./Round.js";
 import Player from "./Player.js";
 
+import { isObject } from "../Core/utils.js";
+
 class Game {
     hostId = "";
     /** @type {Player[]}*/ players = [];
     didGameStart = false;
     maxPlayers = 6;
     /** @type {Round[]} */ rounds = [];
+
+    /**
+     *
+     * @param {Object} data
+     * @param {Game} data.game
+     */
+    constructor(data) {
+        if (isObject(data)) {
+            const { hostId, players } = data.game;
+            this.hostId = hostId;
+            this.players = players;
+        }
+    }
 
     get summary() {
         return {
@@ -18,7 +33,7 @@ class Game {
                     baseScore,
                     killerScore,
                     score,
-                    socketID: playerId,
+                    playerId,
                 } = player;
 
                 return {
@@ -62,12 +77,12 @@ class Game {
         const { players } = this;
 
         const playersPool = killerIds.length
-            ? players.filter((p) => !killerIds.includes(p.socketID))
+            ? players.filter((p) => !killerIds.includes(p.playerId))
             : players;
 
         const playerIndex = this.getRandomInt(playersPool.length - 1);
 
-        return playersPool[playerIndex].socketID;
+        return playersPool[playerIndex].playerId;
     }
 
     nextRound() {
@@ -107,7 +122,7 @@ class Game {
      * @param {string} playerId
      */
     findPlayerById(playerId) {
-        return this.players.find((player) => player.socketID === playerId);
+        return this.players.find((player) => player.playerId === playerId);
     }
 
     /**
@@ -134,16 +149,16 @@ class Game {
      * @param {string} playerId
      */
     disconnectPlayer(playerId, shouldReassignHostId = true) {
-        const { players, hostId, didGameStart } = this;
+        const { players, hostId, didGameStart, killerIds } = this;
 
-        if (!playerId || !players.find((p) => p.socketID === playerId)) {
+        if (!playerId || !players.find((p) => p.playerId === playerId)) {
             return false;
         }
 
-        this.players = players.filter((p) => p.socketID !== playerId);
+        this.players = players.filter((p) => p.playerId !== playerId);
 
-        if (shouldReassignHostId && playerId === this.hostId && !didGameStart) {
-            this.hostId = this.getRandomPlayerId();
+        if (shouldReassignHostId && playerId === hostId && !didGameStart) {
+            this.hostId = this.getRandomPlayerId(killerIds);
         }
 
         return true;
