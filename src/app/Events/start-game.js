@@ -20,7 +20,7 @@ export default function startGame(socket, game) {
     const emitData = { success: true };
 
     if (result instanceof Error) {
-        logger.error(response);
+        logger.error(result);
         emitData.success = false;
         emitData.error = result.message;
     } else {

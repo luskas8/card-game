@@ -6,7 +6,7 @@ import Game from "../Entities/Game.js";
  * @param {Game} game
  */
 export default function startGameUseCase(hostId, game) {
-    if (game.hostSocketId !== hostId || !game.findPlayerById(hostId)) {
+    if (game.hostId !== hostId || !game.findPlayerById(hostId)) {
         return Error.forbidden("You are not the host");
     }
 

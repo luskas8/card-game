@@ -73,7 +73,7 @@ class Game {
     nextRound() {
         const { killerIds, currentRound } = this;
 
-        if (!currentRound.canStartANewTurn()) {
+        if (!currentRound || !currentRound.canStartANewTurn()) {
             const killerId = this.getRandomPlayerId(killerIds);
 
             this.rounds.push(new Round(killerId));
