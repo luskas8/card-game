@@ -1,10 +1,9 @@
 import Game from "./Entities/Game.js";
-import Characters from "./Entities/Character.js";
-
-const game = new Game();
+import { Characters } from "./Entities/Character.js";
+import { isObject, mappedActions } from "./Core/utils.js";
 
 const $enterGameBtn = document.querySelector('button[name="new-connection"]');
-const $chooseActionBtn = document.querySelector(
+const $chooseCharacterBtn = document.querySelector(
     'button[name="choose-character"]'
 );
 const $startGame = document.querySelector('button[name="start-game"]');
@@ -12,66 +11,87 @@ const $startGame = document.querySelector('button[name="start-game"]');
 const socket = io();
 
 socket.on("connect", () => {
-    console.log("> Conectei!", {
-        connected: socket.connected,
-        id: socket.id,
-    });
+    let characterName = "";
+    const { connected, id: playerId } = socket;
+
+    console.log("> Conectei!", { connected, playerId });
 
     socket.on("new-connection", (data) => {
-        console.log("> New Connection:", data);
         $enterGameBtn.disabled = true;
-        $chooseActionBtn.disabled = false;
-        $chooseActionBtn.addEventListener(
+        $chooseCharacterBtn.disabled = false;
+
+        if (!data.success) {
+            alert(data.error);
+            return;
+        }
+
+        const game = new Game(data);
+
+        const checkIfShouldDisplayStartGameBtn = () => {
+            if (game.hostId === socket.id) {
+                $startGame.hidden = false;
+            }
+        };
+
+        checkIfShouldDisplayStartGameBtn();
+
+        console.log("> Iniciei o jogo!", game.summary);
+
+        $chooseCharacterBtn.addEventListener(
             "click",
             () => {
                 const { characters } = Characters;
-                const characterName =
-                    characters[game.getRandomInt(characters.length)].name;
+                const index = game.getRandomInt(characters.length);
+                characterName = characters[index].name;
                 socket.emit("choose-character", { characterName });
             },
             false
         );
 
         socket.on("choose-character", (data) => {
-            console.log("> Choose Character:", data);
             if (data.success) {
-                $chooseActionBtn.disabled = true;
+                $chooseCharacterBtn.disabled = true;
                 $startGame.disabled = false;
+
+                mappedActions["update-players"](game, {
+                    playerId,
+                    characterName,
+                });
+
+                console.log("> Escolhi o meu personagem!", game.summary);
+
+                $startGame.addEventListener(
+                    "click",
+                    () => socket.emit("start-game"),
+                    false
+                );
+            } else {
+                console.error("> Erro ao escolher o personagem:", data);
             }
+        });
+
+        socket.on("game-status-update", (data) => {
+            const actionStr = "action";
+            if (isObject(data) && actionStr in data) {
+                const action = data[actionStr];
+
+                if (action in mappedActions) {
+                    mappedActions[action](game, data.data);
+                }
+            }
+            checkIfShouldDisplayStartGameBtn();
+            console.log("> Ajustei as informações do jogador!", game.summary);
         });
 
         socket.on("start-game", (data) => {
             if (data.success) {
                 $startGame.disabled = true;
-                alert("Game started!")
+                game.start(data.killerId);
+                console.log("> Started game:", game.summary);
+            } else {
+                alert(data.error);
             }
         });
-
-        socket.on("game-status-update", (data) => {
-            console.log("> Game Status Update:", data);
-            switch (data.action) {
-            case "update-players":
-                game.addPlayer(data.data);
-                break;
-            case "start-game":
-                // TODO: Implement a custom start game event
-                // to avoid create new Round with new random killer
-                game.didGameStart = true;
-                break;
-            case "update-game":
-                game.players = data.data.players;
-                break;
-            default:
-                break;
-            }
-            if (data.players.length >= 1) {
-                $startGame.disabled = false;
-            }
-        });
-        
-        socket.on('start-game', (data) => {
-            console.log("> Start Game:", data);
-        })
     });
 
     $enterGameBtn.disabled = false;
@@ -81,15 +101,6 @@ socket.on("connect", () => {
             socket.emit("new-connection", {
                 name: "freirart" + Math.random(),
             }),
-        false
-    );
-
-    $startGame.addEventListener(
-        "click",
-        () => {
-            socket.emit("start-game");
-            $startGame.disabled = true;
-        },
         false
     );
 });
