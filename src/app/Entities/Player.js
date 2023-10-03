@@ -5,13 +5,13 @@ export default class Player {
 
     /**
      * @param {string} name
-     * @param {string} socketID
+     * @param {string} playerId
      * @returns {Player}
      * @constructor
      */
-    constructor(name, socketID) {
+    constructor(name, playerId) {
         this.name = name;
-        this.socketID = socketID;
+        this.playerId = playerId;
     }
 
     /** It's total score: baseScore + killerScore
