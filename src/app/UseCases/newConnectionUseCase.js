@@ -13,6 +13,10 @@ export default function newConnection(playerId, data, game) {
         return Error.forbidden("Game is full");
     }
 
+    if (game.didGameStart) {
+        return Error.forbidden("Game already started");
+    }
+
     if (!data || !data.name) {
         return Error.badRequest("Name is required");
     }
