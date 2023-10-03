@@ -1,5 +1,7 @@
+import { BaseCharacter } from "./Character.js";
+
 export default class Player {
-    character = null;
+    /** @type {BaseCharacter} */ character = null;
     killerScore = 0;
     baseScore = 0;
 

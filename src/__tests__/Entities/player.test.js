@@ -1,4 +1,4 @@
-import Characters from "../../app/Entities/Character.js";
+import { Characters } from "../../app/Entities/Character.js";
 import { Player } from "../../app/Entities/Player.js";
 
 describe("Test player entity", () => {
