@@ -1,4 +1,4 @@
-import { Error, Success } from "../Core/utils.js";
+import { Error } from "../Core/utils.js";
 import Game from "../Entities/Game.js";
 
 /**
@@ -10,8 +10,8 @@ export default function startGameUseCase(hostId, game) {
         return Error.forbidden("You are not the host");
     }
 
-    if (game.players.length < 3) {
-        return Error.forbidden("You need at least 3 players");
+    if (game.players.length < game.minPlayers) {
+        return Error.forbidden(`You need at least ${game.minPlayers} players`);
     }
 
     if (!game.allPlayersChoseACharacter()) {

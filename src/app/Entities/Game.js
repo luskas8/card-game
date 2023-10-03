@@ -8,6 +8,7 @@ class Game {
     /** @type {Player[]}*/ players = [];
     didGameStart = false;
     maxPlayers = 6;
+    minPlayers = 3;
     /** @type {Round[]} */ rounds = [];
 
     /**
@@ -62,9 +63,9 @@ class Game {
         this.rounds = [];
     }
 
-    start() {
+    start(killerId = "") {
         this.didGameStart = true;
-        return this.nextRound();
+        return this.nextRound(killerId);
     }
 
     get currentRound() {
@@ -85,17 +86,41 @@ class Game {
         return playersPool[playerIndex].playerId;
     }
 
-    nextRound() {
-        const { killerIds, currentRound } = this;
+    nextRound(killerIdParam) {
+        const { killerIds, currentRound, rounds } = this;
 
         if (!currentRound || !currentRound.canStartANewTurn()) {
-            const killerId = this.getRandomPlayerId(killerIds);
+            const killerId = killerIdParam || this.getRandomPlayerId(killerIds);
 
-            this.rounds.push(new Round(killerId));
+            rounds.push(new Round(killerId));
+            this.defineZecaFavoritePlace();
             return true;
         }
 
         return false;
+    }
+
+    defineZecaFavoritePlace() {
+        const { players, currentRound } = this;
+
+        const zecaPlayerIndex = players.findIndex(
+            (p) => p.character.name === "Zeca"
+        );
+        const killerIndex = players.findIndex(
+            (p) => p.playerId === currentRound.killerId
+        );
+
+        if (zecaPlayerIndex !== -1) {
+            let newAction = "";
+
+            const isZecaTheKiller = zecaPlayerIndex === killerIndex;
+
+            if (!isZecaTheKiller) {
+                newAction = players[killerIndex].character.favoriteAction;
+            }
+
+            this.players[zecaPlayerIndex].character.favoriteAction = newAction;
+        }
     }
 
     allPlayersChoseACharacter() {
