@@ -30,5 +30,7 @@ Running on http://localhost:3000
 
 ## TO-DO 📝
 
-- [X] start game gets killer id and sets Zeca favorite action
 - [ ] Reset game when it already started but there was a disconnection that resulted in less players than permitted
+- [ ] Reset game when it already started but there was a disconnection that resulted in less players than permitted
+- [ ] Disconnect from client side
+- [ ] Reconnect when reflesh client side
