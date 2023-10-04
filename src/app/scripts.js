@@ -86,8 +86,12 @@ socket.on("connect", () => {
         socket.on("start-game", (data) => {
             if (data.success) {
                 $startGame.disabled = true;
-                game.start(data.killerId);
-                console.log("> Started game:", game.summary);
+
+                if (game.start(data.killerId)) {
+                    console.log("> Started game:", game.summary);
+                } else {
+                    console.error("Failed to start game");
+                }
             } else {
                 alert(data.error);
             }

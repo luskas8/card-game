@@ -118,8 +118,8 @@ export const mappedActions = {
 
         if (playerIdStr in data) {
             const { name: playerName, [playerIdStr]: playerId } = data;
-            const playerIndex = game.players.findIndex(
-                (p) => p.playerId === data[playerIdStr]
+            const playerIndex = game.players.indexOf(
+                game.findPlayerById(playerId)
             );
 
             if (playerIndex === -1 && playerName) {
