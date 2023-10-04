@@ -14,7 +14,7 @@ export default function disconnect(socket, game) {
 
         gameStatusUpdate(socket, {
             action: "update-game",
-            data: { players: game.summary.players },
+            data: { players: game.summary.players, hostId: game.hostId },
         });
     }
 }

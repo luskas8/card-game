@@ -4,11 +4,11 @@ import newConnectionUseCase from "../../app/UseCases/newConnectionUseCase.js";
 import { Error, Success } from "../../app/Core/utils.js";
 
 describe("chooseCharacterUseCase", () => {
-    const socketID = "40028922";
+    const playerId = "40028922";
     const characterName = "Zeca";
 
     it("should be able to choose a character", async () => {
-        const response = await chooseCharacterUseCase(socketID, {
+        const response = await chooseCharacterUseCase(playerId, {
             characterName,
         });
 
@@ -17,10 +17,10 @@ describe("chooseCharacterUseCase", () => {
     });
 
     it("should not be able to choose a character already in use", async () => {
-        await chooseCharacterUseCase(socketID, { characterName });
-        await newConnectionUseCase("socketID", { name: "Player 2" });
+        await chooseCharacterUseCase(playerId, { characterName });
+        await newConnectionUseCase("playerId", { name: "Player 2" });
 
-        const response = await chooseCharacterUseCase("socketID", {
+        const response = await chooseCharacterUseCase("playerId", {
             characterName,
         });
 
@@ -28,7 +28,7 @@ describe("chooseCharacterUseCase", () => {
         expect(response.status).toBe(Error.unauthorized().status);
     });
 
-    it("should not be able to choose a character with no socketID", async () => {
+    it("should not be able to choose a character with no playerId", async () => {
         const response = await chooseCharacterUseCase("", { characterName });
 
         expect(response).toBeInstanceOf(Error);
@@ -36,7 +36,7 @@ describe("chooseCharacterUseCase", () => {
     });
 
     it("should not be able to choose a character with no characterName", async () => {
-        const response = await chooseCharacterUseCase(socketID, {
+        const response = await chooseCharacterUseCase(playerId, {
             characterName: "",
         });
 
@@ -52,7 +52,7 @@ describe("chooseCharacterUseCase", () => {
     });
 
     it("should not be able to choose a character that does not exist", async () => {
-        const response = await chooseCharacterUseCase(socketID, {
+        const response = await chooseCharacterUseCase(playerId, {
             characterName: "invalid",
         });
 

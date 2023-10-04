@@ -1,17 +1,19 @@
+import { BaseCharacter } from "./Character.js";
+
 export default class Player {
-    character = null;
+    /** @type {BaseCharacter} */ character = null;
     killerScore = 0;
     baseScore = 0;
 
     /**
      * @param {string} name
-     * @param {string} socketID
+     * @param {string} playerId
      * @returns {Player}
      * @constructor
      */
-    constructor(name, socketID) {
+    constructor(name, playerId) {
         this.name = name;
-        this.socketID = socketID;
+        this.playerId = playerId;
     }
 
     /** It's total score: baseScore + killerScore
