@@ -29,8 +29,16 @@ Running on http://localhost:3000
 ```
 
 ## TO-DO 📝
-
-- [ ] Reset game when it already started but there was a disconnection that resulted in less players than permitted
-- [ ] Reset game when it already started but there was a disconnection that resulted in less players than permitted
-- [ ] Disconnect from client side
-- [ ] Reconnect when reflesh client side
+- [x] Remover informação de quem é o host do jogador `hostId = socketId`
+- [x] Cartas escolhidas estarem no turno e não no jogador `{'playerId': [<card-1>, <card-2>]}`
+- [x] Remover "ready"
+- [x] Escalpo ficar na Rodada (Round) (killerId = socketId)
+- [x] Criar função getKillerIds (função do Game)
+- [x] Remover `_playersNotWasKillerSocketID` e transformar numa função de `Game` que itera pelos players do jogo e dos killerIds da rodada
+- [x] Transformar `GameStates` em "o jogo foi iniciado ou não?" (booleano = wasGameStarted) (ajustar função start)
+- [x] Matar `inUse` e `playerSocketId` do `Character` e transformar em função de `Game (getAvailableCharacters)`
+- [x] Matar funções `reset` e `findByFavoriteAction` de Character
+- [ ] Depois disso tudo... melhorar os testes de game utilizando TODAS as funções
+- [ ] Resetar o jogo quando já começou mas teve uma desconexão que resultou em menos jogadores que o mínimo permitido
+- [ ] Desconectar pelo client side
+- [ ] Reconectar quando acontecer uma atualização pelo client side
