@@ -38,6 +38,7 @@ Running on http://localhost:3000
 - [x] Transformar `GameStates` em "o jogo foi iniciado ou não?" (booleano = wasGameStarted) (ajustar função start)
 - [x] Matar `inUse` e `playerSocketId` do `Character` e transformar em função de `Game (getAvailableCharacters)`
 - [x] Matar funções `reset` e `findByFavoriteAction` de Character
+- [x] Começar o jogo retorna o `killerId` e atribuí a ação favorita para o Zeca
 - [ ] Depois disso tudo... melhorar os testes de game utilizando TODAS as funções
 - [ ] Resetar o jogo quando já começou mas teve uma desconexão que resultou em menos jogadores que o mínimo permitido
 - [ ] Desconectar pelo client side
