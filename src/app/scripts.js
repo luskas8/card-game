@@ -1,35 +1,42 @@
 import Game from "./Entities/Game.js";
 import { Characters } from "./Entities/Character.js";
-import { isObject, mappedActions } from "./Core/utils.js";
+import { isObject, mappedActions, storage } from "./Core/utils.js";
 
 const $enterGameBtn = document.querySelector('button[name="new-connection"]');
 const $chooseCharacterBtn = document.querySelector(
     'button[name="choose-character"]'
 );
-const $startGame = document.querySelector('button[name="start-game"]');
+const $startGameBtn = document.querySelector('button[name="start-game"]');
+const $disconnectBtn = document.querySelector('button[name="start-game"]');
 
 const socket = io();
 
 socket.on("connect", () => {
-    let characterName = "";
+    let characterName = storage.retriveLocalData("characterName") || "";
+    let playerName = storage.retriveLocalData("playerName") || "";
     const { connected, id: playerId } = socket;
+
+    if (characterName) {
+        console.log(characterName);
+        socket.emit("reconnect", { characterName, name: playerName });
+    }
 
     console.log("> Conectei!", { connected, playerId });
 
     socket.on("new-connection", (data) => {
-        $enterGameBtn.disabled = true;
-        $chooseCharacterBtn.disabled = false;
-
         if (!data.success) {
             alert(data.error);
             return;
         }
 
         const game = new Game(data);
+        storage.saveLocalData("playerName", game.findPlayerById(playerId).name);
+        $enterGameBtn.disabled = true;
+        $chooseCharacterBtn.disabled = false;
 
         const checkIfShouldDisplayStartGameBtn = () => {
             if (game.hostId === socket.id) {
-                $startGame.hidden = false;
+                $startGameBtn.hidden = false;
             }
         };
 
@@ -48,19 +55,27 @@ socket.on("connect", () => {
             false
         );
 
+        $disconnectBtn.addEventListener(
+            "click",
+            () => socket.emit("disconnect"),
+            false
+        );
+
         socket.on("choose-character", (data) => {
             if (data.success) {
                 $chooseCharacterBtn.disabled = true;
-                $startGame.disabled = false;
+                $startGameBtn.disabled = false;
+                $disconnectBtn.disabled = false;
 
                 mappedActions["update-players"](game, {
                     playerId,
                     characterName,
                 });
+                storage.saveLocalData("characterName", game.findPlayerById(playerId).character.name);
 
                 console.log("> Escolhi o meu personagem!", game.summary);
 
-                $startGame.addEventListener(
+                $startGameBtn.addEventListener(
                     "click",
                     () => socket.emit("start-game"),
                     false
@@ -85,7 +100,7 @@ socket.on("connect", () => {
 
         socket.on("start-game", (data) => {
             if (data.success) {
-                $startGame.disabled = true;
+                $startGameBtn.disabled = true;
 
                 if (game.start(data.killerId)) {
                     console.log("> Started game:", game.summary);
