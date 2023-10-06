@@ -14,7 +14,7 @@ import gameStatusUpdate from "./game-status-update.js";
  * @param {Server} io
  * @param {Object} data
  * @param {Game} game
- * @returns {Promise<boolean>}
+ * @returns {boolean}
  */
 export default function newConnection(socket, data, game) {
     const playerId = socket.id;

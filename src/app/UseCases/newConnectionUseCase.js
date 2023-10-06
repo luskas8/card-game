@@ -6,7 +6,7 @@ import Game from "../Entities/Game.js";
  * @param {Object} data
  * @param {string} data.name
  * @param {Game} game
- * @returns {Promise<Error|Success>}
+ * @returns {Error | Success}
  */
 export default function newConnection(playerId, data, game) {
     if (game.players.length >= game.maxPlayers) {

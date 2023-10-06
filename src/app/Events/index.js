@@ -23,6 +23,18 @@ export default function mainEvent(socket, game) {
         console.log(`> "disconnect": ${JSON.stringify(game.summary)}`);
     });
 
+    socket.on("reconnect", (data) => {        
+        new Promise((resolve) => {
+            newConnection(socket, data, game);
+            resolve();
+        }).then(() => {
+            chooseCharacter(socket, data, game);
+        }).finally(() => {
+            console.log(`> "reconnect": ${JSON.stringify(game.summary)}`);
+        });
+        
+    })
+
     socket.on("choose-character", (data) => {
         chooseCharacter(socket, data, game);
         console.log(`> "choose-character: ${JSON.stringify(game.summary)}`);
