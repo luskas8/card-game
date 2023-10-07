@@ -43,3 +43,4 @@ Running on http://localhost:3000
 - [x] Resetar o jogo quando já começou mas teve uma desconexão que resultou em menos jogadores que o mínimo permitido
 - [ ] Desconectar pelo client side
 - [x] Reconectar quando acontecer uma atualização pelo client side
+- [x] Alterar o servidor para servir um aplicativo React (front-end do jogo)
