@@ -1,15 +1,15 @@
 import express, { json } from "express";
 import { createServer, Server } from "http";
-import { pinoHttp } from "pino-http";
-import path from "path";
-import { fileURLToPath } from "url";
 
-import logger from "./Logger.js";
 import router from "../routes.js";
+import Game from "./Game.js";
+import logger from "./Logger.js";
+import { pinoHttp } from "pino-http";
 
 class App {
     /** @type {express} */ _express = null;
     /** @type {Server} */ _server = null;
+    /** @type {Game} */ game = null;
 
     constructor() {
         this.server;
@@ -38,29 +38,13 @@ class App {
     middlewares() {
         const app = this.express;
 
-        const __filename = fileURLToPath(import.meta.url);
-        const __dirname = path.dirname(__filename);
-
-        // app.use(pinoHttp({ logger }));
+        app.use(pinoHttp({ logger }));
         app.use(json());
-        app.use("/", express.static(path.join(__dirname, "..")));
     }
 
     routes() {
         const express = this.express;
         express.use(router);
-    }
-
-    listen(port) {
-        const server = this.server;
-        try {
-            server.listen(port, () => {
-                logger.info(`Running on http://localhost:${port}`);
-            });
-        } catch (error) {
-            logger.fatal(error, "Failed to start server");
-            process.exit(1);
-        }
     }
 }
 
