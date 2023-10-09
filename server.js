@@ -2,11 +2,12 @@ import fs from 'node:fs/promises'
 import Game from './src/server/Entities/Game.js'
 import Application from './src/server/Entities/Application.js'
 import Socket from './src/server/Entities/SocketEntity.js'
+import router from './src/server/routes.js'
 
 // Constants
 const isProduction = process.env.NODE_ENV === 'production'
 const port = process.env.PORT || 5173
-const base = process.env.BASE || '/game' // This is the base path of the React app, e.g. `localhost:3000/game`
+const base = process.env.BASE || '/' // This is the base path of the React app, e.g. `localhost:3000/game`
 Application.game = new Game();
 
 // Create http server
@@ -17,9 +18,9 @@ Socket.init(Application.server, Application.game);
 const templateHtml = isProduction
   ? await fs.readFile('./dist/client/index.html', 'utf-8')
   : ''
-const ssrManifest = isProduction
-  ? await fs.readFile('./dist/client/ssr-manifest.json', 'utf-8')
-  : undefined
+// const ssrManifest = isProduction
+//   ? await fs.readFile('./dist/client/ssr-manifest.json', 'utf-8')
+//   : undefined
 
 // Add Vite or respective production middlewares
 let vite
@@ -38,8 +39,11 @@ if (!isProduction) {
   app.use(base, sirv('./dist/client', { extensions: [] }))
 }
 
+// Serve API
+app.use("/api", router)
+
 // Serve HTML
-app.use('*', async (req, res) => {
+app.use("*", async (req, res) => {
   try {
     const url = req.originalUrl.replace(base, '')
 
@@ -55,7 +59,7 @@ app.use('*', async (req, res) => {
       render = (await import('./dist/server/entry-server.js')).render
     }
 
-    const rendered = await render(url, ssrManifest)
+    const rendered = await render(url)
 
     const html = template
       .replace(`<!--app-head-->`, rendered.head ?? '')

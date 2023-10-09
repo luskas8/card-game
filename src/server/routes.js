@@ -1,7 +1,7 @@
 import { Router } from "express";
-import logger from "./Entities/Logger.js";
-import Game from "./Entities/Game.js";
+import { validateToken } from "./Core/auth.js";
 import Application from "./Entities/Application.js";
+import logger from "./Entities/Logger.js";
 
 const router = Router();
 
@@ -10,13 +10,13 @@ router.get("/health", async (req, res) => {
     res.json({ statusCode: 200, message: "Server online!" });
 });
 
-// TODO: Create and use a auth middleware routes below
+router.use(validateToken);
 
-router.get("/game-status", async (req, res) => {
+router.post("/game-status", async (req, res) => {
     res.json({ status: Application.game.summary });
 });
 
-router.get("/game-end", async (req, res) => {
+router.post("/game-end", async (req, res) => {
     Application.game.end();
     res.json({ statusCode: 200, message: "Game ended!" });
 });
