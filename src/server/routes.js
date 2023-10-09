@@ -21,4 +21,8 @@ router.post("/game-end", async (req, res) => {
     res.json({ statusCode: 200, message: "Game ended!" });
 });
 
+router.all("*", async (req, res) => {
+    res.redirect("/");
+})
+
 export default router;
