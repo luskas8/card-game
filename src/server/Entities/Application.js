@@ -14,7 +14,6 @@ class App {
     constructor() {
         this.server;
         this.middlewares();
-        this.routes();
     }
 
     get express() {
@@ -40,11 +39,6 @@ class App {
 
         app.use(pinoHttp({ logger }));
         app.use(json());
-    }
-
-    routes() {
-        const express = this.express;
-        express.use(router);
     }
 }
 
