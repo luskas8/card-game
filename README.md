@@ -1,31 +1,32 @@
-# Initialization with Docker
+# Por Favor Não Corte Minha Cabeça! 👻
 
-## Build and run the Docker image
+“Por Favor Não Corte Minha Cabeça!” é um jogo festivo carregado de sangue e risadas onde os jogadores tentam sobreviver a um acampamento de verão que está sendo aterrorizado pelo assassino Escalpo (GEEKS N’ ORCS, 2019).
+
+
+Disponível para compra tanto na Amazon quanto na Steam, o jogo de cartas simula um acampamento onde os jogadores disputam sua sobrevivência com o Escalpo de modo a coletar as “bolsinhas de vida” (pontos do jogo) de cada turno.
+
+
+Uma vez que cada um dos jogadores foi o Escalpo do turno, vence o jogo aquele que possui mais pontos.
+
+
+Neste repositório está contida uma representação deste jogo num ambiente online multijogador através de uma aplicação web utilizando sockets.
+
+## Contribuindo para o projeto ✅
+
+Como o projeto é feito em Javascript, é necessário possuir a versão 18.18.0 do [Node](https://nodejs.org/en).
+
+Para tal ação é necessário obter o código fonte do projeto em sua máquina:
 
 ```bash
-docker compose up
+$ git clone https://github.com/luskas8/card-game.git
+$ cd card-game
+$ npm ci
 ```
 
-Your container will now be listed by Docker:
+Uma vez que o código fonte esteja na sua máquina e as dependências do projeto sejam instaladas com sucesso, basta levantar aplicação com o comando:
 
 ```bash
-$ docker ps
-
-CONTAINER ID   IMAGE         COMMAND                  CREATED          STATUS         PORTS                    NAMES        
-0f85d7251da8   jogo-server                            20 minutes ago   Up 7 seconds   0.0.0.0:3000->3000/tcp   jogo-server-1
-```
-
-Print the output of your app:
-
-```bash
-# Get container ID
-$ docker ps
-
-# Print app output
-$ docker logs <container id>
-
-# Example
-Running on http://localhost:3000
+$ npm run dev
 ```
 
 ## TO-DO 📝
