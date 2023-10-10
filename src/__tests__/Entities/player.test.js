@@ -1,4 +1,4 @@
-import Characters from "../../app/Entities/Character.js";
+import { Characters } from "../../app/Entities/Character.js";
 import { Player } from "../../app/Entities/Player.js";
 
 describe("Test player entity", () => {
@@ -9,9 +9,9 @@ describe("Test player entity", () => {
         player = new Player("John", "1234");
     });
 
-    it("should have a name and socketID", () => {
+    it("should have a name and playerId", () => {
         expect(player.name).toBe("John");
-        expect(player.socketID).toBe("1234");
+        expect(player.playerId).toBe("1234");
     });
 
     it("should be able to pick a character", () => {

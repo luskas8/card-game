@@ -3,17 +3,17 @@ import newConnectionUseCase from "../../app/UseCases/newConnectionUseCase";
 import { Error, Success } from "../../app/Core/utils.js";
 
 describe("newConnectionUseCase", () => {
-    const socketID = "40028922";
+    const playerId = "40028922";
     const name = "Jailson Mendes";
 
     it("should be able to create a new connection", async () => {
-        const response = await newConnectionUseCase(socketID, { name });
+        const response = await newConnectionUseCase(playerId, { name });
 
         expect(response).toBeInstanceOf(Success);
         expect(response.status).toBe(Success.created().status);
     });
 
-    it("should not be able to create a new connection with no socketID", async () => {
+    it("should not be able to create a new connection with no playerId", async () => {
         const response = await newConnectionUseCase("", { name });
 
         expect(response).toBeInstanceOf(Error);
@@ -21,37 +21,37 @@ describe("newConnectionUseCase", () => {
     });
 
     it("should not be able to create a new connection with no name", async () => {
-        const response = await newConnectionUseCase(socketID, { name: "" });
+        const response = await newConnectionUseCase(playerId, { name: "" });
 
         expect(response).toBeInstanceOf(Error);
         expect(response.status).toBe(Error.badRequest().status);
     });
 
     it("should not be able to create a new connection with no data", async () => {
-        const response = await newConnectionUseCase(socketID, null);
+        const response = await newConnectionUseCase(playerId, null);
 
         expect(response).toBeInstanceOf(Error);
         expect(response.status).toBe(Error.badRequest().status);
     });
 
     it("should not be able to create a new connection with no data.name", async () => {
-        const response = await newConnectionUseCase(socketID, {});
+        const response = await newConnectionUseCase(playerId, {});
 
         expect(response).toBeInstanceOf(Error);
         expect(response.status).toBe(Error.badRequest().status);
     });
 
     it("should not be able to create a new connection with a name that already exists", async () => {
-        await newConnectionUseCase(socketID, { name });
-        const response = await newConnectionUseCase(socketID, { name });
+        await newConnectionUseCase(playerId, { name });
+        const response = await newConnectionUseCase(playerId, { name });
 
         expect(response).toBeInstanceOf(Error);
         expect(response.status).toBe(Error.badRequest().status);
     });
 
-    it("should not be able to create a new connection with a socketID that already exists", async () => {
-        await newConnectionUseCase(socketID, { name });
-        const response = await newConnectionUseCase(socketID, {
+    it("should not be able to create a new connection with a playerId that already exists", async () => {
+        await newConnectionUseCase(playerId, { name });
+        const response = await newConnectionUseCase(playerId, {
             name: "Jailson Mendes 2",
         });
 
@@ -66,7 +66,7 @@ describe("newConnectionUseCase", () => {
             const num = i + 1;
 
             promises.push(
-                newConnectionUseCase(`socketID ${num}`, {
+                newConnectionUseCase(`playerId ${num}`, {
                     name: `Jailson Mendes ${num}`,
                 })
             );
@@ -74,7 +74,7 @@ describe("newConnectionUseCase", () => {
 
         await Promise.all(promises);
 
-        const response = await newConnectionUseCase(socketID, {
+        const response = await newConnectionUseCase(playerId, {
             name,
         });
 

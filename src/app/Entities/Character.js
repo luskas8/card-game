@@ -1,4 +1,4 @@
-class BaseCharacter {
+export class BaseCharacter {
     name = "";
     favoriteAction = "";
 
@@ -8,19 +8,17 @@ class BaseCharacter {
     }
 }
 
-class Characters {
+export class Characters {
     static characters = [
         new BaseCharacter("Bocão", "food"),
         new BaseCharacter("Fred", "boat"),
         new BaseCharacter("Jaime", "bonfire"),
         new BaseCharacter("Serena", "meditate"),
         new BaseCharacter("Tati", "camping"),
-        new BaseCharacter("Zeca", "joker"),
+        new BaseCharacter("Zeca", ""),
     ];
 
     static findByName(name) {
         return this.characters.find((character) => character.name === name);
     }
 }
-
-export default Characters;

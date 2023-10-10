@@ -1,6 +1,6 @@
 import { Error, Success } from "../Core/utils.js";
 
-import characters from "../Entities/Character.js";
+import { Characters } from "../Entities/Character.js";
 import Game from "../Entities/Game.js";
 
 /**
@@ -21,7 +21,7 @@ export default function chooseCharacterUseCase(playerId, data, game) {
         return Error.badRequest("You are not in a game");
     }
 
-    const character = characters.findByName(data.characterName);
+    const character = Characters.findByName(data.characterName);
 
     if (!character) {
         return Error.badRequest("Character not found");

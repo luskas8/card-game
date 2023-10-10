@@ -20,12 +20,13 @@ export default function startGame(socket, game) {
     const emitData = { success: true };
 
     if (result instanceof Error) {
-        logger.error(response);
+        logger.error(result);
         emitData.success = false;
         emitData.error = result.message;
     } else {
         emitData.didGameStart = result;
-        gameStatusUpdate(socket, { action: "start-game", data: emitData });
+        emitData.killerId = game.currentRound.killerId;
+        gameStatusUpdate(socket, emitData, "start-game");
     }
 
     socket.emit("start-game", emitData);

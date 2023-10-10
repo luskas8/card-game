@@ -8,12 +8,11 @@ export default class Round {
 
     /**
      * @param {string} killerId
-     * @returns {Round}
      * @constructor
      */
     constructor(killerId) {
         this.killerId = killerId;
-        this.nextRound();
+        this.nextTurn();
     }
 
     canStartANewTurn() {
@@ -28,7 +27,14 @@ export default class Round {
         return [...this.turns].pop();
     }
 
-    nextRound() {
+    get summary() {
+        return {
+            killerId: this.killerId,
+            turns: this.turns,
+        };
+    }
+
+    nextTurn() {
         const { currentTurnIndex, turnsHistory, killerId } = this;
 
         if (this.canStartANewTurn()) {

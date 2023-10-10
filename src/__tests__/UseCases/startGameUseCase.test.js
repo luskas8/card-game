@@ -43,7 +43,7 @@ describe("startGameUseCase", () => {
     });
 
     it("should not be able to start a game without a character", async () => {
-        Game.players.push({ socketID: "123", character: null });
+        Game.players.push({ playerId: "123", character: null });
         const result = await startGameUseCase("123");
 
         expect(result).toBeInstanceOf(Error);

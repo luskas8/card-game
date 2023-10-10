@@ -1,4 +1,4 @@
-import Characters from "../../app/Entities/Character";
+import { Characters } from "../../app/Entities/Character.js";
 
 describe("Test character entity", () => {
     it("should return default characters", () => {

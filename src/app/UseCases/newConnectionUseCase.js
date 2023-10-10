@@ -2,15 +2,19 @@ import { Error, Success } from "../Core/utils.js";
 import Game from "../Entities/Game.js";
 
 /**
- * @param {string} socketID
+ * @param {string} playerId
  * @param {Object} data
  * @param {string} data.name
  * @param {Game} game
  * @returns {Promise<Error|Success>}
  */
-export default function newConnection(socketID, data, game) {
+export default function newConnection(playerId, data, game) {
     if (game.players.length >= game.maxPlayers) {
         return Error.forbidden("Game is full");
+    }
+
+    if (game.didGameStart) {
+        return Error.forbidden("Game already started");
     }
 
     if (!data || !data.name) {
@@ -18,7 +22,7 @@ export default function newConnection(socketID, data, game) {
     }
 
     try {
-        if (game.addPlayer(data.name, socketID)) {
+        if (game.addPlayer(data.name, playerId)) {
             return Success.created();
         }
 
