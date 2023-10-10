@@ -3,7 +3,7 @@
 “Por Favor Não Corte Minha Cabeça!” é um jogo festivo carregado de sangue e risadas onde os jogadores tentam sobreviver a um acampamento de verão que está sendo aterrorizado pelo assassino Escalpo (GEEKS N’ ORCS, 2019).
 
 
-Disponível para compra tanto na Amazon quanto na Steam, o jogo de cartas simula um acampamento onde os jogadores disputam sua sobrevivência com o Escalpo de modo a coletar as “bolsinhas de vida” (pontos do jogo) de cada turno.
+Disponível para compra tanto na [Amazon](https://www.amazon.com.br/Favor-Corte-Cabe%C3%A7a-Geeks-Orcs/dp/B07WW254FF) quanto na [Steam](https://steamcommunity.com/sharedfiles/filedetails/?id=2081192874), o jogo de cartas simula um acampamento onde os jogadores disputam sua sobrevivência com o Escalpo de modo a coletar as “bolsinhas de vida” (pontos do jogo) de cada turno.
 
 
 Uma vez que cada um dos jogadores foi o Escalpo do turno, vence o jogo aquele que possui mais pontos.
