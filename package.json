@@ -7,6 +7,7 @@
         "dev": "vite",
         "build": "vite build",
         "preview": "vite preview",
+        "start": "vite build && (cd server && npm start)",
         "lint": "prettier \"src/**/*.js\" --write && eslint \"src/**/*.js\"",
         "lint:fix": "prettier \"src/**/*.js\" --write && eslint \"src/**/*.js\" --fix"
     },

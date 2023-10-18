@@ -1,8 +1,8 @@
 import express, { json, Router } from "express";
 import { createServer, Server } from "http";
 import cors from "cors";
-// import path from "path";
-// import { fileURLToPath } from "url";
+import path from "path";
+import { fileURLToPath } from "url";
 
 import logger from "./Logger.js";
 
@@ -37,9 +37,13 @@ class App {
     middlewares() {
         const app = this.express;
 
-        // const __filename = fileURLToPath(import.meta.url);
-        // const __dirname = path.dirname(__filename);
+        const __filename = fileURLToPath(import.meta.url);
+        const __dirname = path.dirname(__filename);
 
+        app.use(
+            "/",
+            express.static(path.join(__dirname, "..", "..", "..", "dist"))
+        );
         app.use(json());
         app.use(cors());
     }
