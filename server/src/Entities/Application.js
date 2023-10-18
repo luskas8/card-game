@@ -36,20 +36,11 @@ class App {
 
     middlewares() {
         const app = this.express;
-
-        const __filename = fileURLToPath(import.meta.url);
-        const __dirname = path.dirname(__filename);
-
-        app.use(
-            "/",
-            express.static(path.join(__dirname, "..", "..", "..", "dist"))
-        );
         app.use(json());
         app.use(cors());
     }
 
     routes() {
-        const express = this.express;
         const router = Router();
 
         router.get("/health", async (req, res) => {
@@ -57,9 +48,16 @@ class App {
             res.json({ statusCode: 200, message: "Server online!" });
         });
 
+        const __filename = fileURLToPath(import.meta.url);
+        const __dirname = path.dirname(__filename);
+        router.use(
+            "/",
+            express.static(path.join(__dirname, "..", "..", "..", "dist"))
+        );
+
         router.use("*", (_, res) => res.redirect("/health"));
 
-        express.use(router);
+        this.express.use(router);
     }
 
     listen(port) {
