@@ -106,6 +106,9 @@ export class Error {
 
 export const isObject = (data) => data && typeof data === "object";
 
+export const isObjectWithProps = (data) =>
+    isObject(data) && Object.keys(data).length > 0;
+
 export const mappedActions = {
     /**
      *
