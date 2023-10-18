@@ -85,9 +85,13 @@ class Game {
             ? players.filter((p) => !killerIds.includes(p.playerId))
             : players;
 
-        const playerIndex = this.getRandomInt(playersPool.length - 1);
+        if (playersPool.length) {
+            const playerIndex = this.getRandomInt(playersPool.length - 1);
 
-        return playersPool[playerIndex].playerId;
+            return playersPool[playerIndex].playerId;
+        }
+
+        return "";
     }
 
     nextRound(killerIdParam) {

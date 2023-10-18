@@ -1,11 +1,10 @@
-import express, { json } from "express";
+import express, { json, Router } from "express";
 import { createServer, Server } from "http";
-import { pinoHttp } from "pino-http";
+import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
 
 import logger from "./Logger.js";
-import router from "../routes.js";
 
 class App {
     /** @type {express} */ _express = null;
@@ -41,13 +40,25 @@ class App {
         const __filename = fileURLToPath(import.meta.url);
         const __dirname = path.dirname(__filename);
 
-        // app.use(pinoHttp({ logger }));
+        app.use(
+            "/",
+            express.static(path.join(__dirname, "..", "..", "..", "dist"))
+        );
         app.use(json());
-        app.use("/", express.static(path.join(__dirname, "..")));
+        app.use(cors());
     }
 
     routes() {
         const express = this.express;
+        const router = Router();
+
+        router.get("/health", async (req, res) => {
+            logger.warn("Health check");
+            res.json({ statusCode: 200, message: "Server online!" });
+        });
+
+        router.use("*", (_, res) => res.redirect("/health"));
+
         express.use(router);
     }
 
