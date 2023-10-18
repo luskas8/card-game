@@ -19,7 +19,17 @@ class Socket {
             return this._io;
         }
 
-        this._io = new Server(server);
+        const config = {
+            serveClient: false,
+        };
+
+        logger.info(`> ENVIROMENT: ${process.env.ENVIRONMENT}`);
+
+        if (process.env.ENVIRONMENT !== "PROD") {
+            config.cors = "http://localhost:5137";
+        }
+
+        this._io = new Server(server, config);
 
         this._io.on("connection", (socket) => {
             logger.info(`Socket connected: ${socket.id}`);

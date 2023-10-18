@@ -1,7 +1,8 @@
 import express, { json, Router } from "express";
 import { createServer, Server } from "http";
-import path from "path";
-import { fileURLToPath } from "url";
+import cors from "cors";
+// import path from "path";
+// import { fileURLToPath } from "url";
 
 import logger from "./Logger.js";
 
@@ -36,11 +37,11 @@ class App {
     middlewares() {
         const app = this.express;
 
-        const __filename = fileURLToPath(import.meta.url);
-        const __dirname = path.dirname(__filename);
+        // const __filename = fileURLToPath(import.meta.url);
+        // const __dirname = path.dirname(__filename);
 
         app.use(json());
-        app.use("/", express.static(path.join(__dirname, "..")));
+        app.use(cors());
     }
 
     routes() {
@@ -51,6 +52,8 @@ class App {
             logger.warn("Health check");
             res.json({ statusCode: 200, message: "Server online!" });
         });
+
+        router.use("*", (_, res) => res.redirect("/health"));
 
         express.use(router);
     }
