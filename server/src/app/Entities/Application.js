@@ -1,10 +1,9 @@
-import express, { json } from "express";
+import express, { json, Router } from "express";
 import { createServer, Server } from "http";
 import path from "path";
 import { fileURLToPath } from "url";
 
 import logger from "./Logger.js";
-import router from "../routes.js";
 
 class App {
     /** @type {express} */ _express = null;
@@ -46,6 +45,13 @@ class App {
 
     routes() {
         const express = this.express;
+        const router = Router();
+
+        router.get("/health", async (req, res) => {
+            logger.warn("Health check");
+            res.json({ statusCode: 200, message: "Server online!" });
+        });
+
         express.use(router);
     }
 
