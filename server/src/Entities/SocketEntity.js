@@ -23,7 +23,7 @@ class Socket {
             serveClient: false,
         };
 
-        logger.info(`> ENVIROMENT: ${process.env.ENVIRONMENT}`);
+        logger.info(`> ENVIRONMENT: ${process.env.ENVIRONMENT}`);
 
         if (process.env.ENVIRONMENT !== "PROD") {
             config.cors = "http://localhost:5137";
