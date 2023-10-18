@@ -4,10 +4,10 @@
     "version": "0.0.0",
     "type": "module",
     "scripts": {
-        "dev": "vite",
-        "build": "vite build",
-        "preview": "vite preview",
-        "start": "vite build && (cd server && npm start)",
+        "dev": "concurrently \"vite\" \"cd server && npm run dev\"",
+        "install-dev-deps": "npm install && (cd server && npm install)",
+        "build": "vite build && (cd server && npm install)",
+        "start": "cd server && npm start",
         "lint": "prettier \"src/**/*.js\" --write && eslint \"src/**/*.js\"",
         "lint:fix": "prettier \"src/**/*.js\" --write && eslint \"src/**/*.js\" --fix"
     },
@@ -20,6 +20,7 @@
         "@types/react": "^18.2.15",
         "@types/react-dom": "^18.2.7",
         "@vitejs/plugin-react-swc": "^3.3.2",
+        "concurrently": "^8.2.1",
         "eslint": "^8.45.0",
         "eslint-config-prettier": "^9.0.0",
         "eslint-config-standard": "^17.1.0",
