@@ -1,6 +1,6 @@
-import App from "./src/app/Entities/Application.js";
-import Game from "./src/app/Entities/Game.js";
-import Socket from "./src/app/Entities/SocketEntity.js";
+import App from "./src/Entities/Application.js";
+import Game from "./src/Entities/Game.js";
+import Socket from "./src/Entities/SocketEntity.js";
 
 const port = process.env.PORT || 3000;
 
