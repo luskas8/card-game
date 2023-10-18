@@ -1,6 +1,5 @@
 import express, { json } from "express";
 import { createServer, Server } from "http";
-import { pinoHttp } from "pino-http";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -41,7 +40,6 @@ class App {
         const __filename = fileURLToPath(import.meta.url);
         const __dirname = path.dirname(__filename);
 
-        // app.use(pinoHttp({ logger }));
         app.use(json());
         app.use("/", express.static(path.join(__dirname, "..")));
     }
