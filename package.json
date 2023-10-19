@@ -19,8 +19,15 @@
         "install-dev-deps": "npm install && (cd server && npm install)",
         "build": "vite build && (cd server && npm install)",
         "start": "cd server && npm start",
-        "lint": "prettier \"src/**/*.js\" --write && eslint \"src/**/*.js\"",
-        "lint:fix": "prettier \"src/**/*.js\" --write && eslint \"src/**/*.js\" --fix"
+        "lint": "eslint ./",
+        "lint:fix": "eslint ./ --fix",
+        "prepare": "husky install",
+        "lint-staged": "lint-staged"
+    },
+    "lint-staged": {
+        "*.js": [
+            "npm run lint:fix"
+        ]
     },
     "dependencies": {
         "react": "^18.2.0",
@@ -37,10 +44,13 @@
         "eslint-config-standard": "^17.1.0",
         "eslint-plugin-import": "^2.28.1",
         "eslint-plugin-n": "^16.2.0",
+        "eslint-plugin-prettier": "^5.0.1",
         "eslint-plugin-promise": "^6.1.1",
         "eslint-plugin-react": "^7.32.2",
         "eslint-plugin-react-hooks": "^4.6.0",
         "eslint-plugin-react-refresh": "^0.4.3",
+        "husky": "^8.0.3",
+        "lint-staged": "^15.0.2",
         "vite": "^4.4.5"
     }
 }
