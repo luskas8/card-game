@@ -7,8 +7,8 @@ class Game {
     hostId = "";
     /** @type {Player[]}*/ players = [];
     didGameStart = false;
-    maxPlayers = 6;
-    minPlayers = 3;
+    MAX_PLAYERS = 6;
+    MIN_PLAYERS = 3;
     /** @type {Round[]} */ rounds = [];
 
     /**
@@ -59,7 +59,7 @@ class Game {
         this.hostId = "";
         this.players = [];
         this.didGameStart = false;
-        this.maxPlayers = 6;
+        this.MAX_PLAYERS = 6;
         this.rounds = [];
     }
 

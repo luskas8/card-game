@@ -9,7 +9,7 @@ import Game from "../Entities/Game.js";
  * @returns {Promise<Error|Success>}
  */
 export default function newConnection(playerId, data, game) {
-    if (game.players.length >= game.maxPlayers) {
+    if (game.players.length >= game.MAX_PLAYERS) {
         return Error.forbidden("Game is full");
     }
 

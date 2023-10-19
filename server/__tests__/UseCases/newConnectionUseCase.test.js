@@ -62,7 +62,7 @@ describe("newConnectionUseCase", () => {
     it("should not be able to connect when game is full", async () => {
         const promises = [];
 
-        for (let i = 0; i < Game.maxPlayers; i++) {
+        for (let i = 0; i < Game.MAX_PLAYERS; i++) {
             const num = i + 1;
 
             promises.push(

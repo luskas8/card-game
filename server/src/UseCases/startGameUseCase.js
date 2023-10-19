@@ -10,8 +10,8 @@ export default function startGameUseCase(hostId, game) {
         return Error.forbidden("You are not the host");
     }
 
-    if (game.players.length < game.minPlayers) {
-        return Error.forbidden(`You need at least ${game.minPlayers} players`);
+    if (game.players.length < game.MIN_PLAYERS) {
+        return Error.forbidden(`You need at least ${game.MIN_PLAYERS} players`);
     }
 
     if (!game.allPlayersChoseACharacter()) {
