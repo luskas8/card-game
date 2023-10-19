@@ -16,15 +16,6 @@
         "eslint-plugin-prettier",
         "react"
     ],
-    "ignorePatterns":[
-        "node_modules/",
-        "build/",
-        "dist/",
-        "coverage/",
-        "public/",
-        "scripts/",
-        "package-lock.json"
-    ],
     "rules": {
         "indent": "error"
     }
