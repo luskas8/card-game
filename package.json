@@ -1,8 +1,19 @@
 {
     "name": "por-favor-nao-corte-minha-cabeca-client",
     "private": true,
-    "version": "0.0.0",
+    "version": "1.0.0",
+    "description": "Cliente para jogo desenvolvido para a aula de Sitemas Distribuídos",
+    "main": "server/index.js",
+    "keywords": [
+        "game",
+        "socket",
+        "js"
+    ],
     "type": "module",
+    "author": "luskas8",
+    "contributors": [
+        "freirart"
+    ],
     "scripts": {
         "dev": "concurrently \"vite\" \"cd server && npm run dev\"",
         "install-dev-deps": "npm install && (cd server && npm install)",
