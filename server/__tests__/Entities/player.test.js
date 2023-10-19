@@ -1,5 +1,6 @@
-import { Characters } from "../../app/Entities/Character.js";
-import { Player } from "../../app/Entities/Player.js";
+import { describe, it, expect, beforeEach } from "vitest";
+import { Characters } from "../../src/Entities/Character.js";
+import Player from "../../src/Entities/Player.js";
 
 describe("Test player entity", () => {
     /** @type {Player} */
