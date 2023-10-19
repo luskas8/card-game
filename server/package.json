@@ -1,16 +1,13 @@
 {
     "name": "por-favor-nao-corte-minha-cabeca-server",
     "type": "module",
-    "version": "1.0.0",
-    "description": "",
+    "version": "2.0.0",
+    "description": "Servidor para jogo desenvolvido para a aula de Sitemas Distribuídos",
     "main": "index.js",
+    "private": true,
     "scripts": {
         "dev": "nodemon -r dotenv/config index.js dotenv_config_path=../.env",
-        "start": "node index.js",
-        "test": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules npx jest --verbose --detectOpenHandles --forceExit",
-        "test:coverage": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules npx jest --coverage --verbose --detectOpenHandles --forceExit",
-        "lint": "prettier \"src/**/*.js\" --write && eslint \"src/**/*.js\"",
-        "lint:fix": "prettier \"src/**/*.js\" --write && eslint \"src/**/*.js\" --fix"
+        "start": "node index.js"
     },
     "keywords": [
         "game",
@@ -18,7 +15,9 @@
         "js"
     ],
     "author": "luskas8",
-    "license": "MIT",
+    "contributors": [
+        "freirart"
+    ],
     "dependencies": {
         "cors": "^2.8.5",
         "express": "^4.18.2",
