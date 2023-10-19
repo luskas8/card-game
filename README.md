@@ -52,5 +52,5 @@ $ npm run dev
 -   [x] Matar funções `reset` e `findByFavoriteAction` de Character
 -   [x] Começar o jogo retorna o `killerId` e atribuí a ação favorita para o Zeca
 -   [ ] Melhorar os testes das entidades
--   [ ] Resetar o jogo quando já começou mas teve uma desconexão que resultou em menos jogadores que o mínimo permitido
+-   [x] Resetar o jogo quando já começou mas teve uma desconexão que resultou em menos jogadores que o mínimo permitido
 -   [ ] Reconexão

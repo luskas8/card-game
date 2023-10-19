@@ -22,4 +22,10 @@ export default class Player {
     get score() {
         return this.baseScore + this.killerScore;
     }
+
+    reset() {
+        this.character = null;
+        this.killerScore = 0;
+        this.baseScore = 0;
+    }
 }

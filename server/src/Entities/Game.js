@@ -59,8 +59,13 @@ class Game {
         this.hostId = "";
         this.players = [];
         this.didGameStart = false;
-        this.MAX_PLAYERS = 6;
         this.rounds = [];
+    }
+
+    reset() {
+        this.rounds = [];
+        this.didGameStart = false;
+        this.players.forEach((player) => player.reset());
     }
 
     start(killerId = "") {
