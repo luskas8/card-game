@@ -7,7 +7,9 @@
     "private": true,
     "scripts": {
         "dev": "nodemon -r dotenv/config index.js dotenv_config_path=../.env",
-        "start": "node index.js"
+        "start": "node index.js",
+        "test": "vitest",
+        "coverage": "vitest run --coverage"
     },
     "keywords": [
         "game",
@@ -34,6 +36,7 @@
         "eslint-plugin-n": "^16.0.1",
         "eslint-plugin-promise": "^6.1.1",
         "jest": "^29.6.2",
-        "nodemon": "^3.0.1"
+        "nodemon": "^3.0.1",
+        "vitest": "^0.34.6"
     }
 }
