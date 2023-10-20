@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, test } from "vitest";
 import { Characters } from "../../src/Entities/Character.js";
 import Player from "../../src/Entities/Player.js";
 
@@ -25,4 +25,14 @@ describe("Test player entity", () => {
         player.killerScore = 20;
         expect(player.score).toBe(30);
     });
+
+    test("should reset all values", () => {
+        player.character = Characters.findByName("Bocão");
+        player.baseScore = 10;
+        player.killerScore = 20;
+        player.reset();
+        expect(player.character).toBeNull();
+        expect(player.baseScore).toBe(0);
+        expect(player.killerScore).toBe(0);
+    })
 });
