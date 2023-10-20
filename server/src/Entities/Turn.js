@@ -20,19 +20,24 @@ export default class Turn {
     /**
      * @param {string} playerId
      * @param {Actions} actions
+     * @returns {boolean}
      */
     chooseAction(playerId, actions) {
         const { killerId, chosenActions, killerMaxActions } = this;
 
-        if (
-            !(playerId in actions) ||
-            (playerId === killerId &&
-                chosenActions[playerId].length < killerMaxActions)
-        ) {
-            this.chosenActions[playerId] = [...actions];
-            return true;
+        if (actions.length === 0) {
+            return false; //"Killer must choose at least one action";
         }
 
-        return false;
+        if ((playerId === killerId && actions.length > killerMaxActions) || (playerId !== killerId && actions.length > 1)) {
+            return false; //"Too many actions";
+        }
+
+        if (playerId !== killerId && chosenActions[playerId]) {
+            return false; //"All actions chosen for this turn";
+        }
+
+        this.chosenActions[playerId] = [...actions];
+        return true;
     }
 }
