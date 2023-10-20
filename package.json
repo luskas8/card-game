@@ -22,7 +22,8 @@
         "lint": "eslint ./",
         "lint:fix": "eslint ./ --fix",
         "prepare": "husky install",
-        "lint-staged": "lint-staged"
+        "lint-staged": "lint-staged",
+        "test:server": "cd server && npm test"
     },
     "lint-staged": {
         "*.js": [
