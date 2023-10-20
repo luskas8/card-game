@@ -65,7 +65,9 @@ class Game {
     reset() {
         this.rounds = [];
         this.didGameStart = false;
-        this.players.forEach((player) => player.reset());
+        this.players.map((player) => {
+            player.reset()
+        });
     }
 
     start(killerId = "") {
@@ -119,18 +121,13 @@ class Game {
         const zecaPlayer = this.findPlayerByCharacter("Zeca");
 
         if (zecaPlayer) {
-            let newAction = "";
-
-            const killerIndex = players.indexOf(this.findPlayerById(killerId));
-            const zecaPlayerIndex = players.indexOf(zecaPlayer);
-
-            const isZecaTheKiller = zecaPlayerIndex === killerIndex;
-
+            const isZecaTheKiller = zecaPlayer.playerId === killerId;
             if (!isZecaTheKiller) {
-                newAction = players[killerIndex].character.favoriteAction;
-            }
+                const killerPlayer = this.findPlayerById(killerId);
+                const zecaPlayerIndex = players.indexOf(zecaPlayer);
 
-            this.players[zecaPlayerIndex].character.favoriteAction = newAction;
+                this.players[zecaPlayerIndex].character.favoriteAction =  killerPlayer.character.favoriteAction;
+            }
         }
     }
 
@@ -183,6 +180,7 @@ class Game {
 
     /**
      * @param {string} playerId
+     * @param {boolean} shouldReassignHostId
      */
     disconnectPlayer(playerId, shouldReassignHostId = true) {
         const { players, hostId, didGameStart, killerIds } = this;
